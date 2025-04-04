@@ -5,6 +5,25 @@
 
 <h1>Counter</h1>
 
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        You are an admin
+    </Authorized>
+    <NotAuthorized>
+        No llegas a los niveles.
+    </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        You are a common user a mere human, a short minded human.
+    </Authorized>
+    <NotAuthorized>
+        No eres, eres mas que eso.
+    </NotAuthorized>
+</AuthorizeView>
+
+
 <p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
