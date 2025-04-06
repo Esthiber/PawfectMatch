@@ -8,8 +8,10 @@ namespace PawfectMatch.Models
     {
         [Key]
         public int AdoptanteId { get; set; }
+
         [Required(ErrorMessage ="Nombre requerido")]
         public string Nombre { get; set; } = null!;
+
         [Required(ErrorMessage ="Ingrese su ocupacion")]
         public string Ocupacion { get; set; } = null!;
 
