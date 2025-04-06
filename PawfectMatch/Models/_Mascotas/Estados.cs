@@ -6,5 +6,7 @@ namespace PawfectMatch.Models._Mascotas
     {
         [Key]
         public int EstadoId { get; set; }
+
+        public string Nombre { get; set; } = null!;
     }
 }
