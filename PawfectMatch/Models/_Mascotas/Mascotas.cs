@@ -11,13 +11,13 @@ namespace PawfectMatch.Models._Mascotas
         [Required(ErrorMessage = "La categoria es requerida")]
         public int CategoriaId { get; set; }
 
-        [Required(ErrorMessage = "El nombre es requerido")]
+        [Required(ErrorMessage = "Raza es requerido")]
         public int RazaId { get; set; }
 
         [Required(ErrorMessage = "La relacion de tamaño es requerida")]
         public int RelacionSizeId { get; set; }
 
-        [Required(ErrorMessage ="El Estado es Requerido")]
+        [Required(ErrorMessage = "El Estado es Requerido")]
         public int EstadoId { get; set; }
 
         [Required(ErrorMessage = "El nombre es requerido")]
@@ -34,9 +34,6 @@ namespace PawfectMatch.Models._Mascotas
 
         [Required(ErrorMessage = "La Foto es requerida")]
         public string FotoUrl { get; set; } = null!;
-
-        [ForeignKey("RazaId")]
-        public Razas Raza { get; set; } = null!;
 
         [ForeignKey("CategoriaId")]
         public Categorias Categoria { get; set; } = null!;
