@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\Images\Logos\" />
     <Folder Include="Components\Pages\_Adoptantes\_Editar\" />
     <Folder Include="Components\Pages\_Citas\_Editar\" />
     <Folder Include="Components\Pages\_Mascotas\_Editar\" />
