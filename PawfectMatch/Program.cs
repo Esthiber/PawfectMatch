@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using PawfectMatch.Components;
 using PawfectMatch.Components.Account;
 using PawfectMatch.Data;
+using PawfectMatch.Services;
+using PawfectMatch.Services._Mascotas;
+using PawfectMatch.Services._Solicitudes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +39,14 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+// Estos servicios. 
+builder.Services.AddScoped<RazasService>();
+builder.Services.AddScoped<CategoriasServices>();
+builder.Services.AddScoped<MascotasService>();
+builder.Services.AddScoped<HistorialAdopcionesService>();
+builder.Services.AddScoped<SolicitudesAdopcionesService>();
+builder.Services.AddScoped<AdoptantesService>();
+builder.Services.AddScoped<CitasService>();
 
 var app = builder.Build();
 
