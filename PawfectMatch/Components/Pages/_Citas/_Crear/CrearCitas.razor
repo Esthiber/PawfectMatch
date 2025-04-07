@@ -1,0 +1,111 @@
+﻿@page "/Crear/Citas"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using PawfectMatch.Models
+@using PawfectMatch.Models._Mascotas
+@attribute [Authorize]
+
+@inject CitasService citasService
+@inject AdoptantesService adoptantesService
+@inject MascotasService mascotasService
+@inject AuthenticationStateProvider authProvider
+
+@rendermode InteractiveServer
+
+<h3>Agendar Cita</h3>
+
+@if (!string.IsNullOrEmpty(mensajeExito))
+{
+    <div class="alert alert-success">@mensajeExito</div>
+}
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+<EditForm Model="@cita" OnValidSubmit="GuardarCita">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="mascota">Mascota:</label>
+        <InputSelect id="mascota" class="form-control" @bind-Value="cita.MascotaId">
+            <option value="">Seleccione una mascota</option>
+            @foreach (var mascota in mascotasDisponibles)
+            {
+                <option value="@mascota.MascotaId">@mascota.Nombre</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => cita.MascotaId)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="fechaHora">Fecha y hora:</label>
+        <InputDate id="fechaHora" class="form-control" @bind-Value="cita.FechaHora" />
+        <ValidationMessage For="@(() => cita.FechaHora)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Agendar</button>
+</EditForm>
+
+@code {
+    private Citas cita = new();
+    private List<Mascotas> mascotasDisponibles = new();
+    private string? mensajeExito;
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cita.FechaHora = DateTime.Now.AddDays(1); // Fecha por defecto
+        var authState = await authProvider.GetAuthenticationStateAsync();
+        var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId is not null)
+        {
+            var adoptantes = await adoptantesService.ListAsync(a => a.UsuarioId == userId);
+            var adoptante = adoptantes.FirstOrDefault();
+
+            if (adoptante is not null)
+            {
+                cita.AdoptanteId = adoptante.AdoptanteId;
+                mascotasDisponibles = await mascotasService.ListAsync(m => true); // Puedes filtrar
+            }
+            else
+            {
+                error = "No se encontró el adoptante vinculado al usuario.";
+            }
+        }
+        else
+        {
+            error = "No se pudo obtener el usuario autenticado.";
+        }
+    }
+
+    private async Task GuardarCita()
+    {
+        mensajeExito = error = null;
+
+        if (cita.MascotaId == 0 || cita.FechaHora == default)
+        {
+            error = "Debe seleccionar una mascota y una fecha válida.";
+            return;
+        }
+
+        bool guardado = await citasService.InsertAsync(cita);
+        if (guardado)
+        {
+            mensajeExito = "¡Cita agendada con éxito!";
+            cita = new Citas
+            {
+                AdoptanteId = cita.AdoptanteId,
+                FechaHora = DateTime.Now.AddDays(1)
+            };
+        }
+        else
+        {
+            error = "No se pudo agendar la cita.";
+        }
+    }
+}
