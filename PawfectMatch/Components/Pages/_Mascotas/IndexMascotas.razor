@@ -1,0 +1,45 @@
+﻿@page "/Index/Mascotas"
+
+@using PawfectMatch.Models._Mascotas
+@inject MascotasService mascotasService
+
+<h3 class="mb-4">Mascotas en Adopción</h3>
+
+@if (mascotas == null)
+{
+    <p>Cargando mascotas...</p>
+}
+else if (!mascotas.Any())
+{
+    <div class="alert alert-warning">No hay mascotas disponibles actualmente.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var m in mascotas)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <img src="@m.FotoUrl" class="card-img-top" style="height: 250px; object-fit: cover;" alt="@m.Nombre" />
+                    <div class="card-body">
+                        <h5 class="card-title">@m.Nombre</h5>
+                        <p class="card-text">
+                            Edad: @m.FechaNacimieneto años<br />
+                            @* Raza: @m.Raza *@
+                        </p>
+                        <a href="/DetalleMascota/@m.MascotaId" class="btn btn-outline-primary btn-sm">Ver más</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Mascotas>? mascotas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        mascotas = await mascotasService.ListAsync(m => true);
+    }
+}
