@@ -10,7 +10,7 @@ namespace PawfectMatch.Services
         public Task<T> SearchByIdAsync(int id);
         public Task<bool> ExistAsync(int id);
         public Task<bool> SaveAsync(T elem);
-        public Task<List<T>> LiistAsync(Expression<Func<T, bool>> criteria);
+        public Task<List<T>> ListAsync(Expression<Func<T, bool>> criteria);
 
     }
 }
