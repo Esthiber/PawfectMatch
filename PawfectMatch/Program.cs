@@ -47,6 +47,9 @@ builder.Services.AddScoped<HistorialAdopcionesService>();
 builder.Services.AddScoped<SolicitudesAdopcionesService>();
 builder.Services.AddScoped<AdoptantesService>();
 builder.Services.AddScoped<CitasService>();
+builder.Services.AddScoped<EstadosService>();
+builder.Services.AddScoped<SexosService>();
+builder.Services.AddScoped<EstadosSolicitudesService>();
 
 var app = builder.Build();
 

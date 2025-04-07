@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Pages\_Mascotas\" />
+    <Folder Include="Components\Pages\_Solicitudes\_Editar\" />
+    <Folder Include="Components\Pages\_Solicitudes\_Crear\" />
     <Folder Include="DAL\" />
   </ItemGroup>
 

@@ -35,6 +35,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<RelacionSizes> RelacionSizes { get; set; }
 
+    public DbSet<Estados> Estados { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
