@@ -1,0 +1,97 @@
+﻿@page "/Crear/SolicitudesAdopciones"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using PawfectMatch.Models._Solicitudes
+@using PawfectMatch.Models._Mascotas
+@attribute [Authorize]
+
+@inject SolicitudesAdopcionesService solicitudesAdopcionesService
+@inject AdoptantesService adoptantesService
+@inject MascotasService mascotasService
+@inject AuthenticationStateProvider authProvider
+
+@rendermode InteractiveServer
+
+<h3>Crear Solicitud de Adopción</h3>
+
+@if (mensajeExito is not null)
+{
+    <div class="alert alert-success">@mensajeExito</div>
+}
+
+@if (error is not null)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+<EditForm Model="@solicitud" OnValidSubmit="GuardarSolicitud">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Mascota:</label>
+        <InputSelect @bind-Value="solicitud.MascotaId" class="form-control">
+            <option value="">Seleccione una mascota</option>
+            @foreach (var mascota in mascotasDisponibles)
+            {
+                <option value="@mascota.MascotaId">@mascota.Nombre</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => solicitud.MascotaId)" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Enviar solicitud</button>
+</EditForm>
+
+@code {
+    private SolicitudesAdopciones solicitud = new();
+    private List<Mascotas> mascotasDisponibles = new();
+    private string? mensajeExito;
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        solicitud.Fecha = DateTime.Now;
+        solicitud.EstadoSolicitudId = 1; // Asumiendo que 1 = "Pendiente"
+
+        var authState = await authProvider.GetAuthenticationStateAsync();
+        var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId is not null)
+        {
+            var adoptantes = await adoptantesService.ListAsync(a => a.UsuarioId == userId);
+            var adoptante = adoptantes.FirstOrDefault();
+
+            if (adoptante is not null)
+            {
+                solicitud.AdoptanteId = adoptante.AdoptanteId;
+                mascotasDisponibles = await mascotasService.ListAsync(m => true); // Puedes filtrar disponibles
+            }
+            else
+            {
+                error = "No se encontró el adoptante vinculado al usuario.";
+            }
+        }
+    }
+
+    private async Task GuardarSolicitud()
+    {
+        if (solicitud.AdoptanteId == 0 || solicitud.MascotaId == 0)
+        {
+            error = "Debe seleccionar una mascota.";
+            return;
+        }
+
+        bool guardado = await solicitudesAdopcionesService.InsertAsync(solicitud);
+        if (guardado)
+        {
+            mensajeExito = "¡Solicitud enviada con éxito!";
+            solicitud = new() { Fecha = DateTime.Now, EstadoSolicitudId = 1 };
+        }
+        else
+        {
+            error = "Error al enviar la solicitud.";
+        }
+    }
+}
