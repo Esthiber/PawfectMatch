@@ -16,12 +16,9 @@
 
   <ItemGroup>
     <Folder Include="Components\Pages\_Adoptantes\_Editar\" />
-    <Folder Include="Components\Pages\_Adoptantes\_Crear\" />
     <Folder Include="Components\Pages\_Citas\_Editar\" />
-    <Folder Include="Components\Pages\_Citas\_Crear\" />
     <Folder Include="Components\Pages\_Mascotas\_Editar\" />
     <Folder Include="Components\Pages\_Solicitudes\_Editar\" />
-    <Folder Include="Components\Pages\_Solicitudes\_Crear\" />
     <Folder Include="DAL\" />
   </ItemGroup>
 
