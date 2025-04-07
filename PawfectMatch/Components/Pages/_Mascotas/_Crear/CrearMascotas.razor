@@ -1,0 +1,131 @@
+﻿@page "/Crear/Mascotas"
+
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Admin")]
+
+
+@inject MascotasService mascotasService
+@inject RazasService razasService
+@inject CategoriasServices categoriasServices
+@inject RelacionSizesService relacionSizesService
+@inject EstadosService estadosService
+
+@rendermode InteractiveServer
+
+<h3 class="text-xl font-semibold mb-4">Crear Mascota</h3>
+
+<EditForm Model="@mascota" OnValidSubmit="GuardarMascota">
+    <DataAnnotationsValidator />
+    @* <ValidationSummary /> *@
+
+    <div class="mb-3">
+        <label>Nombre:</label>
+        <InputText @bind-Value="mascota.Nombre" class="form-control" />
+        <ValidationMessage For="@(() => mascota.Nombre)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Categoría:</label>
+        <InputSelect @bind-Value="mascota.CategoriaId" class="form-control">
+            <option value="">Seleccione una categoría</option>
+            @foreach (var cat in categorias)
+            {
+                <option value="@cat.CategoriaId">@cat.Nombre</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => mascota.CategoriaId)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Raza:</label>
+        <InputSelect @bind-Value="mascota.RazaId" class="form-control">
+            <option value="">Seleccione una raza</option>
+            @foreach (var raza in razas)
+            {
+                <option value="@raza.RazaId">@raza.Nombre</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => mascota.RazaId)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Relación de Tamaño:</label>
+        <InputSelect @bind-Value="mascota.RelacionSizeId" class="form-control">
+            <option value="">Seleccione una opción</option>
+            @foreach (var size in relacionSizes)
+            {
+                <option value="@size.RelacionSizeId">@size.Size</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => mascota.RelacionSizeId)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Estado:</label>
+        <InputSelect @bind-Value="mascota.EstadoId" class="form-control">
+            <option value="">Seleccione un estado</option>
+            @foreach (var estado in estados)
+            {
+                <option value="@estado.EstadoId">@estado.Nombre</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => mascota.EstadoId)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Tamaño (pulgadas):</label>
+        <InputNumber @bind-Value="mascota.Tamano" class="form-control" />
+        <ValidationMessage For="@(() => mascota.Tamano)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha de nacimiento:</label>
+        <InputDate @bind-Value="mascota.FechaNacimieneto" class="form-control" />
+        <ValidationMessage For="@(() => mascota.FechaNacimieneto)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Descripción:</label>
+        <InputTextArea @bind-Value="mascota.Descripcion" class="form-control" />
+        <ValidationMessage For="@(() => mascota.Descripcion)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Foto (URL):</label>
+        <InputText @bind-Value="mascota.FotoUrl" class="form-control" />
+        <ValidationMessage For="@(() => mascota.FotoUrl)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</EditForm>
+
+@code {
+    private Mascotas mascota = new();
+    private List<Razas> razas = new();
+    private List<Categorias> categorias = new();
+    private List<RelacionSizes> relacionSizes = new();
+    private List<Estados> estados = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categorias = await categoriasServices.ListAsync(x => true);
+        razas = await razasService.ListAsync(x => true);
+        relacionSizes = await relacionSizesService.ListAsync(x => true);
+        estados = await estadosService.ListAsync(x => true);
+    }
+
+    private async Task GuardarMascota()
+    {
+        bool guardado = await mascotasService.InsertAsync(mascota);
+        if (guardado)
+        {
+            mascota = new(); // Limpiar formulario
+            // Puedes mostrar mensaje de éxito aquí
+        }
+        else
+        {
+            // Mostrar error
+        }
+    }
+}
