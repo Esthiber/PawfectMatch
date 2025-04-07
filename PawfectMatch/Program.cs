@@ -27,18 +27,9 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();      
 
 var connectionString = builder.Configuration.GetConnectionString("SqlConStr") ?? throw new InvalidOperationException("Connection string 'SqlConStr' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 // Estos servicios. 
 builder.Services.AddScoped<RazasService>();
 builder.Services.AddScoped<CategoriasServices>();
@@ -50,6 +41,19 @@ builder.Services.AddScoped<CitasService>();
 builder.Services.AddScoped<EstadosService>();
 builder.Services.AddScoped<SexosService>();
 builder.Services.AddScoped<EstadosSolicitudesService>();
+builder.Services.AddScoped<RelacionSizesService>();
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddSignInManager()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+
 
 var app = builder.Build();
 
