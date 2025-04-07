@@ -1,81 +1,55 @@
-﻿@implements IDisposable
-
+﻿
 @inject NavigationManager NavigationManager
 
-<div>
-    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-        Logo
-    </NavLink>
+@rendermode InteractiveServer
+
+<div class="nav-menu">
+    <div class="logo-container">
+        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <img src="@Assets["/img/logo/logo0.png"]" />
+        </NavLink>
+    </div>
+    <div class="navigation-buttons">
+        <div class="nav-btn">
+            <NavLink class="nav-link" href="/Index/Mascotas">
+                <div class="text">Mascotas</div>
+            </NavLink>
+        </div>
+        <div class="nav-btn2">
+            <NavLink class="nav-link" href="/Nosotros">
+                <div class="text">Nosotros</div>
+            </NavLink>
+        </div>
+    </div>
+    <div class="main-nav-btn">
+        <div class="text2">Adopta aqui !</div>
+    </div>
+
+    <div class="user-btn" @onpointerenter="pointerEnter" @onpointerleave="pointerLeave">
+        <img class="user" src="@Assets["/img/icons/user0.svg"]" />
+
+        @if (showUserMenu)
+        {
+            <div class="usermenu-container">
+                <UserMenu />
+            </div>
+        }
+    </div>
 </div>
 
-<nav class="nav flex-row">
-    <div class="nav-item px-3">
-
-        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-
-    </div>
-
-    <div class="nav-item px-3">
-        <NavLink class="nav-link" href="/Index/Mascotas">
-            <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Mascotas
-        </NavLink>
-    </div>
-
-    <div class="nav-item px-3">
-        <NavLink class="nav-link" href="/Nosotros">
-            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Nosotros
-        </NavLink>
-    </div>
-
-    <AuthorizeView>
-        <Authorized>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="Account/Manage">
-                    <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                </NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <form action="Account/Logout" method="post">
-                    <AntiforgeryToken />
-                    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                    <button type="submit" class="nav-link">
-                        <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
-                    </button>
-                </form>
-            </div>
-        </Authorized>
-        <NotAuthorized>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="Account/Register">
-                    <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
-                </NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="Account/Login">
-                    <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
-                </NavLink>
-            </div>
-        </NotAuthorized>
-    </AuthorizeView>
-</nav>
-
 @code {
-    private string? currentUrl;
+    private bool showUserMenu = false;
 
-    protected override void OnInitialized()
+    private void pointerEnter()
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.LocationChanged += OnLocationChanged;
+        showUserMenu = true;
     }
 
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    private void pointerLeave()
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
+        showUserMenu = false;
     }
 }
+
+
+
