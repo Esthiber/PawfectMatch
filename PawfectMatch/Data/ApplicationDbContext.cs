@@ -15,24 +15,25 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     {
     }
 
-    DbSet<Citas> Citas { get; set; }
-    DbSet<HistorialAdopciones> HistorialAdopciones { get; set; }
+    public DbSet<Citas> Citas { get; set; }
 
-    DbSet<SolicitudesAdopciones> SolicitudesAdopciones { get; set; }
+    public DbSet<HistorialAdopciones> HistorialAdopciones { get; set; }
 
-    DbSet<EstadoSolicitudes> EstadoSolicitudes { get; set; }
+    public DbSet<SolicitudesAdopciones> SolicitudesAdopciones { get; set; }
 
-    DbSet<Adoptantes> Adoptantes { get; set; }
+    public DbSet<EstadoSolicitudes> EstadoSolicitudes { get; set; }
 
-    DbSet<Mascotas> Mascotas { get; set; }
+    public DbSet<Adoptantes> Adoptantes { get; set; }
 
-    DbSet<Sexos> Sexos { get; set; }
+    public DbSet<Mascotas> Mascotas { get; set; }
 
-    DbSet<Razas> Razas { get; set; }
+    public DbSet<Sexos> Sexos { get; set; }
 
-    DbSet<Categorias> Categorias { get; set; }
+    public DbSet<Razas> Razas { get; set; }
 
-    DbSet<RelacionSizes> RelacionSizes { get; set; }
+    public DbSet<Categorias> Categorias { get; set; }
+
+    public DbSet<RelacionSizes> RelacionSizes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
