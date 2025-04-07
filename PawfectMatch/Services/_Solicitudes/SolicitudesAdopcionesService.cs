@@ -1,0 +1,73 @@
+﻿using Microsoft.EntityFrameworkCore;
+using PawfectMatch.Data;
+using PawfectMatch.Models._Solicitudes;
+using System.Linq;
+using System.Linq.Expressions;
+
+namespace PawfectMatch.Services._Solicitudes
+{
+    public class SolicitudesAdopcionesService(IDbContextFactory<ApplicationDbContext> DbFactory) : ICRUD<SolicitudesAdopciones>
+    {
+        public async Task<bool> DeleteAsync(int id)
+        {
+            await using var ctx = await DbFactory.CreateDbContextAsync();
+            return await ctx.SolicitudesAdopciones
+                .AsNoTracking()
+                .Where(a => a.SolicitudAdopcionId == id)
+                .ExecuteDeleteAsync() > 0;
+        }
+
+        public async Task<bool> ExistAsync(int id)
+        {
+            await using var ctx = await DbFactory.CreateDbContextAsync();
+            return await ctx.SolicitudesAdopciones
+                .AnyAsync(c => c.SolicitudAdopcionId == id);
+        }
+
+        public async Task<bool> InsertAsync(SolicitudesAdopciones elem)
+        {
+            await using var ctx = await DbFactory.CreateDbContextAsync();
+            ctx.SolicitudesAdopciones.Add(elem);
+            return await ctx.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<SolicitudesAdopciones>> ListAsync(Expression<Func<SolicitudesAdopciones, bool>> criteria)
+        {
+            await using var ctx = await DbFactory.CreateDbContextAsync();
+            return await ctx.SolicitudesAdopciones
+                .Include(a => a.Adoptante)
+                .Include(a => a.Mascota)
+                .AsNoTracking()
+                .Where(criteria)
+                .ToListAsync();
+        }
+
+        public async Task<bool> SaveAsync(SolicitudesAdopciones elem)
+        {
+            if (await ExistAsync(elem.SolicitudAdopcionId))
+            {
+                return await InsertAsync(elem);
+            }
+            else
+            {
+                return await UpdateAsync(elem);
+            }
+        }
+
+        public async Task<SolicitudesAdopciones> SearchByIdAsync(int id)
+        {
+            await using var ctx = await DbFactory.CreateDbContextAsync();
+            return await ctx.SolicitudesAdopciones
+                .Include(a => a.Adoptante)
+                .Include(a => a.Mascota)
+                .FirstOrDefaultAsync(a => a.SolicitudAdopcionId == id) ?? new();
+        }
+
+        public async Task<bool> UpdateAsync(SolicitudesAdopciones elem)
+        {
+                await using var ctx = await DbFactory.CreateDbContextAsync();
+                ctx.SolicitudesAdopciones.Update(elem);
+                return await ctx.SaveChangesAsync() > 0;
+        }
+    }
+}
