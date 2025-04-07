@@ -1,0 +1,105 @@
+﻿@inject NavigationManager navigationManager
+@implements IDisposable
+@rendermode InteractiveServer
+
+<div class="user-menu">
+    <AuthorizeView>
+        <Authorized>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link " href="Account/Manage">
+                    <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+                </NavLink>
+            </div>
+
+        </Authorized>
+        <NotAuthorized>
+
+        </NotAuthorized>
+    </AuthorizeView>
+    <AuthorizeView Roles="Admin">
+        <div class="button4">
+            @* <img class="book" src="./book0.svg" /> *@
+            <NavLink class="nav-link " href="Index/Solicitudes">
+                <div class="button2">Ver Solicitudes</div>
+            </NavLink>
+        </div>
+        <div class="button5">
+            <div class="button2">Historial Adop</div>
+        </div>
+        <div class="button5">
+            <div class="button2">Citas</div>
+        </div>
+        <div class="button5">
+            <div class="button2">Funciones Avanzadas</div>
+        </div>
+    </AuthorizeView>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="button">
+                <NavLink class="nav-link" href="Account/Login">
+                    @* <img class="log-in" src="log-in0.svg" /> *@
+                    <div class="button2">Iniciar Sesion</div>
+                </NavLink>
+            </div>
+            <div class="button3">
+                <NavLink class="nav-link" href="Account/Register">
+
+                    @* <img class="user-plus" src="user-plus0.svg" /> *@
+                    <div class="button2">Registrarse</div>
+                </NavLink>
+            </div>
+        </NotAuthorized>
+
+        <Authorized>
+
+
+            <div class="button5">
+                <div class="button2">Mis Citas</div>
+            </div>
+            <div class="button5">
+                <div class="button2">Ver Sugerencias</div>
+            </div>
+            <div class="button5">
+                <div class="button2">Sugerencias</div>
+            </div>
+            <div class="button3">
+                @* <img class="book-open" src="book-open0.svg" /> *@
+                <div class="button2">Mis Solicitudes</div>
+            </div>
+
+            <div class="button6">
+                <form action="Account/Logout" method="post">
+                    <AntiforgeryToken />
+                    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                    <button type="submit" class="nav-link">
+                        @* <img class="log-out" src="log-out0.svg" /> *@
+
+                        <div class="button2">Cerrar Sesion</div>
+                    </button>
+                </form>
+
+            </div>
+        </Authorized>
+    </AuthorizeView>
+</div>
+
+@code {
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = navigationManager.ToBaseRelativePath(navigationManager.Uri);
+        navigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = navigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        navigationManager.LocationChanged -= OnLocationChanged;
+    }
+}
