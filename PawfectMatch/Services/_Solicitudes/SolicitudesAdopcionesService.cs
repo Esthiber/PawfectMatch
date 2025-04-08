@@ -37,6 +37,7 @@ namespace PawfectMatch.Services._Solicitudes
             return await ctx.SolicitudesAdopciones
                 .Include(a => a.Adoptante)
                 .Include(a => a.Mascota)
+                .Include(a => a.EstadoSolicitud)
                 .AsNoTracking()
                 .Where(criteria)
                 .ToListAsync();
@@ -60,14 +61,15 @@ namespace PawfectMatch.Services._Solicitudes
             return await ctx.SolicitudesAdopciones
                 .Include(a => a.Adoptante)
                 .Include(a => a.Mascota)
+                .Include(a => a.EstadoSolicitud)
                 .FirstOrDefaultAsync(a => a.SolicitudAdopcionId == id) ?? new();
         }
 
         public async Task<bool> UpdateAsync(SolicitudesAdopciones elem)
         {
-                await using var ctx = await DbFactory.CreateDbContextAsync();
-                ctx.SolicitudesAdopciones.Update(elem);
-                return await ctx.SaveChangesAsync() > 0;
+            await using var ctx = await DbFactory.CreateDbContextAsync();
+            ctx.SolicitudesAdopciones.Update(elem);
+            return await ctx.SaveChangesAsync() > 0;
         }
     }
 }
