@@ -7,6 +7,7 @@ namespace PawfectMatch.Models._Mascotas
     {
         [Key]
         public int CategoriaId { get; set; }
+        [Required(ErrorMessage ="Requerido")]
         public string Nombre { get; set; } = null!;
 
         [InverseProperty("Categoria")]

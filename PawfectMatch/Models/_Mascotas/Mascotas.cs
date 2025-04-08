@@ -35,6 +35,9 @@ namespace PawfectMatch.Models._Mascotas
         [Required(ErrorMessage = "La Foto es requerida")]
         public string FotoUrl { get; set; } = null!;
 
+        [Required(ErrorMessage = "El Sexo es Requerido")]
+        public int SexoId { get; set; }
+
         [ForeignKey("CategoriaId")]
         public Categorias Categoria { get; set; } = null!;
 
@@ -43,6 +46,9 @@ namespace PawfectMatch.Models._Mascotas
 
         [ForeignKey("EstadoId")]
         public Estados Estado { get; set; } = null!;
+
+        [ForeignKey("SexoId")]
+        public Sexos Sexo { get; set; } = null!;
 
     }
 }
