@@ -38,6 +38,7 @@ namespace PawfectMatch.Services._Mascotas
                 .Include(a => a.Categoria)
                 .Include(a => a.RelacionSize)
                 .Include(a => a.Estado)
+                .Include(a => a.Sexo)
                 .AsNoTracking()
                 .Where(criteria)
                 .ToListAsync();
@@ -62,6 +63,7 @@ namespace PawfectMatch.Services._Mascotas
                 .Include(a => a.Categoria)
                 .Include(a => a.RelacionSize)
                 .Include(a => a.Estado)
+                .Include(a => a.Sexo)
                 .FirstOrDefaultAsync(a => a.MascotaId == id) ?? new();
         }
 
