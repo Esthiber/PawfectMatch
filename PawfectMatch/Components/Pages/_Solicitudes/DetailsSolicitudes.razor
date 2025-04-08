@@ -1,0 +1,92 @@
+﻿@page "/Details/Solicitudes/{id:int}"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using PawfectMatch.Models._Solicitudes
+@using PawfectMatch.Models._Mascotas
+
+@attribute [Authorize(Roles = "Admin")]
+
+@inject SolicitudesAdopcionesService solicitudesService
+@inject HistorialAdopcionesService historialService
+@inject MascotasService mascotasService
+@inject NavigationManager navManager
+
+@rendermode InteractiveServer
+
+<h3>Detalle de Solicitud</h3>
+
+@if (solicitud is null)
+{
+    <p><em>Cargando detalles...</em></p>
+}
+else
+{
+    <div class="card p-3">
+        <h5>Información del Adoptante</h5>
+        <p><strong>Nombre:</strong> @solicitud.Adoptante.Nombre</p>
+        <p><strong>Ocupación:</strong> @solicitud.Adoptante.Ocupacion</p>
+
+        <h5>Información de la Mascota</h5>
+        <p><strong>Nombre:</strong> @solicitud.Mascota.Nombre</p>
+        <p><strong>Descripción:</strong> @solicitud.Mascota.Descripcion</p>
+        <p><strong>Fecha de nacimiento:</strong> @solicitud.Mascota.FechaNacimieneto</p>
+        <img src="@solicitud.Mascota.FotoUrl" alt="Mascota" style="max-width:200px;" />
+
+        <h5>Estado de la Solicitud</h5>
+        <p><strong>Estado:</strong> @solicitud.EstadoSolicitud.Nombre</p>
+        <p><strong>Fecha:</strong> @solicitud.Fecha.ToString("dd/MM/yyyy")</p>
+
+        <div class="mt-3">
+            @if (solicitud.EstadoSolicitudId == 1)
+            {
+                <button class="btn btn-success me-2" @onclick="AceptarSolicitud">Aceptar</button>
+            }
+            <button class="btn btn-secondary" @onclick="Volver">Volver</button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    private SolicitudesAdopciones? solicitud;
+
+    protected override async Task OnInitializedAsync()
+    {
+        solicitud = await solicitudesService.SearchByIdAsync(id);
+    }
+
+    private async Task AceptarSolicitud()
+    {
+        if (solicitud is null)
+            return;
+
+        // Cambiar estado de solicitud a "Aprobada" (ID: 2)
+        solicitud.EstadoSolicitudId = 2;
+        await solicitudesService.UpdateAsync(solicitud);
+
+        // Cambiar estado de la mascota a "Adoptado" (ID: 2)
+        solicitud.Mascota.EstadoId = 2;
+        await mascotasService.UpdateAsync(solicitud.Mascota);
+
+        // Crear entrada en historial de adopciones
+        var historial = new HistorialAdopciones
+            {
+                AdoptanteId = solicitud.AdoptanteId,
+                MascotaId = solicitud.MascotaId,
+                FechaAdopcion = DateTime.Now,
+                Notas = "Adopción aprobada desde el sistema"
+            };
+        await historialService.InsertAsync(historial);
+
+        navManager.NavigateTo("/Index/Solicitudes");
+    }
+
+    private void Volver()
+    {
+        navManager.NavigateTo("/Index/Solicitudes");
+    }
+}
