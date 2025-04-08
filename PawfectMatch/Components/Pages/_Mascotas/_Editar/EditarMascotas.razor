@@ -1,0 +1,162 @@
+﻿@page "/Editar/Mascotas/{id:int}"
+
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+
+@using PawfectMatch.Components.Pages._Mascotas
+@inject MascotasService mascotasService
+@inject RazasService razasService
+@inject SexosService sexosService
+@inject CategoriasServices categoriasServices
+@inject RelacionSizesService relacionSizesService
+@inject EstadosService estadosService
+@inject NavigationManager navManager
+
+@rendermode InteractiveServer
+
+<h3 class="text-xl font-semibold mb-4">Editar Mascota</h3>
+
+@if (mascota is null)
+{
+    <p>Cargando mascota...</p>
+}
+else
+{
+    <EditForm Model="@mascota" OnValidSubmit="ActualizarMascota">
+        <DataAnnotationsValidator />
+
+        <div class="mb-3">
+            <label>Nombre:</label>
+            <InputText @bind-Value="mascota.Nombre" class="form-control" />
+            <ValidationMessage For="@(() => mascota.Nombre)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Categoría:</label>
+            <InputSelect @bind-Value="mascota.CategoriaId" class="form-control">
+                <option value="">Seleccione una categoría</option>
+                @foreach (var cat in categorias)
+                {
+                    <option value="@cat.CategoriaId">@cat.Nombre</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => mascota.CategoriaId)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Raza:</label>
+            <InputSelect @bind-Value="mascota.RazaId" class="form-control">
+                <option value="">Seleccione una raza</option>
+                @foreach (var raza in razas)
+                {
+                    <option value="@raza.RazaId">@raza.Nombre</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => mascota.RazaId)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Sexo:</label>
+            <InputSelect @bind-Value="mascota.SexoId" class="form-control">
+                <option value="">Seleccione un sexo</option>
+                @foreach (var sexo in Sexos)
+                {
+                    <option value="@sexo.SexoId">@sexo.Nombre</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => mascota.SexoId)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Relación de Tamaño:</label>
+            <InputSelect @bind-Value="mascota.RelacionSizeId" class="form-control">
+                <option value="">Seleccione una opción</option>
+                @foreach (var size in relacionSizes)
+                {
+                    <option value="@size.RelacionSizeId">@size.Size</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => mascota.RelacionSizeId)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Estado:</label>
+            <InputSelect @bind-Value="mascota.EstadoId" class="form-control">
+                <option value="">Seleccione un estado</option>
+                @foreach (var estado in estados)
+                {
+                    <option value="@estado.EstadoId">@estado.Nombre</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => mascota.EstadoId)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Tamaño (pulgadas):</label>
+            <InputNumber @bind-Value="mascota.Tamano" class="form-control" />
+            <ValidationMessage For="@(() => mascota.Tamano)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Fecha de nacimiento:</label>
+            <InputDate @bind-Value="mascota.FechaNacimieneto" class="form-control" />
+            <ValidationMessage For="@(() => mascota.FechaNacimieneto)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Descripción:</label>
+            <InputTextArea @bind-Value="mascota.Descripcion" class="form-control" />
+            <ValidationMessage For="@(() => mascota.Descripcion)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Foto (URL):</label>
+            <InputText @bind-Value="mascota.FotoUrl" class="form-control" />
+            <ValidationMessage For="@(() => mascota.FotoUrl)" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Actualizar</button>
+        <button class="btn btn-secondary ms-2" @onclick="Volver">Cancelar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private Mascotas mascota = new();
+    private List<Razas> razas = new();
+    private List<Sexos> Sexos = new();
+    private List<Categorias> categorias = new();
+    private List<RelacionSizes> relacionSizes = new();
+    private List<Estados> estados = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+        mascota = await mascotasService.SearchByIdAsync(id);
+    }
+
+    private async Task Refresh()
+    {
+        categorias = await categoriasServices.ListAsync(x => true);
+        razas = await razasService.ListAsync(x => true);
+        relacionSizes = await relacionSizesService.ListAsync(x => true);
+        estados = await estadosService.ListAsync(x => true);
+        Sexos = await sexosService.ListAsync(x => true);
+    }
+
+    private async Task ActualizarMascota()
+    {
+        bool actualizado = await mascotasService.UpdateAsync(mascota);
+        if (actualizado)
+        {
+            navManager.NavigateTo("/Mascotas");
+        }
+        else
+        {
+            // Mostrar error
+        }
+    }
+
+    private void Volver() => navManager.NavigateTo("/Mascotas");
+}
