@@ -1,0 +1,83 @@
+﻿@page "/Citas/MisCitas"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using PawfectMatch.Models
+@using PawfectMatch.Models._Mascotas
+@attribute [Authorize]
+
+@inject CitasService citasService
+@inject AdoptantesService adoptantesService
+@inject MascotasService mascotasService
+@inject AuthenticationStateProvider authProvider
+
+@rendermode InteractiveServer
+
+<h3 class="text-xl font-semibold mb-4">Mis Citas</h3>
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger">@error</div>
+}
+else if (citasUsuario is null)
+{
+    <p>Cargando tus citas...</p>
+}
+else if (citasUsuario.Count == 0)
+{
+    <p>No tienes citas agendadas aún.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Mascota</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cita in citasUsuario)
+                {
+                    <tr>
+                        <td>@cita.FechaHora.ToString("dd/MM/yyyy hh:mm tt")</td>
+                        <td>@cita.Mascota.Nombre</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private List<Citas>? citasUsuario;
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authProvider.GetAuthenticationStateAsync();
+        var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId is null)
+        {
+            error = "No se pudo identificar al usuario.";
+            return;
+        }
+
+        var adoptante = (await adoptantesService.ListAsync(a => a.UsuarioId == userId)).FirstOrDefault();
+
+        if (adoptante is null)
+        {
+            error = "No se encontró un adoptante vinculado al usuario.";
+            return;
+        }
+
+        var citas = await citasService.ListAsync(c => c.AdoptanteId == adoptante.AdoptanteId);
+
+        citasUsuario = citas
+            .OrderBy(c => c.FechaHora)
+            .ToList();
+    }
+}
