@@ -1,4 +1,4 @@
-﻿@page "/Crear/SolicitudesAdopciones"
+﻿@page "/Crear/SolicitudesAdopciones/mascotaID={id:int}"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
@@ -31,24 +31,38 @@
 
     <div class="mb-3">
         <label>Mascota:</label>
-        <InputSelect @bind-Value="solicitud.MascotaId" class="form-control">
-            <option value="">Seleccione una mascota</option>
-            @foreach (var mascota in mascotasDisponibles)
-            {
-                <option value="@mascota.MascotaId">@mascota.Nombre</option>
-            }
-        </InputSelect>
-        <ValidationMessage For="@(() => solicitud.MascotaId)" />
+        <div class="card p-3">
+            <img src="@mascota.FotoUrl" alt="Foto de la mascota" width="200" class="mb-2" />
+            <p><strong>Nombre:</strong> @mascota.Nombre</p>
+            <p><strong>Categoría:</strong> @mascota.Categoria.Nombre</p>
+            <p><strong>Tamaño:</strong> @mascota.RelacionSize.Size</p>
+            <p><strong>Estado:</strong> @mascota.Estado.Nombre</p>
+            <p><strong>Descripción:</strong> @mascota.Descripcion</p>
+        </div>
     </div>
+
+    <div class="mb-3">
+        <label>Información del Adoptante:</label>
+        <div class="card p-3">
+            <p><strong>Nombre:</strong> @adoptanteActual?.Nombre</p>
+            <p><strong>Correo electrónico:</strong> @correoUsuario</p>
+            <p><strong>Correo electrónico:</strong> @adoptanteActual?.Ocupacion</p>
+        </div>
+    </div>
+
 
     <button class="btn btn-primary" type="submit">Enviar solicitud</button>
 </EditForm>
 
 @code {
+    [Parameter]
+    public int id { get; set; }
     private SolicitudesAdopciones solicitud = new();
-    private List<Mascotas> mascotasDisponibles = new();
-    private string? mensajeExito;
-    private string? error;
+    private Mascotas mascota = new();
+    private string? mensajeExito { get; set; }
+    private string? error { get; set; }
+    private Adoptantes? adoptanteActual;
+    private string? correoUsuario;
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,10 +77,13 @@
             var adoptantes = await adoptantesService.ListAsync(a => a.UsuarioId == userId);
             var adoptante = adoptantes.FirstOrDefault();
 
+            adoptanteActual = adoptante;
+            correoUsuario = authState.User.FindFirst(ClaimTypes.Email)?.Value;
+
             if (adoptante is not null)
             {
                 solicitud.AdoptanteId = adoptante.AdoptanteId;
-                mascotasDisponibles = await mascotasService.ListAsync(m => true); // Puedes filtrar disponibles
+                mascota = await mascotasService.SearchByIdAsync(id);
             }
             else
             {

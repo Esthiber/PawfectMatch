@@ -5,57 +5,13 @@
 
 <PageTitle>Inicio</PageTitle>
 
-@if (mascotas == null)
-{
-    <p>Cargando...</p>
-}
-else
-{
-    <div id="carouselHero" class="carousel slide mb-4" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            @for (int i = 0; i < imagenesHero.Count; i++)
-            {
-                <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <img src="@imagenesHero[i]" class="d-block w-100" style="max-height: 500px; object-fit: cover;" alt="Slide @i" />
-                </div>
-            }
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselHero" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselHero" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
-    </div>
+<div class="home">
 
-    <h2 class="mb-4">Mascotas en adopción</h2>
-
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach (var m in mascotas)
-        {
-            <p>@m.Nombre</p>
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <img src="@m.FotoUrl" class="card-img-top" style="height: 250px; object-fit: cover;" alt="@m.Nombre" />
-                    <div class="card-body">
-                        <h5 class="card-title">@m.Nombre</h5>
-                        <p class="card-text">
-                            Edad: @m.FechaNacimieneto años<br />
-                            @* Raza: @m.Categoria.Razas.First(r => r.RazaId == m.RazaId) *@
-                        </p>
-                        <a href="/DetalleMascota/@m.MascotaId" class="btn btn-primary">Ver más</a>
-                    </div>
-                </div>
-            </div>
-        }
-
-
-
-    </div>
-}
+</div>
 
 @code {
     private List<Mascotas>? mascotas;
+
     private List<string> imagenesHero = new()
     {
         "https://images.unsplash.com/photo-1611003228941-98852ba62227?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFieSUyMGRvZ3xlbnwwfHwwfHx8MA%3D%3D",
@@ -63,13 +19,25 @@ else
         "https://cdn.royalcanin-weshare-online.io/HiJiPmYBaxEApS7LmAfe/v1/ed7a-how-to-buy-a-puppy-article-dog"
     };
 
+    private int currentIndex = 0;
+    private Timer? sliderTimer;
+
     protected override async Task OnInitializedAsync()
     {
-        mascotas = await mascotasService.ListAsync(m => true) ?? new(); // ajusta el filtro si es necesario
-        Console.WriteLine(">>>>>>>>");
-        foreach (var m in mascotas)
-        {
-            Console.WriteLine(m.Nombre);
-        }
+        mascotas = await mascotasService.ListAsync(m => true) ?? new();
+
+        // Inicia el slider automático
+        sliderTimer = new Timer(ChangeSlide, null, 0, 5000); // 5 segundos
+    }
+
+    private void ChangeSlide(object? state)
+    {
+        currentIndex = (currentIndex + 1) % imagenesHero.Count;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        sliderTimer?.Dispose();
     }
 }

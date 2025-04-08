@@ -1,3 +1,4 @@
+using Blazored.Toast;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,9 @@ builder.Services.AddScoped<EstadosService>();
 builder.Services.AddScoped<SexosService>();
 builder.Services.AddScoped<EstadosSolicitudesService>();
 builder.Services.AddScoped<RelacionSizesService>();
+
+builder.Services.AddBlazorBootstrap();
+builder.Services.AddBlazoredToast();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
