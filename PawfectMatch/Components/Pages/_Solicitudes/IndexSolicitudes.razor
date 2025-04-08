@@ -1,0 +1,62 @@
+﻿@page "/Index/Solicitudes"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using PawfectMatch.Models._Solicitudes
+@using PawfectMatch.Models._Mascotas
+@attribute [Authorize(Roles = "Admin")]
+
+@inject SolicitudesAdopcionesService solicitudesAdopcionesService
+@inject AdoptantesService adoptantesService
+@inject MascotasService mascotasService
+@inject AuthenticationStateProvider authProvider
+
+@rendermode InteractiveServer
+
+<h3>Solicitudes de Adopción</h3>
+
+@if (solicitudes is null)
+{
+    <p><em>Cargando solicitudes...</em></p>
+}
+else if (!solicitudes.Any())
+{
+    <p>No hay solicitudes disponibles.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Solicitante</th>
+                <th>Mascota</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var solicitud in solicitudes)
+            {
+                <tr>
+                    <td>@solicitud.Adoptante.Nombre</td>
+                    <td>@solicitud.Mascota.Nombre</td>
+                    <td>@solicitud.Fecha.ToShortDateString()</td>
+                    <td>@solicitud.EstadoSolicitud.Nombre</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="/Details/Solicitudes/@solicitud.SolicitudAdopcionId">Ver Detalles</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<SolicitudesAdopciones>? solicitudes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
+    }
+}
