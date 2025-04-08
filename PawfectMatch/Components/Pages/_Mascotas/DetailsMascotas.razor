@@ -1,0 +1,64 @@
+﻿@page "/Details/Mascotas/{id:int}"
+
+@using PawfectMatch.Models._Mascotas
+@inject MascotasService mascotasService
+@inject NavigationManager navManager
+
+<h3>Detalles de la Mascota</h3>
+
+@if (mascota is null)
+{
+    <p><em>Cargando detalles...</em></p>
+}
+else
+{
+    <div class="card mb-3" style="max-width: 800px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="@mascota.FotoUrl" class="img-fluid rounded-start" alt="Foto de @mascota.Nombre" />
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">@mascota.Nombre</h5>
+                    <p class="card-text"><strong>Descripción:</strong> @mascota.Descripcion</p>
+                    <p class="card-text"><strong>Categoría:</strong> @mascota.Categoria.Nombre</p>
+                    <p class="card-text"><strong>Tamaño:</strong> @mascota.Tamano pulgadas</p>
+                    <p class="card-text"><strong>Relación de Tamaño:</strong> @mascota.RelacionSize.Size</p>
+                    <p class="card-text"><strong>Estado:</strong> @mascota.Estado.Nombre</p>
+                    <p class="card-text"><strong>Fecha de Nacimiento:</strong> @mascota.FechaNacimieneto.ToShortDateString()</p>
+
+                    <button class="btn btn-secondary mt-3" @onclick="Volver">Volver</button>
+
+                    <button class="btn btn-primary mt-3" >ADOPTAME YA!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    private Mascotas? mascota;
+
+    protected override async Task OnInitializedAsync()
+    {
+        mascota = await mascotasService.SearchByIdAsync(id);
+
+        if (mascota is null || mascota.MascotaId == 0)
+        {
+            // Mascota no encontrada
+            navManager.NavigateTo("/404", true);
+        }
+    }
+
+    private void Volver()
+    {
+        navManager.NavigateTo("/Index/Mascotas");
+    }
+    private void Adoptar()
+    {
+        
+    }
+}
