@@ -4,9 +4,11 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
+@using PawfectMatch.Components.Pages._Mascotas
 
 @inject MascotasService mascotasService
 @inject RazasService razasService
+@inject SexosService sexosService
 @inject CategoriasServices categoriasServices
 @inject RelacionSizesService relacionSizesService
 @inject EstadosService estadosService
@@ -14,6 +16,9 @@
 @rendermode InteractiveServer
 
 <h3 class="text-xl font-semibold mb-4">Crear Mascota</h3>
+
+<button class="btn btn-primary" @onclick="ShowCrearCategorias">Crear Categoria</button>
+<button class="btn btn-primary" @onclick="ShowCreaRazas">Crear Raza</button>
 
 <EditForm Model="@mascota" OnValidSubmit="GuardarMascota">
     <DataAnnotationsValidator />
@@ -41,6 +46,18 @@
         <label>Raza:</label>
         <InputSelect @bind-Value="mascota.RazaId" class="form-control">
             <option value="">Seleccione una raza</option>
+            @foreach (var raza in razas)
+            {
+                <option value="@raza.RazaId">@raza.Nombre</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => mascota.RazaId)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Raza:</label>
+        <InputSelect @bind-Value="mascota.RazaId" class="form-control">
+            <option value="">Seleccione un sexo</option>
             @foreach (var raza in razas)
             {
                 <option value="@raza.RazaId">@raza.Nombre</option>
@@ -100,19 +117,73 @@
     <button type="submit" class="btn btn-primary">Guardar</button>
 </EditForm>
 
+
+<!-- The Crear Categorias Modal -->
+@if (isCrearCategoriasVisible)
+{
+    <div class="modal show d-block z-index: 1050" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="z-index: 1060;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Categorias</h2>
+                    <button type="button" class="btn-close" @onclick="HideCrearCategorias" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <CrearCategorias />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop fade show z-index-1040"></div>
+}
+
+@if (isCrearRazasVisible)
+{
+    <div class="modal show d-block z-index: 1050" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="z-index: 1060;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Categorias</h2>
+                    <button type="button" class="btn-close" @onclick="HideCreaRazas" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <CrearRazas />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop fade show z-index-1040"></div>
+}
+
+
+
+
 @code {
     private Mascotas mascota = new();
     private List<Razas> razas = new();
+    private List<Sexos> Sexos = new();
     private List<Categorias> categorias = new();
     private List<RelacionSizes> relacionSizes = new();
     private List<Estados> estados = new();
+    private bool isCrearCategoriasVisible = false;
+    private bool isCrearRazasVisible = false;
+
 
     protected override async Task OnInitializedAsync()
+    {
+
+        await Refresh();
+    }
+
+    private async Task Refresh()
     {
         categorias = await categoriasServices.ListAsync(x => true);
         razas = await razasService.ListAsync(x => true);
         relacionSizes = await relacionSizesService.ListAsync(x => true);
         estados = await estadosService.ListAsync(x => true);
+        Sexos = await sexosService.ListAsync(x => true);
     }
 
     private async Task GuardarMascota()
@@ -128,4 +199,9 @@
             // Mostrar error
         }
     }
+
+    private void ShowCrearCategorias() => isCrearCategoriasVisible = true;
+    private void HideCrearCategorias() => isCrearCategoriasVisible = false;
+    private void ShowCreaRazas() => isCrearRazasVisible = true;
+    private void HideCreaRazas() => isCrearRazasVisible = false;
 }
