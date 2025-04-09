@@ -12,8 +12,8 @@ using PawfectMatch.Data;
 namespace PawfectMatch.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250406171212_Models-and-fix")]
-    partial class Modelsandfix
+    [Migration("20250409002643_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,20 @@ namespace PawfectMatch.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -377,6 +391,9 @@ namespace PawfectMatch.Migrations
                     b.Property<int>("RelacionSizeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SexoId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Tamano")
                         .HasColumnType("float");
 
@@ -387,6 +404,8 @@ namespace PawfectMatch.Migrations
                     b.HasIndex("EstadoId");
 
                     b.HasIndex("RelacionSizeId");
+
+                    b.HasIndex("SexoId");
 
                     b.ToTable("Mascotas");
                 });
@@ -695,11 +714,19 @@ namespace PawfectMatch.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("PawfectMatch.Models._Mascotas.Sexos", "Sexo")
+                        .WithMany()
+                        .HasForeignKey("SexoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Categoria");
 
                     b.Navigation("Estado");
 
                     b.Navigation("RelacionSize");
+
+                    b.Navigation("Sexo");
                 });
 
             modelBuilder.Entity("PawfectMatch.Models._Mascotas.Razas", b =>
