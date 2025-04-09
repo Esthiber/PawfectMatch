@@ -34,7 +34,10 @@ else
 
                     <div class="d-flex justify-content-between">
                         <a href="/Details/Mascotas/@m.MascotaId" class="btn btn-outline-primary btn-sm">Ver más</a>
-                            <a class="btn btn-secondary btn-sm" href="/Editar/Mascotas/@m.MascotaId">Editar</a>
+
+                            <AuthorizeView>
+                                        <a class="btn btn-secondary btn-sm" href="/Editar/Mascotas/@m.MascotaId">Editar</a>
+                            </AuthorizeView>
                     </div>
                 </div>
             </div>
