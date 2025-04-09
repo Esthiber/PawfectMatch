@@ -65,7 +65,13 @@
     </EditForm>
 </div>
 
+@if (mascota is not null)
+{
+    <div class="mb-3">
+        <CrearCitas Mascota="mascota" Adoptante="adoptanteActual" />
 
+    </div>
+}
 
 @code {
     [Parameter]

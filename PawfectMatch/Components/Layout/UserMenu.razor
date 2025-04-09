@@ -5,53 +5,55 @@
 <div class="user-menu">
     <AuthorizeView>
         <Authorized>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link " href="Account/Manage">
-                    <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                </NavLink>
-            </div>
-
+            <NavLink href="Account/Manage">
+                <div class="nav-item px-3">
+                    @context.User.Identity?.Name
+                </div>
+            </NavLink>
         </Authorized>
         <NotAuthorized>
 
         </NotAuthorized>
     </AuthorizeView>
     <AuthorizeView Roles="Admin">
-        <div class="button4">
-            @* <img class="book" src="./book0.svg" /> *@
-            <NavLink class="nav-link " href="Index/Solicitudes">
+        <NavLink href="Index/Solicitudes">
+            <div class="button4">
+                @* <img class="book" src="./book0.svg" /> *@
                 <div class="button2">Ver Solicitudes</div>
-            </NavLink>
-        </div>
+            </div>
+        </NavLink>
+
         <div class="button5">
             <div class="button2">Historial Adop</div>
         </div>
-        <div class="button5">
-            <div class="button2">Citas</div>
-        </div>
+
+        <NavLink href="/Citas">
+            <div class="button5">
+                <div class="button2">Citas</div>
+            </div>
+        </NavLink>
+
         <div class="button5">
             <div class="button2">Funciones Avanzadas</div>
         </div>
     </AuthorizeView>
     <AuthorizeView>
         <NotAuthorized>
-            <div class="button">
-                <NavLink class="nav-link" href="Account/Login">
+            <NavLink href="Account/Login">
+                <div class="button">
                     @* <img class="log-in" src="log-in0.svg" /> *@
                     <div class="button2">Iniciar Sesion</div>
-                </NavLink>
-            </div>
-            <div class="button3">
-                <NavLink class="nav-link" href="Account/Register">
-
+                </div>
+            </NavLink>
+            <NavLink href="Account/Register">
+                <div class="button3">
                     @* <img class="user-plus" src="user-plus0.svg" /> *@
                     <div class="button2">Registrarse</div>
-                </NavLink>
-            </div>
+                </div>
+            </NavLink>
         </NotAuthorized>
 
         <Authorized>
-
 
             <div class="button5">
                 <div class="button2">Mis Citas</div>

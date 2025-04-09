@@ -1,0 +1,50 @@
+﻿@page "/Citas"
+
+@using PawfectMatch.Models
+@inject CitasService citasService
+
+@rendermode InteractiveServer
+
+<h3 class="text-lg font-semibold mb-3">Listado de Citas</h3>
+
+@if (citas is null)
+{
+    <p>Cargando citas...</p>
+}
+else if (citas.Count == 0)
+{
+    <p>No hay citas registradas.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Mascota</th>
+                <th>Adoptante</th>
+                <th>Fecha y Hora</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cita in citas)
+            {
+                <tr>
+                    <td>@cita.CitaId</td>
+                    <td>@cita.Mascota?.Nombre</td>
+                    <td>@cita.Adoptante?.Nombre</td>
+                    <td>@cita.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Citas>? citas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        citas = await citasService.ListAsync(c => true);
+    }
+}
