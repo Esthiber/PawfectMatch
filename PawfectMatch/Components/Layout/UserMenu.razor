@@ -16,16 +16,12 @@
         </NotAuthorized>
     </AuthorizeView>
     <AuthorizeView Roles="Admin">
-        <NavLink href="Index/Solicitudes">
-            <div class="button4">
+        <NavLink class="button4" href="Index/Solicitudes">
+            <div>
                 @* <img class="book" src="./book0.svg" /> *@
-                <div class="button2">Ver Solicitudes</div>
+                <div class="button2">Solicitudes</div>
             </div>
         </NavLink>
-
-        <div class="button5">
-            <div class="button2">Historial Adop</div>
-        </div>
 
         <NavLink href="/Citas">
             <div class="button5">
@@ -33,9 +29,17 @@
             </div>
         </NavLink>
 
-        <div class="button5">
-            <div class="button2">Funciones Avanzadas</div>
-        </div>
+        <NavLink>
+            <div class="button5">
+                <div class="button2">Historial Adop</div>
+            </div>
+        </NavLink>
+
+        <NavLink>
+            <div class="button5">
+                <div class="button2">Funciones Avanzadas</div>
+            </div>
+        </NavLink>
     </AuthorizeView>
     <AuthorizeView>
         <NotAuthorized>
