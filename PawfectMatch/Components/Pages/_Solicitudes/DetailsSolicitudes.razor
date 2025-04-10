@@ -5,12 +5,17 @@
 @using System.Security.Claims
 @using PawfectMatch.Models._Solicitudes
 @using PawfectMatch.Models._Mascotas
+@using PawfectMatch.Components.Pages._Citas
+@using PawfectMatch.Components.Pages
+@using PawfectMatch.Components.Pages._Solicitudes
+@using PawfectMatch.Components.Pages._Adoptantes
 
 @attribute [Authorize(Roles = "Admin")]
 
 @inject SolicitudesAdopcionesService solicitudesService
 @inject HistorialAdopcionesService historialService
 @inject MascotasService mascotasService
+@inject CitasService citasService
 @inject NavigationManager navManager
 
 @rendermode InteractiveServer
@@ -38,6 +43,16 @@ else
         <p><strong>Estado:</strong> @solicitud.EstadoSolicitud?.Nombre</p>
         <p><strong>Fecha:</strong> @solicitud.Fecha.ToString("dd/MM/yyyy")</p>
 
+        @if (solicitud.EstadoSolicitudId == 2 && listaCitas.Count == 0)
+        {
+            @if (solicitud.Mascota is not null)
+            {
+                <div class="mb-3">
+                    <CrearCitas Mascota="solicitud.Mascota" Adoptante="solicitud.Adoptante" />
+                </div>
+            }
+        }
+
         <div class="mt-3">
             @if (solicitud.EstadoSolicitudId == 1)
             {
@@ -53,11 +68,14 @@ else
     [Parameter]
     public int id { get; set; }
 
-    private SolicitudesAdopciones? solicitud;
+    private SolicitudesAdopciones? solicitud { get; set; }
+
+    private List<Citas> listaCitas { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         solicitud = await solicitudesService.SearchByIdAsync(id);
+        listaCitas = await citasService.ListAsync(c => c.MascotaId == solicitud.MascotaId && c.AdoptanteId == solicitud.AdoptanteId);
     }
 
     private async Task AceptarSolicitud()
