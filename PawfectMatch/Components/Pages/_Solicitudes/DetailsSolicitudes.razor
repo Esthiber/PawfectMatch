@@ -35,13 +35,14 @@ else
         <img src="@solicitud.Mascota.FotoUrl" alt="Mascota" style="max-width:200px;" />
 
         <h5>Estado de la Solicitud</h5>
-        <p><strong>Estado:</strong> @solicitud.EstadoSolicitud.Nombre</p>
+        <p><strong>Estado:</strong> @solicitud.EstadoSolicitud?.Nombre</p>
         <p><strong>Fecha:</strong> @solicitud.Fecha.ToString("dd/MM/yyyy")</p>
 
         <div class="mt-3">
             @if (solicitud.EstadoSolicitudId == 1)
             {
                 <button class="btn btn-success me-2" @onclick="AceptarSolicitud">Aceptar</button>
+                <button class="btn btn-danger me-2" @onclick="RechazarSolicitud">Rechazar</button>
             }
             <button class="btn btn-secondary" @onclick="Volver">Volver</button>
         </div>
@@ -61,28 +62,40 @@ else
 
     private async Task AceptarSolicitud()
     {
-        if (solicitud is null)
-            return;
+        if (solicitud is null) return;
 
-        // Cambiar estado de solicitud a "Aprobada" (ID: 2)
-        solicitud.EstadoSolicitudId = 2;
-        await solicitudesService.UpdateAsync(solicitud);
+        bool exito = await solicitudesService.AceptarSolicitud(solicitud.SolicitudAdopcionId);
 
-        // Cambiar estado de la mascota a "Adoptado" (ID: 2)
-        solicitud.Mascota.EstadoId = 2;
-        await mascotasService.UpdateAsync(solicitud.Mascota);
+        bool exitoMascota = await mascotasService.AdoptarAsync(solicitud.MascotaId);
 
-        // Crear entrada en historial de adopciones
-        var historial = new HistorialAdopciones
-            {
-                AdoptanteId = solicitud.AdoptanteId,
-                MascotaId = solicitud.MascotaId,
-                FechaAdopcion = DateTime.Now,
-                Notas = "Adopción aprobada desde el sistema"
-            };
-        await historialService.InsertAsync(historial);
+        HistorialAdopciones historialAdopciones = new();
+        historialAdopciones.AdoptanteId = solicitud.AdoptanteId;
+        historialAdopciones.MascotaId = solicitud.MascotaId;
+        historialAdopciones.FechaAdopcion = DateTime.Now;
+        historialAdopciones.Notas = "Adopción aprobada desde el sistema";
+        bool exitoHistorial = await historialService.InsertAsync(historialAdopciones);
 
-        navManager.NavigateTo("/Index/Solicitudes");
+        if (exito && exitoMascota && exitoHistorial)
+        {
+            navManager.NavigateTo("/Index/Solicitudes", forceLoad: true);
+        }
+        else
+        {
+            Console.WriteLine("Error al aceptar la solicitud.");
+        }
+    }
+
+    private async Task RechazarSolicitud()
+    {
+        bool exito = await solicitudesService.RechazarSolicitud(solicitud.SolicitudAdopcionId);
+        if (exito)
+        {
+            navManager.NavigateTo("/Index/Solicitudes", forceLoad: true);
+        }
+        else
+        {
+            Console.WriteLine("Error al rechazar la solicitud.");
+        }
     }
 
     private void Volver()

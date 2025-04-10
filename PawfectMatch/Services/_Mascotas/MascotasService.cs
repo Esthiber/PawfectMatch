@@ -73,5 +73,22 @@ namespace PawfectMatch.Services._Mascotas
             ctx.Mascotas.Update(elem);
             return await ctx.SaveChangesAsync() > 0;
         }
+
+        public async Task<bool> AdoptarAsync(int id)
+        {
+            await using var ctx = await DbFactory.CreateDbContextAsync();
+            var s = await ctx.Mascotas
+                .Include(a=>a.Categoria)
+                .Include(a=>a.Estado)
+                .Include(a=>a.RelacionSize)
+                .Include(a=>a.Sexo)
+                .FirstOrDefaultAsync(a => a.MascotaId == id);
+
+            if (s is null) return false;
+
+            s.EstadoId = 2;
+
+            return await ctx.SaveChangesAsync() > 0;
+        }
     }
 }

@@ -12,7 +12,6 @@ namespace PawfectMatch.Services._Solicitudes
         {
             await using var ctx = await DbFactory.CreateDbContextAsync();
             return await ctx.SolicitudesAdopciones
-                .AsNoTracking()
                 .Where(a => a.SolicitudAdopcionId == id)
                 .ExecuteDeleteAsync() > 0;
         }
@@ -38,7 +37,6 @@ namespace PawfectMatch.Services._Solicitudes
                 .Include(a => a.Adoptante)
                 .Include(a => a.Mascota)
                 .Include(a => a.EstadoSolicitud)
-                .AsNoTracking()
                 .Where(criteria)
                 .ToListAsync();
         }
@@ -69,6 +67,39 @@ namespace PawfectMatch.Services._Solicitudes
         {
             await using var ctx = await DbFactory.CreateDbContextAsync();
             ctx.SolicitudesAdopciones.Update(elem);
+            return await ctx.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> AceptarSolicitud(int id)
+        {
+            await using var ctx = await DbFactory.CreateDbContextAsync();
+            var s = await ctx.SolicitudesAdopciones
+                .Include(a => a.Adoptante)
+                .Include(a => a.Mascota)
+                .Include(a => a.EstadoSolicitud)
+                .FirstOrDefaultAsync(a => a.SolicitudAdopcionId == id);
+
+            if (s is null) return false;
+
+            s.EstadoSolicitudId = 2;
+
+            return await ctx.SaveChangesAsync() > 0;
+        }
+
+
+        public async Task<bool> RechazarSolicitud(int id)
+        {
+            await using var ctx = await DbFactory.CreateDbContextAsync();
+            var s = await ctx.SolicitudesAdopciones
+                .Include(a => a.Adoptante)
+                .Include(a => a.Mascota)
+                .Include(a => a.EstadoSolicitud)
+                .FirstOrDefaultAsync(a => a.SolicitudAdopcionId == id);
+
+            if (s is null) return false;
+
+            s.EstadoSolicitudId = 3; // Rechazar
+
             return await ctx.SaveChangesAsync() > 0;
         }
     }
