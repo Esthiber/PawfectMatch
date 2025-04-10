@@ -1,0 +1,55 @@
+﻿@page "/historial"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using PawfectMatch.Models._Solicitudes
+@using PawfectMatch.Models._Mascotas
+
+@attribute [Authorize(Roles = "Admin")]
+
+@inject HistorialAdopcionesService HistorialService
+
+<h3 class="text-2xl font-semibold mb-4">Historial de Adopciones</h3>
+
+@if (historial == null)
+{
+    <p>Cargando historial de adopciones...</p>
+}
+else if (!historial.Any())
+{
+    <p>No hay adopciones registradas.</p>
+}
+else
+{
+    <table class="table-auto w-full border rounded shadow">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="px-4 py-2 text-left">Adoptante</th>
+                <th class="px-4 py-2 text-left">Mascota</th>
+                <th class="px-4 py-2 text-left">Fecha de Adopción</th>
+                <th class="px-4 py-2 text-left">Notas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in historial)
+            {
+                <tr class="border-t">
+                    <td class="px-4 py-2">@item.Adoptante.Nombre</td>
+                    <td class="px-4 py-2">@item.Mascota.Nombre</td>
+                    <td class="px-4 py-2">@item.FechaAdopcion.ToString("dd/MM/yyyy")</td>
+                    <td class="px-4 py-2">@item.Notas</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<HistorialAdopciones>? historial;
+
+    protected override async Task OnInitializedAsync()
+    {
+        historial = await HistorialService.ListAsync(_ => true);
+    }
+}
