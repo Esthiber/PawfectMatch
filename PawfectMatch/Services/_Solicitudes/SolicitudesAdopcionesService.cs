@@ -43,7 +43,7 @@ namespace PawfectMatch.Services._Solicitudes
 
         public async Task<bool> SaveAsync(SolicitudesAdopciones elem)
         {
-            if (await ExistAsync(elem.SolicitudAdopcionId))
+            if (!await ExistAsync(elem.SolicitudAdopcionId))
             {
                 return await InsertAsync(elem);
             }
