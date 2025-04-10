@@ -1,5 +1,4 @@
-﻿
-@inject NavigationManager NavigationManager
+﻿@inject NavigationManager NavigationManager
 
 @rendermode InteractiveServer
 
@@ -10,20 +9,23 @@
         </NavLink>
     </div>
     <div class="navigation-buttons">
-        <div class="nav-btn">
-            <NavLink class="nav-link" href="/Mascotas">
+        <NavLink href="/Mascotas">
+            <div class="nav-btn">
                 <div class="text">Mascotas</div>
-            </NavLink>
-        </div>
-        <div class="nav-btn2">
-            <NavLink class="nav-link" href="/Nosotros">
+            </div>
+        </NavLink>
+        <NavLink href="/Nosotros">
+            <div class="nav-btn2">
                 <div class="text">Nosotros</div>
-            </NavLink>
+            </div>
+        </NavLink>
+    </div>
+    <NavLink href="/Mascotas">
+        <div class="main-nav-btn">
+            <div class="text2">Adopta aqui !</div>
         </div>
-    </div>
-    <div class="main-nav-btn">
-        <div class="text2">Adopta aqui !</div>
-    </div>
+    </NavLink>
+
 
     <div class="user-btn" @onpointerenter="pointerEnter" @onpointerleave="pointerLeave">
         <img class="user" src="@Assets["/img/icons/user0.svg"]" />
