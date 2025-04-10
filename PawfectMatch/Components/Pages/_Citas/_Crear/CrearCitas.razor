@@ -1,111 +1,64 @@
-﻿@page "/Crear/Citas"
-
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Authorization
-@using System.Security.Claims
-@using PawfectMatch.Models
-@using PawfectMatch.Models._Mascotas
-@attribute [Authorize]
-
+﻿@using PawfectMatch.Models
+@using Microsoft.AspNetCore.Components.Forms
 @inject CitasService citasService
-@inject AdoptantesService adoptantesService
-@inject MascotasService mascotasService
-@inject AuthenticationStateProvider authProvider
-
-@rendermode InteractiveServer
-
-<h3>Agendar Cita</h3>
-
-@if (!string.IsNullOrEmpty(mensajeExito))
-{
-    <div class="alert alert-success">@mensajeExito</div>
-}
-@if (!string.IsNullOrEmpty(error))
-{
-    <div class="alert alert-danger">@error</div>
-}
 
 <EditForm Model="@cita" OnValidSubmit="GuardarCita">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="mb-3">
-        <label for="mascota">Mascota:</label>
-        <InputSelect id="mascota" class="form-control" @bind-Value="cita.MascotaId">
-            <option value="">Seleccione una mascota</option>
-            @foreach (var mascota in mascotasDisponibles)
-            {
-                <option value="@mascota.MascotaId">@mascota.Nombre</option>
-            }
-        </InputSelect>
-        <ValidationMessage For="@(() => cita.MascotaId)" />
-    </div>
-
-    <div class="mb-3">
-        <label for="fechaHora">Fecha y hora:</label>
-        <InputDate id="fechaHora" class="form-control" @bind-Value="cita.FechaHora" />
+        <label>Fecha y hora:</label>
+        <InputDate @bind-Value="cita.FechaHora" class="form-control" />
         <ValidationMessage For="@(() => cita.FechaHora)" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Agendar</button>
+    <button type="submit" class="btn btn-success">Guardar Cita</button>
+
+    @if (!string.IsNullOrWhiteSpace(mensaje))
+    {
+        <div class="alert alert-info mt-3">@mensaje</div>
+    }
 </EditForm>
 
 @code {
-    private Citas cita = new();
-    private List<Mascotas> mascotasDisponibles = new();
-    private string? mensajeExito;
-    private string? error;
+    [Parameter]
+    public Mascotas Mascota { get; set; } = null!;
 
-    protected override async Task OnInitializedAsync()
+    [Parameter]
+    public Adoptantes Adoptante { get; set; } = null!;
+
+    private Citas cita { get; set; } = new();
+    private string mensaje { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
     {
-        cita.FechaHora = DateTime.Now.AddDays(1); // Fecha por defecto
-        var authState = await authProvider.GetAuthenticationStateAsync();
-        var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (userId is not null)
+        if (Mascota is null)
         {
-            var adoptantes = await adoptantesService.ListAsync(a => a.UsuarioId == userId);
-            var adoptante = adoptantes.FirstOrDefault();
-
-            if (adoptante is not null)
-            {
-                cita.AdoptanteId = adoptante.AdoptanteId;
-                mascotasDisponibles = await mascotasService.ListAsync(m => true); // Puedes filtrar
-            }
-            else
-            {
-                error = "No se encontró el adoptante vinculado al usuario.";
-            }
+            mensaje = "Error al encontrar la mascota";
+            if (Adoptante is null) mensaje += "\nError al encontrar al adoptante";
         }
         else
         {
-            error = "No se pudo obtener el usuario autenticado.";
+            cita.MascotaId = Mascota.MascotaId;
+            cita.AdoptanteId = Adoptante.AdoptanteId;
+            cita.FechaHora = DateTime.Now.AddDays(1);
         }
     }
 
     private async Task GuardarCita()
     {
-        mensajeExito = error = null;
+        var exito = await citasService.InsertAsync(cita);
 
-        if (cita.MascotaId == 0 || cita.FechaHora == default)
-        {
-            error = "Debe seleccionar una mascota y una fecha válida.";
-            return;
-        }
+        mensaje = exito ? "Cita guardada correctamente." : "Error al guardar la cita.";
 
-        bool guardado = await citasService.InsertAsync(cita);
-        if (guardado)
+        if (exito)
         {
-            mensajeExito = "¡Cita agendada con éxito!";
             cita = new Citas
-            {
-                AdoptanteId = cita.AdoptanteId,
-                FechaHora = DateTime.Now.AddDays(1)
-            };
-        }
-        else
-        {
-            error = "No se pudo agendar la cita.";
+                {
+                    MascotaId = Mascota.MascotaId,
+                    AdoptanteId = Adoptante.AdoptanteId,
+                    FechaHora = DateTime.Now.AddDays(1)
+                };
         }
     }
 }
