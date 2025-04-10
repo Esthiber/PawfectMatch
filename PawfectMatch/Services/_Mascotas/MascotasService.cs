@@ -46,7 +46,7 @@ namespace PawfectMatch.Services._Mascotas
 
         public async Task<bool> SaveAsync(Mascotas elem)
         {
-            if (await ExistAsync(elem.MascotaId))
+            if (!await ExistAsync(elem.MascotaId))
             {
                 return await InsertAsync(elem);
             }
