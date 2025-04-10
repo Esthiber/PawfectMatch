@@ -375,8 +375,80 @@ namespace PawfectMatch.Tests
         public async Task ListAsync()
         {
             var factory = CrearDbFactory();
+            var mascotaService = new MascotasService(factory);
+            var adoptanteService = new AdoptantesService(factory);
+            var estadoService = new EstadosSolicitudesService(factory);
             var service = new SolicitudesAdopcionesService(factory);
-            Assert.NotNull(await service.ListAsync(s => true));
+
+            // Insertar entidades requeridas para Mascota
+            var categoria = new Categorias { Nombre = "Perro" };
+            var raza = new Razas { Nombre = "Labrador", Categoria = categoria };
+            var relacionSize = new RelacionSizes { Size = "Mediano" };
+            var estadoMascota = new Estados { Nombre = "Disponible" };
+            var sexo = new Sexos { Nombre = "Macho" };
+
+            // Contexto para agregar entidades relacionadas
+            using (var ctx = await factory.CreateDbContextAsync())
+            {
+                ctx.Categorias.Add(categoria);
+                ctx.RelacionSizes.Add(relacionSize);
+                ctx.Estados.Add(estadoMascota);
+                ctx.Sexos.Add(sexo);
+                ctx.SaveChanges();
+
+                raza.CategoriaId = categoria.CategoriaId;
+                ctx.Razas.Add(raza);
+                ctx.SaveChanges();
+            }
+
+            var mascota = new Mascotas
+            {
+                Nombre = "Felix",
+                Descripcion = "Una mascota",
+                CategoriaId = categoria.CategoriaId,
+                RazaId = raza.RazaId,
+                RelacionSizeId = relacionSize.RelacionSizeId,
+                EstadoId = estadoMascota.EstadoId,
+                SexoId = sexo.SexoId,
+                Tamano = 12.5,
+                FechaNacimieneto = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
+                FotoUrl = "https://ejemplo.com/felix.jpg"
+            };
+            await mascotaService.InsertAsync(mascota);
+
+            // Insertar usuario adoptante y entidad adoptante
+            var usuario = new ApplicationUser { Id = Guid.NewGuid().ToString(), UserName = "usuario_prueba" };
+            using (var ctx = await factory.CreateDbContextAsync())
+            {
+                ctx.Users.Add(usuario);
+                ctx.SaveChanges();
+            }
+
+            var adoptante = new Adoptantes
+            {
+                Nombre = "Carlos Pérez",
+                Ocupacion = "Ingeniero",
+                UsuarioId = usuario.Id
+            };
+            await adoptanteService.InsertAsync(adoptante);
+
+            // Insertar estado de solicitud
+            var estado = new EstadoSolicitudes { Nombre = "Pendiente" };
+            await estadoService.InsertAsync(estado);
+
+            var solicitud = new SolicitudesAdopciones
+            {
+                MascotaId = mascota.MascotaId,
+                AdoptanteId = adoptante.AdoptanteId,
+                EstadoSolicitudId = estado.EstadoSolicitudId,
+                Fecha = DateTime.Now
+            };
+
+            // Act
+            var resultado = await service.InsertAsync(solicitud);
+
+            var lista = await service.ListAsync(s => true);
+            Assert.Contains(lista, s => s.SolicitudAdopcionId == solicitud.SolicitudAdopcionId);
         }
 
         [Fact]
