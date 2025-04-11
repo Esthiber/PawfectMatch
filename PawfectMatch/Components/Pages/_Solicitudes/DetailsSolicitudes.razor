@@ -1,22 +1,12 @@
 ﻿@page "/Details/Solicitudes/{id:int}"
 
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Authorization
-@using System.Security.Claims
-@using PawfectMatch.Models._Solicitudes
-@using PawfectMatch.Models._Mascotas
-@using PawfectMatch.Components.Pages._Citas
-@using PawfectMatch.Components.Pages
-@using PawfectMatch.Components.Pages._Solicitudes
-@using PawfectMatch.Components.Pages._Adoptantes
-
-@attribute [Authorize(Roles = "Admin")]
-
 @inject SolicitudesAdopcionesService solicitudesService
 @inject HistorialAdopcionesService historialService
 @inject MascotasService mascotasService
 @inject CitasService citasService
 @inject NavigationManager navManager
+
+@attribute [Authorize(Roles = "Admin")]
 
 @rendermode InteractiveServer
 

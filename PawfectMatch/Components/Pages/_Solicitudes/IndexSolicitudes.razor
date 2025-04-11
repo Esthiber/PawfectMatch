@@ -1,9 +1,5 @@
 ﻿@page "/Index/Solicitudes"
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Authorization
-@using System.Security.Claims
-@using PawfectMatch.Models._Solicitudes
-@using PawfectMatch.Models._Mascotas
+
 @attribute [Authorize(Roles = "Admin")]
 
 @inject SolicitudesAdopcionesService solicitudesAdopcionesService

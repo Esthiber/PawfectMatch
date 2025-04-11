@@ -1,16 +1,11 @@
 ﻿@page "/Crear/SolicitudesAdopciones/{id:int}"
 
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Authorization
-@using System.Security.Claims
-@using PawfectMatch.Models._Solicitudes
-@using PawfectMatch.Models._Mascotas
-@attribute [Authorize]
-
 @inject SolicitudesAdopcionesService solicitudesAdopcionesService
 @inject AdoptantesService adoptantesService
 @inject MascotasService mascotasService
 @inject AuthenticationStateProvider authProvider
+
+@attribute [Authorize]
 
 @rendermode InteractiveServer
 
@@ -39,8 +34,6 @@
             <p><strong>Descripción:</strong> @mascota?.Descripcion</p>
         </div>
     </div>
-
-
 
     <button class="btn btn-primary" type="submit">Enviar solicitud</button>
 </EditForm>

@@ -1,17 +1,13 @@
 ﻿@page "/Crear/Mascotas"
 
-@using Microsoft.AspNetCore.Authorization
-
-@attribute [Authorize(Roles = "Admin")]
-
-@using PawfectMatch.Components.Pages._Mascotas
-
 @inject MascotasService mascotasService
 @inject RazasService razasService
 @inject SexosService sexosService
 @inject CategoriasServices categoriasServices
 @inject RelacionSizesService relacionSizesService
 @inject EstadosService estadosService
+
+@attribute [Authorize(Roles = "Admin")]
 
 @rendermode InteractiveServer
 
