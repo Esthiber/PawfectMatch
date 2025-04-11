@@ -1,0 +1,47 @@
+﻿@page "/Sugerencias"
+
+@attribute [Authorize(Roles = "Admin")]
+
+@inject SugerenciasService sugerenciasService
+
+<h3 class="text-xl font-semibold mb-4">Sugerencias de los Usuarios</h3>
+
+@if (sugerencias is null)
+{
+    <p>Cargando sugerencias...</p>
+}
+else if (sugerencias.Count == 0)
+{
+    <p>No hay sugerencias registradas.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Correo</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sug in sugerencias)
+            {
+                <tr>
+                    <td>@sug.SugerenciaId</td>
+                    <td>@sug.UserMail</td>
+                    <td>@sug.Descripcion</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Sugerencias>? sugerencias;
+
+    protected override async Task OnInitializedAsync()
+    {
+        sugerencias = await sugerenciasService.ListAsync(x => true);
+    }
+}
