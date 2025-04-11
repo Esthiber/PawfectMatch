@@ -5,7 +5,7 @@
 <div class="user-menu">
     <AuthorizeView>
         <Authorized>
-            <NavLink href="Account/Manage">
+            <NavLink href="@Urls.Account.Manage">
                 <div class="nav-item px-3">
                     @context.User.Identity?.Name
                 </div>
@@ -16,20 +16,7 @@
         </NotAuthorized>
     </AuthorizeView>
     <AuthorizeView Roles="Admin">
-        <NavLink class="button4" href="Index/Solicitudes">
-            <div>
-                @* <img class="book" src="./book0.svg" /> *@
-                <div class="button2">Solicitudes</div>
-            </div>
-        </NavLink>
-
-        <NavLink href="/Citas">
-            <div class="button5">
-                <div class="button2">Citas</div>
-            </div>
-        </NavLink>
-
-        <NavLink href="/historial">
+        <NavLink href="@Urls.General.HistorialAdopciones">
             <div class="button5">
                 <div class="button2">Historial Adop</div>
             </div>
@@ -40,16 +27,17 @@
                 <div class="button2">Funciones Avanzadas</div>
             </div>
         </NavLink>
+
     </AuthorizeView>
     <AuthorizeView>
         <NotAuthorized>
-            <NavLink href="Account/Login">
+            <NavLink href="@Urls.Account.Login">
                 <div class="button">
                     @* <img class="log-in" src="log-in0.svg" /> *@
                     <div class="button2">Iniciar Sesion</div>
                 </div>
             </NavLink>
-            <NavLink href="Account/Register">
+            <NavLink href="@Urls.Account.Register">
                 <div class="button3">
                     @* <img class="user-plus" src="user-plus0.svg" /> *@
                     <div class="button2">Registrarse</div>
@@ -58,20 +46,18 @@
         </NotAuthorized>
 
         <Authorized>
+            <NavLink class="button4" href="@Urls.Solicitudes.Index">
+                <div>
+                    @* <img class="book" src="./book0.svg" /> *@
+                    <div class="button2">Solicitudes</div>
+                </div>
+            </NavLink>
 
-            <div class="button5">
-                <div class="button2">Mis Citas</div>
-            </div>
-            <div class="button5">
-                <div class="button2">Ver Sugerencias</div>
-            </div>
-            <div class="button5">
-                <div class="button2">Sugerencias</div>
-            </div>
-            <div class="button3">
-                @* <img class="book-open" src="book-open0.svg" /> *@
-                <div class="button2">Mis Solicitudes</div>
-            </div>
+            <NavLink href="@Urls.Citas.Index">
+                <div class="button5">
+                    <div class="button2">Citas</div>
+                </div>
+            </NavLink>
 
             <div class="button6">
                 <form action="Account/Logout" method="post">

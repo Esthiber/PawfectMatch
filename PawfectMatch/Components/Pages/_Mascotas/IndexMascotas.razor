@@ -19,31 +19,31 @@ else if (!mascotas.Any())
 }
 else
 {
-   <div class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach (var m in mascotas)
-    {
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                <img src="@m.FotoUrl" class="card-img-top" style="height: 250px; object-fit: cover;" alt="@m.Nombre" />
-                <div class="card-body">
-                    <h5 class="card-title">@m.Nombre</h5>
-                    <p class="card-text">
-                        Edad: @((DateTime.Now.Year - m.FechaNacimieneto.Year)) años<br />
-                        Raza: @m.Categoria.Razas.FirstOrDefault(r=>r.RazaId == m.RazaId)?.Nombre
-                    </p>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var m in mascotas)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <img src="@m.FotoUrl" class="card-img-top" style="height: 250px; object-fit: cover;" alt="@m.Nombre" />
+                    <div class="card-body">
+                        <h5 class="card-title">@m.Nombre</h5>
+                        <p class="card-text">
+                            Edad: @((DateTime.Now.Year - m.FechaNacimieneto.Year)) años<br />
+                            Raza: @m.Categoria.Razas.FirstOrDefault(r => r.RazaId == m.RazaId)?.Nombre
+                        </p>
 
-                    <div class="d-flex justify-content-between">
-                        <a href="/Details/Mascotas/@m.MascotaId" class="btn btn-outline-primary btn-sm">Ver más</a>
+                        <div class="d-flex justify-content-between">
+                            <a href="/Details/Mascotas/@m.MascotaId" class="btn btn-outline-primary btn-sm">Ver más</a>
 
                             <AuthorizeView>
-                                        <a class="btn btn-secondary btn-sm" href="/Editar/Mascotas/@m.MascotaId">Editar</a>
+                                <a class="btn btn-secondary btn-sm" href="/Editar/Mascotas/@m.MascotaId">Editar</a>
                             </AuthorizeView>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
 
 }
 
@@ -52,7 +52,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        mascotas = await mascotasService.ListAsync(m => true);
+        mascotas = await mascotasService.ListAsync(m => m.EstadoId == 1);
     }
 
     public void gotoCreate()
