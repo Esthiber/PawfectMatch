@@ -5,6 +5,7 @@ using PawfectMatch.Models._Mascotas;
 using PawfectMatch.Models._Solicitudes;
 using PawfectMatch.Models;
 using System.Reflection.Emit;
+using PawfectMatch.Models._Presentacion;
 
 namespace PawfectMatch.Data;
 
@@ -38,6 +39,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Estados> Estados { get; set; }
 
     public DbSet<Sugerencias> Sugerencias { get; set; }
+
+    public DbSet<Presentaciones> Presentaciones { get; set; }
+    public DbSet<PresentacionesDiapositivas> PresentacionesDiapositivas { get; set; }
+    public DbSet<Diapositivas> Diapositivas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

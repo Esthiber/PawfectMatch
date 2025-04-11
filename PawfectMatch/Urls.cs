@@ -48,6 +48,12 @@ namespace PawfectMatch
             public const string Crear = "/Sugerencias/Crear";
         }
 
+        public static class Advanced
+        {
+            public const string Index = "/Advanced";
+            public const string Presentacion = "/Advanced/Presentacion";
+        }
+
         public static class General
         {
             public const string Home = "/";
