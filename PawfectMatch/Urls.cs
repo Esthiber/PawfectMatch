@@ -42,6 +42,12 @@ namespace PawfectMatch
             public const string Manage = "Account/Manage";
         }
 
+        public static class Sugerencias
+        {
+            public const string Index = "/Sugerencias";
+            public const string Crear = "/Sugerencias/Crear";
+        }
+
         public static class General
         {
             public const string Home = "/";
