@@ -1,0 +1,57 @@
+﻿@inject PresentacionesService presentacionesService
+
+@if (Presentacion is null)
+{
+    <p>Cargando presentación...</p>
+}
+else
+{
+    <div class="carousel">
+        @foreach (var item in Diapositivas.OrderBy(d => d.Orden))
+        {
+            <div class="slide" style="background-image: url('@item.ImageUrl');">
+                <div class="slide-content">
+                    @if (item.IsTituloLeftActive)
+                    {
+                        <div class="left">
+                            <h2>@item.Titulo_Left</h2>
+                            <p>@item.SubTitulo_Left</p>
+                            @if (item.IsButtonLefttActive)
+                            {
+                                <a href="@item.LinkButton_Left" class="btn">@item.TextButton_Left</a>
+                            }
+                        </div>
+                    }
+                    @if (item.IsTituloRightActive)
+                    {
+                        <div class="right">
+                            <h2>@item.Titulo_Right</h2>
+                            <p>@item.SubTitulo_Right</p>
+                            @if (item.IsButtonRighttActive)
+                            {
+                                <a href="@item.LinkButton_Right" class="btn">@item.TextButton_Right</a>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    Presentaciones? Presentacion;
+    List<Diapositivas> Diapositivas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Presentacion = await presentacionesService.GetActiveAsync();
+
+        if (Presentacion is not null)
+        {
+            Diapositivas = Presentacion.PresentacionesDiapositivas
+                .Select(pd => pd.Diapositiva)
+                .ToList();
+        }
+    }
+}

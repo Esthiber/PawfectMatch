@@ -1,0 +1,83 @@
+﻿@page "/Advanced/Presentaciones/Crear"
+
+@inject NavigationManager Nav
+@using PawfectMatch.Models._Presentacion
+@using PawfectMatch.Services._Presentacion
+@inject PresentacionesService presentacionesService
+
+<h3>Crear Presentación</h3>
+
+<EditForm Model="@presentacion" OnValidSubmit="@GuardarPresentacion">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Título:</label>
+        <InputText class="form-control" @bind-Value="presentacion.Titulo" />
+    </div>
+
+    <h4>Diapositivas</h4>
+
+    @foreach (var d in diapositivas)
+    {
+        <div class="card p-3 mb-3">
+            <label>Imagen URL:</label>
+            <InputText class="form-control" @bind-Value="d.ImageUrl" />
+
+            <label>Título Izquierdo:</label>
+            <InputText class="form-control" @bind-Value="d.Titulo_Left" />
+
+            <label>Subtítulo Izquierdo:</label>
+            <InputText class="form-control" @bind-Value="d.SubTitulo_Left" />
+
+            <label>Título Derecho:</label>
+            <InputText class="form-control" @bind-Value="d.Titulo_Right" />
+
+            <label>Subtítulo Derecho:</label>
+            <InputText class="form-control" @bind-Value="d.SubTitulo_Right" />
+
+            <label>Orden:</label>
+            <InputNumber class="form-control" @bind-Value="d.Orden" />
+
+            <button class="btn btn-danger mt-2" type="button" @onclick="@(() => EliminarDiapositiva(d))">Eliminar</button>
+        </div>
+    }
+
+    <button class="btn btn-secondary" type="button" @onclick="AgregarDiapositiva">Agregar Diapositiva</button>
+    <br /><br />
+    <button class="btn btn-primary" type="submit">Guardar Presentación</button>
+</EditForm>
+
+@code {
+    Presentaciones presentacion = new();
+    List<Diapositivas> diapositivas = new();
+
+    private async Task GuardarPresentacion()
+    {
+        bool result = await presentacionesService.InsertAsync(presentacion, diapositivas);
+
+        if (result)
+        {
+            Nav.NavigateTo(Urls.Advanced.Presentacion);
+        }
+        else
+        {
+            // podrías mostrar una alerta o mensaje
+            Console.WriteLine("Error al guardar la presentación.");
+        }
+    }
+
+    private void AgregarDiapositiva()
+    {
+        diapositivas.Add(new Diapositivas
+            {
+                Orden = diapositivas.Count + 1,
+                ImageUrl = "https://placehold.co/600x300" // Imagen por defecto
+            });
+    }
+
+    private void EliminarDiapositiva(Diapositivas d)
+    {
+        diapositivas.Remove(d);
+    }
+}
