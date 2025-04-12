@@ -1,4 +1,5 @@
 ﻿using PawfectMatch.Models._Mascotas;
+using PawfectMatch.Models._Servicios;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,13 +19,16 @@ namespace PawfectMatch.Models._Solicitudes
         public int MascotaId { get; set; }
 
         [ForeignKey("AdoptanteId")]
-        public Adoptantes Adoptante { get; set; } = null!;
+        virtual public Adoptantes Adoptante { get; set; } = null!;
 
         [ForeignKey("EstadoSolicitudId")]
-        public EstadoSolicitudes EstadoSolicitud { get; set; } = null!;
+        virtual public EstadoSolicitudes EstadoSolicitud { get; set; } = null!;
 
         [ForeignKey("MascotaId")]
-        public Mascotas Mascota { get; set; } = null!;
+        virtual public Mascotas Mascota { get; set; } = null!;
+
+        [InverseProperty("SolicitudAdopcion")]
+        virtual public ICollection<SolicitudesServicios> SolicitudesServicios { get; set; } = null!;
 
     }
 }
