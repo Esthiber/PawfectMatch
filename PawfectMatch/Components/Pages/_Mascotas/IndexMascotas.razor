@@ -28,7 +28,7 @@ else
                         <h5 class="card-title">@m.Nombre</h5>
                         <p class="card-text">
                             Edad: @((DateTime.Now.Year - m.FechaNacimieneto.Year)) años<br />
-                            Raza: @m.Categoria.Razas.FirstOrDefault(r => r.RazaId == m.RazaId)?.Nombre
+                            Raza: @m.RazaId
                         </p>
 
                         <div class="d-flex justify-content-between">
