@@ -7,6 +7,7 @@ using PawfectMatch.Components.Account;
 using PawfectMatch.Data;
 using PawfectMatch.Services;
 using PawfectMatch.Services._Mascotas;
+using PawfectMatch.Services._Presentacion;
 using PawfectMatch.Services._Solicitudes;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +44,7 @@ builder.Services.AddScoped<EstadosService>();
 builder.Services.AddScoped<SexosService>();
 builder.Services.AddScoped<EstadosSolicitudesService>();
 builder.Services.AddScoped<RelacionSizesService>();
+builder.Services.AddScoped<PresentacionesService>();
 
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddBlazoredToast();
