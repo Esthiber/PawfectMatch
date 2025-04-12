@@ -51,7 +51,8 @@ namespace PawfectMatch
         public static class Advanced
         {
             public const string Index = "/Advanced";
-            public const string Presentacion = "/Advanced/Presentacion";
+            public const string Presentacion = "/Advanced/Presentaciones";
+            public const string CrearPresentacion = "/Advanced/Presentaciones/Crear";
         }
 
         public static class General
