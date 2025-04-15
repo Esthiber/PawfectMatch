@@ -53,7 +53,7 @@ namespace PawfectMatch.Tests
                 EstadoId = estadoMascota.EstadoId,
                 SexoId = sexo.SexoId,
                 Tamano = 12.5,
-                FechaNacimieneto = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
+                FechaNacimiento = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
                 FotoUrl = "https://ejemplo.com/felix.jpg"
             };
             await mascotaService.InsertAsync(mascota);
@@ -99,7 +99,7 @@ namespace PawfectMatch.Tests
                 EstadoId = estadoMascota.EstadoId,
                 SexoId = sexo.SexoId,
                 Tamano = 12.5,
-                FechaNacimieneto = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
+                FechaNacimiento = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
                 FotoUrl = "https://ejemplo.com/felix.jpg"
             };
             await mascotaService.InsertAsync(mascota);
@@ -144,7 +144,7 @@ namespace PawfectMatch.Tests
                 EstadoId = estadoMascota.EstadoId,
                 SexoId = sexo.SexoId,
                 Tamano = 12.5,
-                FechaNacimieneto = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
+                FechaNacimiento = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
                 FotoUrl = "https://ejemplo.com/felix.jpg"
             };
             var resultado = await mascotaService.InsertAsync(mascota);
@@ -190,7 +190,7 @@ namespace PawfectMatch.Tests
                 EstadoId = estadoMascota.EstadoId,
                 SexoId = sexo.SexoId,
                 Tamano = 12.5,
-                FechaNacimieneto = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
+                FechaNacimiento = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
                 FotoUrl = "https://ejemplo.com/felix.jpg"
             };
             await mascotaService.InsertAsync(mascota);
@@ -237,7 +237,7 @@ namespace PawfectMatch.Tests
                 EstadoId = estadoMascota.EstadoId,
                 SexoId = sexo.SexoId,
                 Tamano = 12.5,
-                FechaNacimieneto = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
+                FechaNacimiento = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
                 FotoUrl = "https://ejemplo.com/felix.jpg"
             };
             await mascotaService.InsertAsync(mascota);
@@ -285,7 +285,7 @@ namespace PawfectMatch.Tests
                 EstadoId = estadoMascota.EstadoId,
                 SexoId = sexo.SexoId,
                 Tamano = 12.5,
-                FechaNacimieneto = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
+                FechaNacimiento = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
                 FotoUrl = "https://ejemplo.com/felix.jpg"
             };
             await mascotaService.InsertAsync(mascota);
@@ -333,7 +333,7 @@ namespace PawfectMatch.Tests
                 EstadoId = estadoMascota.EstadoId,
                 SexoId = sexo.SexoId,
                 Tamano = 12.5,
-                FechaNacimieneto = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
+                FechaNacimiento = DateOnly.FromDateTime(DateTime.Now.AddYears(-1)),
                 FotoUrl = "https://ejemplo.com/felix.jpg"
             };
             await mascotaService.InsertAsync(mascota);
