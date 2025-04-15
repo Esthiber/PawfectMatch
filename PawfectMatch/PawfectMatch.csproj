@@ -31,6 +31,7 @@
     <Folder Include="Components\Pages\_Citas\_Editar\" />
     <Folder Include="Components\Pages\_Solicitudes\_Editar\" />
     <Folder Include="DAL\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
