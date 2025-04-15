@@ -120,6 +120,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .HasForeignKey(h => h.AdoptanteId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<SolicitudesServicios>()
+            .HasKey(ss => ss.SolicitudServicioId); 
+
+        modelBuilder.Entity<SolicitudesServicios>()
+            .HasOne(ss => ss.SolicitudAdopcion)
+            .WithMany(s => s.SolicitudesServicios) 
+            .HasForeignKey(ss => ss.SolicitudAdopcionId)
+            .OnDelete(DeleteBehavior.Cascade); 
         #endregion
 
         #region Initial Seed

@@ -27,7 +27,7 @@ namespace PawfectMatch.Services
         public async Task<bool> ExistAsync(int id)
         {
             using var db = await DbFactory.CreateDbContextAsync();
-            return await db.SolicitudesServicios.AnyAsync(ss => ss.SolicitudesServiciosId == id);
+            return await db.SolicitudesServicios.AnyAsync(ss => ss.SolicitudServicioId == id);
         }
 
         public async Task<SolicitudesServicios> SearchByIdAsync(int id)
@@ -36,7 +36,7 @@ namespace PawfectMatch.Services
             return await db.SolicitudesServicios
                           .Include(ss => ss.Servicio)
                           .Include(ss => ss.SolicitudAdopcion)
-                          .FirstOrDefaultAsync(ss => ss.SolicitudesServiciosId == id)
+                          .FirstOrDefaultAsync(ss => ss.SolicitudServicioId == id)
                    ?? new SolicitudesServicios();
         }
 
@@ -53,7 +53,7 @@ namespace PawfectMatch.Services
         public async Task<bool> UpdateAsync(SolicitudesServicios elem)
         {
             using var db = await DbFactory.CreateDbContextAsync();
-            var existing = await db.SolicitudesServicios.FindAsync(elem.SolicitudesServiciosId);
+            var existing = await db.SolicitudesServicios.FindAsync(elem.SolicitudServicioId);
             if (existing == null) return false;
 
             db.Entry(existing).CurrentValues.SetValues(elem);
@@ -62,7 +62,7 @@ namespace PawfectMatch.Services
 
         public async Task<bool> SaveAsync(SolicitudesServicios elem)
         {
-            if (await ExistAsync(elem.SolicitudesServiciosId))
+            if (await ExistAsync(elem.SolicitudServicioId))
                 return await UpdateAsync(elem);
             else
                 return await InsertAsync(elem);

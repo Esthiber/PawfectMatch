@@ -7,7 +7,7 @@ namespace PawfectMatch.Models._Servicios
     public class SolicitudesServicios
     {
         [Key]
-        public int SolicitudesServiciosId { get; set; }
+        public int SolicitudServicioId { get; set; }
 
         public int SolicitudAdopcionId { get; set; }
 
