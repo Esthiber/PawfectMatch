@@ -202,21 +202,23 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         );
 
         modelBuilder.Entity<Mascotas>().HasData(
-             new Mascotas()
-             {
-                 CategoriaId = 1,
-                 RazaId = 5,
-                 RelacionSizeId = 1,
-                 EstadoId = 1,
-                 Nombre = "Felipe",
-                 Tamano = 25,
-                 FechaNacimiento = DateOnly.Parse("2025-04-02"),
-                 Descripcion = "Es grande es bonito es un perro loco.",
-                 FotoUrl = "https://media.istockphoto.com/id/1465311007/es/foto/un-perro-peque%C3%B1o-sonr%C3%ADe-al-due%C3%B1o-peque%C3%B1as-mordeduras-de-mascotas-peligroso-terrier-de-juguete.jpg?s=612x612&w=0&k=20&c=nZzhW0piLl7oIrielT9JA7vAcXqaepnDhCggxD7JZ0I=",
-                 SexoId = 1
-             },
         new Mascotas()
         {
+            MascotaId = 1,
+            CategoriaId = 1,
+            RazaId = 5,
+            RelacionSizeId = 1,
+            EstadoId = 1,
+            Nombre = "Felipe",
+            Tamano = 25,
+            FechaNacimiento = DateOnly.Parse("2025-04-02"),
+            Descripcion = "Es grande es bonito es un perro loco.",
+            FotoUrl = "https://media.istockphoto.com/id/1465311007/es/foto/un-perro-peque%C3%B1o-sonr%C3%ADe-al-due%C3%B1o-peque%C3%B1as-mordeduras-de-mascotas-peligroso-terrier-de-juguete.jpg?s=612x612&w=0&k=20&c=nZzhW0piLl7oIrielT9JA7vAcXqaepnDhCggxD7JZ0I=",
+            SexoId = 1
+        },
+        new Mascotas()
+        {
+            MascotaId = 2,
             CategoriaId = 1,
             RazaId = 1,
             RelacionSizeId = 3,
@@ -230,6 +232,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         },
         new Mascotas()
         {
+            MascotaId = 3,
             CategoriaId = 1,
             RazaId = 2,
             RelacionSizeId = 1,
@@ -243,6 +246,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         },
         new Mascotas()
         {
+            MascotaId = 4,
             CategoriaId = 1,
             RazaId = 5,
             RelacionSizeId = 3,
@@ -256,6 +260,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         },
         new Mascotas()
         {
+            MascotaId = 5,
             CategoriaId = 1,
             RazaId = 6,
             RelacionSizeId = 1,
@@ -269,6 +274,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         },
         new Mascotas()
         {
+            MascotaId = 6,
             CategoriaId = 1,
             RazaId = 1,
             RelacionSizeId = 3,
@@ -282,6 +288,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         },
         new Mascotas()
         {
+            MascotaId = 7,
             CategoriaId = 1,
             RazaId = 7,
             RelacionSizeId = 1,
@@ -295,6 +302,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         },
         new Mascotas()
         {
+            MascotaId = 8,
             CategoriaId = 1,
             RazaId = 8,
             RelacionSizeId = 2,
@@ -308,6 +316,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         },
         new Mascotas()
         {
+            MascotaId = 9,
             CategoriaId = 1,
             RazaId = 6,
             RelacionSizeId = 1,
