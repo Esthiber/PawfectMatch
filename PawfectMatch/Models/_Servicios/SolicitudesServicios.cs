@@ -15,9 +15,9 @@ namespace PawfectMatch.Models._Servicios
 
         [InverseProperty("SolicitudesServicios")]
         [ForeignKey("SolicitudAdopcionId")]
-        virtual public SolicitudesAdopciones SolicitudAdopcion { get; set; } = new();
+        virtual public SolicitudesAdopciones SolicitudAdopcion { get; set; } = null!;
 
         [ForeignKey("ServicioId")]
-        virtual public Servicios Servicio { get; set; } = new();
+        virtual public Servicios? Servicio { get; set; }
     }
 }

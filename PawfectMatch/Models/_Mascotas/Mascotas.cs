@@ -27,7 +27,7 @@ namespace PawfectMatch.Models._Mascotas
         public double Tamano { get; set; } = 0; // Pulgadas
 
         [Required(ErrorMessage = "La Fecha de nacimiento es requerida")]
-        public DateOnly FechaNacimieneto { get; set; }
+        public DateOnly FechaNacimiento { get; set; }
 
         [Required(ErrorMessage = "La descripcion es requerida")]
         public string Descripcion { get; set; } = null!;
