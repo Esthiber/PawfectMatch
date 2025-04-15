@@ -51,88 +51,78 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        // Additional configuration if needed
 
-        // Configuración de la relación entre Categorias y Razas
+        #region Configuraciones
+
         modelBuilder.Entity<Categorias>()
             .HasMany(c => c.Razas)
             .WithOne(r => r.Categoria)
             .HasForeignKey(r => r.CategoriaId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre Mascotas y Categorias
         modelBuilder.Entity<Mascotas>()
             .HasOne(m => m.Categoria)
             .WithMany()
             .HasForeignKey(m => m.CategoriaId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre Mascotas y RelacionSizes
         modelBuilder.Entity<Mascotas>()
             .HasOne(m => m.RelacionSize)
             .WithMany()
             .HasForeignKey(m => m.RelacionSizeId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre Mascotas y Estados
         modelBuilder.Entity<Mascotas>()
             .HasOne(m => m.Estado)
             .WithMany()
             .HasForeignKey(m => m.EstadoId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre SolicitudesAdopciones y Mascotas
         modelBuilder.Entity<SolicitudesAdopciones>()
             .HasOne(s => s.Mascota)
             .WithMany()
             .HasForeignKey(s => s.MascotaId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre HistorialAdopciones y Mascotas
         modelBuilder.Entity<HistorialAdopciones>()
             .HasOne(h => h.Mascota)
             .WithMany()
             .HasForeignKey(h => h.MascotaId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre Citas y Mascotas
         modelBuilder.Entity<Citas>()
             .HasOne(c => c.Mascota)
             .WithMany()
             .HasForeignKey(c => c.MascotaId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre Citas y Adoptantes
         modelBuilder.Entity<Citas>()
             .HasOne(c => c.Adoptante)
             .WithMany()
             .HasForeignKey(c => c.AdoptanteId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre SolicitudesAdopciones y Adoptantes
         modelBuilder.Entity<SolicitudesAdopciones>()
             .HasOne(s => s.Adoptante)
             .WithMany()
             .HasForeignKey(s => s.AdoptanteId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre SolicitudesAdopciones y EstadoSolicitudes
         modelBuilder.Entity<SolicitudesAdopciones>()
             .HasOne(s => s.EstadoSolicitud)
             .WithMany()
             .HasForeignKey(s => s.EstadoSolicitudId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
-        // Configuración de la relación entre HistorialAdopciones y Adoptantes
         modelBuilder.Entity<HistorialAdopciones>()
             .HasOne(h => h.Adoptante)
             .WithMany()
             .HasForeignKey(h => h.AdoptanteId)
-            .OnDelete(DeleteBehavior.NoAction); // Evitar eliminación en cascada
+            .OnDelete(DeleteBehavior.NoAction);
 
+        #endregion
 
-
-        // Inserción de datos iniciales
+        #region Initial Seed
         modelBuilder.Entity<Categorias>().HasData(
             new Categorias { CategoriaId = 1, Nombre = "Perros" },
             new Categorias { CategoriaId = 2, Nombre = "Gatos" }
@@ -173,5 +163,162 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             new IdentityRole { Id = "2", Name = "User", NormalizedName = "USER" }
         );
 
+        modelBuilder.Entity<Servicios>().HasData(
+            new Servicios
+            {
+                ServicioId = 1,
+                Nombre = "Documentos de Adopción",
+                Descripcion = "Documentos que certifican la propiedad de la mascota.",
+                Costo = 0.00
+            },
+           new Servicios
+           {
+               ServicioId = 2,
+               Nombre = "Vacunación",
+               Descripcion = "Servicio de vacunación para mascotas.",
+               Costo = 500.00
+           },
+           new Servicios
+           {
+               ServicioId = 3,
+               Nombre = "Desparasitación",
+               Descripcion = "Tratamiento para eliminar parásitos internos y externos.",
+               Costo = 300.00
+           },
+           new Servicios
+           {
+               ServicioId = 4,
+               Nombre = "Corte de Uñas",
+               Descripcion = "Servicio de corte de uñas para mascotas pequeñas y grandes.",
+               Costo = 150.00
+           },
+           new Servicios
+           {
+               ServicioId = 5,
+               Nombre = "Consulta Veterinaria",
+               Descripcion = "Consulta general con un veterinario calificado.",
+               Costo = 800.00
+           }
+        );
+
+        modelBuilder.Entity<Mascotas>().HasData(
+             new Mascotas()
+             {
+                 CategoriaId = 1,
+                 RazaId = 5,
+                 RelacionSizeId = 1,
+                 EstadoId = 1,
+                 Nombre = "Felipe",
+                 Tamano = 25,
+                 FechaNacimiento = DateOnly.Parse("2025-04-02"),
+                 Descripcion = "Es grande es bonito es un perro loco.",
+                 FotoUrl = "https://media.istockphoto.com/id/1465311007/es/foto/un-perro-peque%C3%B1o-sonr%C3%ADe-al-due%C3%B1o-peque%C3%B1as-mordeduras-de-mascotas-peligroso-terrier-de-juguete.jpg?s=612x612&w=0&k=20&c=nZzhW0piLl7oIrielT9JA7vAcXqaepnDhCggxD7JZ0I=",
+                 SexoId = 1
+             },
+        new Mascotas()
+        {
+            CategoriaId = 1,
+            RazaId = 1,
+            RelacionSizeId = 3,
+            EstadoId = 2,
+            Nombre = "Milo",
+            Tamano = 18,
+            FechaNacimiento = DateOnly.Parse("2022-08-08"),
+            Descripcion = "Es un perrito muy cariñoso y con mucha energia",
+            FotoUrl = "https://th.bing.com/th/id/OIP.TfniUPx7NqEggeKV9APOZgHaE8?rs=1&pid=ImgDetMain",
+            SexoId = 1
+        },
+        new Mascotas()
+        {
+            CategoriaId = 1,
+            RazaId = 2,
+            RelacionSizeId = 1,
+            EstadoId = 2,
+            Nombre = "Roky",
+            Tamano = 16,
+            FechaNacimiento = DateOnly.Parse("2021-06-08"),
+            Descripcion = "Es un perrito que adora pasear y comer",
+            FotoUrl = "https://http2.mlstatic.com/D_NQ_NP_660656-MLM46803871812_072021-F.jpg",
+            SexoId = 1
+        },
+        new Mascotas()
+        {
+            CategoriaId = 1,
+            RazaId = 5,
+            RelacionSizeId = 3,
+            EstadoId = 1,
+            Nombre = "Willi",
+            Tamano = 24,
+            FechaNacimiento = DateOnly.Parse("2024-03-08"),
+            Descripcion = "Es un perro jugueton y le gusta dormir",
+            FotoUrl = "https://th.bing.com/th/id/R.69b9a203e86486a2114bc7380d204970?rik=kimEIahYLupgjQ&pid=ImgRaw&r=0&sres=1&sresct=1",
+            SexoId = 1
+        },
+        new Mascotas()
+        {
+            CategoriaId = 1,
+            RazaId = 6,
+            RelacionSizeId = 1,
+            EstadoId = 1,
+            Nombre = "lali",
+            Tamano = 9,
+            FechaNacimiento = DateOnly.Parse("2024-01-07"),
+            Descripcion = "Es un perrito muy tierno y adora jugar",
+            FotoUrl = "https://www.publicdomainpictures.net/pictures/180000/velka/chihuaua-puppy.jpg",
+            SexoId = 1
+        },
+        new Mascotas()
+        {
+            CategoriaId = 1,
+            RazaId = 1,
+            RelacionSizeId = 3,
+            EstadoId = 1,
+            Nombre = "Mango",
+            Tamano = 16,
+            FechaNacimiento = DateOnly.Parse("2024-10-22 "),
+            Descripcion = "Es un perrito muy aventurero",
+            FotoUrl = "https://th.bing.com/th/id/OIP.NA3_b8GubIn0nfMn0w4XDAHaE8?rs=1&pid=ImgDetMain",
+            SexoId = 1
+        },
+        new Mascotas()
+        {
+            CategoriaId = 1,
+            RazaId = 7,
+            RelacionSizeId = 1,
+            EstadoId = 1,
+            Nombre = "rodolf",
+            Tamano = 9,
+            FechaNacimiento = DateOnly.Parse("2023-11-08"),
+            Descripcion = "Le encanta correr y comer",
+            FotoUrl = "https://th.bing.com/th/id/OIP.EzwbKs8GJQPv0CCPP2GMlQHaD9?rs=1&pid=ImgDetMain",
+            SexoId = 1
+        },
+        new Mascotas()
+        {
+            CategoriaId = 1,
+            RazaId = 8,
+            RelacionSizeId = 2,
+            EstadoId = 1,
+            Nombre = "Oli",
+            Tamano = 10,
+            FechaNacimiento = DateOnly.Parse("2021-04-06"),
+            Descripcion = "Es un perro que adora el cariño y los paseos largos",
+            FotoUrl = "https://th.bing.com/th/id/OIP.v3rbPJHS2RVJFSlRq_DXTAHaE8?rs=1&pid=ImgDetMain",
+            SexoId = 1
+        },
+        new Mascotas()
+        {
+            CategoriaId = 1,
+            RazaId = 6,
+            RelacionSizeId = 1,
+            EstadoId = 1,
+            Nombre = "Lalo",
+            Tamano = 10,
+            FechaNacimiento = DateOnly.Parse("2023-04-12"),
+            Descripcion = "Es un perro con mucha energia y adora que le den cariño",
+            FotoUrl = "https://th.bing.com/th/id/OIP.JuzlhHcoLZR61J50nJgftwHaFr?rs=1&pid=ImgDetMain",
+            SexoId = 1
+        });
+        #endregion
     }
 }
