@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(options =>
         options.DefaultScheme = IdentityConstants.ApplicationScheme;
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
     })
-    .AddIdentityCookies();      
+    .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("SqlConStr") ?? throw new InvalidOperationException("Connection string 'SqlConStr' not found.");
 builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
@@ -45,6 +45,8 @@ builder.Services.AddScoped<SexosService>();
 builder.Services.AddScoped<EstadosSolicitudesService>();
 builder.Services.AddScoped<RelacionSizesService>();
 builder.Services.AddScoped<PresentacionesService>();
+builder.Services.AddScoped<ServiciosService>();
+builder.Services.AddScoped<SolicitudesServiciosService>();
 
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddBlazoredToast();
