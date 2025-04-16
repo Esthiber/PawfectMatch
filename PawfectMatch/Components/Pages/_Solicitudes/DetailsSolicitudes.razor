@@ -5,6 +5,7 @@
 @inject MascotasService mascotasService
 @inject CitasService citasService
 @inject NavigationManager navManager
+@inject SolicitudesServiciosService solicitudesServiciosService
 
 @attribute [Authorize(Roles = "Admin")]
 
@@ -32,6 +33,14 @@ else
         <h5>Estado de la Solicitud</h5>
         <p><strong>Estado:</strong> @solicitud.EstadoSolicitud?.Nombre</p>
         <p><strong>Fecha:</strong> @solicitud.Fecha.ToString("dd/MM/yyyy")</p>
+
+        <ul>
+            @foreach (var s in listaServicios)
+            {
+                <li>@s.Servicio?.Nombre | @s.Servicio?.Costo</li>
+            }
+            @listaServicios.Sum(ss => ss.Servicio?.Costo);
+        </ul>
 
         @if (solicitud.EstadoSolicitudId == 2 && listaCitas.Count == 0)
         {
@@ -62,10 +71,13 @@ else
 
     private List<Citas> listaCitas { get; set; } = new();
 
+    private List<SolicitudesServicios> listaServicios { get; set; } = new();
+
     protected override async Task OnInitializedAsync()
     {
         solicitud = await solicitudesService.SearchByIdAsync(id);
         listaCitas = await citasService.ListAsync(c => c.MascotaId == solicitud.MascotaId && c.AdoptanteId == solicitud.AdoptanteId);
+        listaServicios = await solicitudesServiciosService.ListAsync(ss => ss.SolicitudAdopcionId == solicitud.SolicitudAdopcionId);
     }
 
     private async Task AceptarSolicitud()
