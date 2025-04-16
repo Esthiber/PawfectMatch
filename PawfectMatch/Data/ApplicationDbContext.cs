@@ -54,12 +54,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
         #region Configuraciones
 
-        modelBuilder.Entity<Categorias>()
-            .HasMany(c => c.Razas)
-            .WithOne(r => r.Categoria)
-            .HasForeignKey(r => r.CategoriaId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         modelBuilder.Entity<Mascotas>()
             .HasOne(m => m.Categoria)
             .WithMany()

@@ -9,8 +9,5 @@ namespace PawfectMatch.Models._Mascotas
         public int CategoriaId { get; set; }
         [Required(ErrorMessage ="Requerido")]
         public string Nombre { get; set; } = null!;
-
-        [InverseProperty("Categoria")]
-        public ICollection<Razas> Razas { get; set; } = new List<Razas>();
     }
 }
