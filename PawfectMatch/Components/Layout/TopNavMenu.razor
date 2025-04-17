@@ -27,9 +27,8 @@
     </NavLink>
 
 
-    <div class="user-btn" @onpointerenter="pointerEnter" @onpointerleave="pointerLeave">
+    <div class="user-btn" @onclick="pointerEnter" @onpointerleave="pointerLeave">
         <img class="user" src="@Assets["/img/icons/user0.svg"]" />
-
         @if (showUserMenu)
         {
             <div class="usermenu-container">
@@ -41,17 +40,7 @@
 
 @code {
     private bool showUserMenu = false;
+    private void pointerEnter() => showUserMenu = true;
+    private void pointerLeave() => showUserMenu = false;
 
-    private void pointerEnter()
-    {
-        showUserMenu = true;
-    }
-
-    private void pointerLeave()
-    {
-        showUserMenu = false;
-    }
 }
-
-
-

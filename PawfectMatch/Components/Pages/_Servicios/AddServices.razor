@@ -53,6 +53,7 @@
     private async Task Confirmar()
     {
         await OnServiciosSeleccionados.InvokeAsync(ServiciosSeleccionados);
+        await CerrarModal();
     }
 
     private async Task CerrarModal()
