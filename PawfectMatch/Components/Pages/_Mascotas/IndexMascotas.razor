@@ -26,7 +26,7 @@
             <div class="row row-cols-2 row-cols-md-4 g-2">
                 @foreach (var m in mascotas)
                 {
-                    <CardMascota Mascota="m"></CardMascota>
+                    <CardMascota Mascota="m" OnVerDetalles="VerDetalle"></CardMascota>
                 }
             </div>
 
@@ -43,6 +43,11 @@
     protected override async Task OnInitializedAsync()
     {
         mascotas = await mascotasService.ListAsync(m => m.EstadoId == 1);
+    }
+
+    private void VerDetalle(int id)
+    {
+        navigationManager.NavigateTo($"{Urls.Mascotas.Detalle}{id}");
     }
 
     public void gotoCreate()
