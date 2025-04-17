@@ -15,17 +15,19 @@ namespace PawfectMatch.Models._Presentacion
         public string? Titulo_Right { get; set; }
         public string? SubTitulo_Right { get; set; }
 
-        public bool IsButtonLefttActive { get; set; }
+        public bool IsButtonLeftActive { get; set; }
         public string? TextButton_Left { get; set; }
         public string? LinkButton_Left { get; set; }
 
-        public bool IsButtonRighttActive { get; set; }
+        public bool IsButtonRightActive { get; set; }
         public string? TextButton_Right { get; set; }
         public string? LinkButton_Right { get; set; }
 
-        [Required(ErrorMessage ="Imagen de fondo Requerida")]
+        [Required(ErrorMessage = "Imagen de fondo Requerida")]
         public string ImageUrl { get; set; } = null!;
 
+        [Required(ErrorMessage = "Es necesario un numero de orden")]
+        [Range(1, 100, ErrorMessage = "El numero de orden debe mayor a 1 y menor a 100")]
         public int Orden { get; set; }
 
         public string? Animacion { get; set; }

@@ -111,7 +111,7 @@ namespace PawfectMatch.Tests
                 },
                 new Diapositivas
                 {
-                    IsButtonLefttActive = true,
+                    IsButtonLeftActive = true,
                     TextButton_Left = "Click aquí",
                     LinkButton_Left = "/link",
                     ImageUrl = "/images/img3.jpg",

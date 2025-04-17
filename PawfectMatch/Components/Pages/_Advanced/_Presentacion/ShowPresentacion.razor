@@ -7,41 +7,20 @@
 else
 {
     <div class="carousel">
-        @foreach (var item in Diapositivas.OrderBy(d => d.Orden))
-        {
-            <div class="slide" style="background-image: url('@item.ImageUrl');">
-                <div class="slide-content">
-                    @if (item.IsTituloLeftActive)
-                    {
-                        <div class="left">
-                            <h2>@item.Titulo_Left</h2>
-                            <p>@item.SubTitulo_Left</p>
-                            @if (item.IsButtonLefttActive)
-                            {
-                                <a href="@item.LinkButton_Left" class="btn">@item.TextButton_Left</a>
-                            }
-                        </div>
-                    }
-                    @if (item.IsTituloRightActive)
-                    {
-                        <div class="right">
-                            <h2>@item.Titulo_Right</h2>
-                            <p>@item.SubTitulo_Right</p>
-                            @if (item.IsButtonRighttActive)
-                            {
-                                <a href="@item.LinkButton_Right" class="btn">@item.TextButton_Right</a>
-                            }
-                        </div>
-                    }
-                </div>
-            </div>
-        }
+        <ul>
+            @foreach (var item in Diapositivas.OrderBy(d => d.Orden))
+            {
+                <li>
+                    <ShowDiapositiva diapositiva="item"></ShowDiapositiva>
+                </li>
+            }
+        </ul>
     </div>
 }
 
 @code {
-    Presentaciones? Presentacion;
-    List<Diapositivas> Diapositivas = new();
+    Presentaciones? Presentacion { get; set; }
+    List<Diapositivas> Diapositivas { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,6 +31,17 @@ else
             Diapositivas = Presentacion.PresentacionesDiapositivas
                 .Select(pd => pd.Diapositiva)
                 .ToList();
+        }
+        else
+        {
+            Presentacion = new();
+            Diapositivas = new()
+            {
+                new()
+                {
+                    ImageUrl="https://placehold.co/1400x720/5E3023/C08552?text=Cute+\nDog+And+AAAAAAAA+\n_Pawfect+Match_&font=roboto"
+                }
+            };
         }
     }
 }

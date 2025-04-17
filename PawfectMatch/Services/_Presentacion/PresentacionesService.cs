@@ -137,7 +137,7 @@ namespace PawfectMatch.Services._Presentacion
             return await ctx.Presentaciones
                  .Include(p => p.PresentacionesDiapositivas)
                      .ThenInclude(pd => pd.Diapositiva)
-                 .FirstOrDefaultAsync(p => p.EsActiva) ?? throw new KeyNotFoundException($"Presentación con Activa no encontrada.");
+                 .FirstOrDefaultAsync(p => p.EsActiva) ?? null!;
         }
 
         public async Task<bool> SetActive(int id)
