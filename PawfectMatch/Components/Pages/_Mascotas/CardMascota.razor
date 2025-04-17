@@ -4,6 +4,9 @@
     <div class="card-img-container">
         <img src="@Mascota.FotoUrl" class="card-img-top" alt="@Mascota.Nombre">
         <span class="badge @GetEstadoBadgeClass()">@Mascota.Estado.Nombre</span>
+        <AuthorizeView Roles="Admin">
+            <span class="edit-btn btn btn-primary"><i class="bi bi-pencil-square"></i></span>
+        </AuthorizeView>
     </div>
     <div class="card-body">
         <h5 class="card-title">@Mascota.Nombre</h5>
