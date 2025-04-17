@@ -11,7 +11,6 @@ namespace PawfectMatch.Models._Mascotas
         public string Nombre { get; set; } = null!;
 
         [ForeignKey("CategoriaId")]
-        [InverseProperty("Razas")]
         public Categorias Categoria { get; set; } = null!;
     }
 }
