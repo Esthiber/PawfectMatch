@@ -1,31 +1,43 @@
 ﻿<div class="d-diapositiva">
     <img class="d-bg-img" src="@diapositiva.ImageUrl" />
+    @if (diapositiva.IsButtonLeftActive || diapositiva.IsTituloLeftActive)
+    {
+        <div class="d-left-side">
+            @if (diapositiva.IsTituloLeftActive)
+            {
+                <h1 class="d-Title">@diapositiva.Titulo_Left</h1>
+                <h3 class="d-SubTitle">
+                    @diapositiva.SubTitulo_Left
+                </h3>
+            }
+            @if (diapositiva.IsButtonLeftActive)
+            {
+                <NavLink href="@diapositiva.LinkButton_Left">
+                    <button class="d-Left-btn">@diapositiva.TextButton_Left</button>
+                </NavLink>
 
-    <div class="d-left-side">
-        <h1 class="d-Title">Titulo</h1>
-        <h3 class="d-SubTitle">
-            Subtitulo :Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit,sed do eiusmod
-            tempor incididunt ut labore et dolore magna
-            aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip
-            ex ea commodo consequat.
-        </h3>
-        <button class="d-Left-btn">Esto es un boton</button>
-    </div>
+            }
+        </div>
+    }
 
-    <div class="d-right-side">
-        <h1 class="d-Title">Titulo</h1>
-        <h3 class="d-SubTitle">
-            Subtitulo :Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit,sed do eiusmod
-            tempor incididunt ut labore et dolore magna
-            aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip
-            ex ea commodo consequat.
-        </h3>
-        <button class="d-Right-btn">Esto es un boton</button>
-    </div>
+    @if (diapositiva.IsButtonRightActive || diapositiva.IsTituloRightActive)
+    {
+        <div class="d-right-side">
+            @if (diapositiva.IsTituloRightActive)
+            {
+                <h1 class="d-Title">@diapositiva.Titulo_Right</h1>
+                <h3 class="d-SubTitle">
+                    @diapositiva.SubTitulo_Right
+                </h3>
+            }
+            @if (diapositiva.IsButtonRightActive)
+            {
+                <NavLink href="@diapositiva.LinkButton_Right">
+                    <button class="d-Right-btn">@diapositiva.TextButton_Right</button>
+                </NavLink>
+            }
+        </div>
+    }
 </div>
 
 @code {

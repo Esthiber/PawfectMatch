@@ -3,20 +3,27 @@
 @rendermode InteractiveServer
 
 <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModal">
-    <div class="modal-dialog" role="document" @onclick:stopPropagation="true">
-        <div class="modal-content">
+    <div class="modal-dialog sideMenu" role="document" @onclick:stopPropagation="true">
+        <div class="modal-content ">
             <div class="modal-header">
                 <h5 class="modal-title">Menu</h5>
                 <button type="button" class="btn-close" @onclick="CerrarModal"></button>
             </div>
             <div class="modal-body">
+                <AuthorizeView>
+                    <Authorized>
+                        Bienvenido:<br/>
+                        @context.User.Identity?.Name
+                    </Authorized>
+                </AuthorizeView>
                 <div class="card p-3 mb-3">
-                    <div class="user-menu" >
+                    <div class="user-menu">
                         <AuthorizeView>
                             <Authorized>
                                 <NavLink href="@Urls.Account.Manage" @onclick="CerrarModal">
-                                    <div class="ver_perfil">
-                                        Ver Perfil
+                                    <div class="btnUserMenu ver_perfil">
+                                        <i class="bi bi-code-slash"></i>
+                                        <div class="btnText">Ver Perfil</div>
                                     </div>
                                 </NavLink>
                             </Authorized>
