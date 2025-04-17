@@ -21,26 +21,7 @@ else
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @foreach (var m in mascotas)
         {
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <img src="@m.FotoUrl" class="card-img-top" style="height: 250px; object-fit: cover;" alt="@m.Nombre" />
-                    <div class="card-body">
-                        <h5 class="card-title">@m.Nombre</h5>
-                        <p class="card-text">
-                            Edad: @((DateTime.Now.Year - m.FechaNacimiento.Year)) años<br />
-                            Raza: @m.RazaId
-                        </p>
-
-                        <div class="d-flex justify-content-between">
-                            <a href="/Details/Mascotas/@m.MascotaId" class="btn btn-outline-primary btn-sm">Ver más</a>
-
-                            <AuthorizeView>
-                                <a class="btn btn-secondary btn-sm" href="/Editar/Mascotas/@m.MascotaId">Editar</a>
-                            </AuthorizeView>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <CardMascota Mascota="m"></CardMascota>
         }
     </div>
 
