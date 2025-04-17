@@ -1,11 +1,12 @@
 ﻿@using PawfectMatch.Models._Mascotas
+@inject NavigationManager navigationManager
 
 <div class="card mascota-card">
     <div class="card-img-container">
         <img src="@Mascota.FotoUrl" class="card-img-top" alt="@Mascota.Nombre">
         <span class="badge @GetEstadoBadgeClass()">@Mascota.Estado.Nombre</span>
         <AuthorizeView Roles="Admin">
-            <span class="edit-btn btn btn-primary"><i class="bi bi-pencil-square"></i></span>
+            <span class="edit-btn btn btn-primary" @onclick="GoToEdit"><i class="bi bi-pencil-square"></i></span>
         </AuthorizeView>
     </div>
     <div class="card-body">
@@ -66,5 +67,10 @@
     private async Task VerDetalles()
     {
         await OnVerDetalles.InvokeAsync(Mascota.MascotaId);
+    }
+
+    private void GoToEdit()
+    {
+        navigationManager.NavigateTo($"{Urls.Mascotas.Editar}{Mascota.MascotaId}");
     }
 }

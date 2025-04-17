@@ -1,4 +1,4 @@
-﻿@page "/Editar/Mascotas/{id:int}"
+﻿@page "/mascotas/editar/{id:int}"
 
 @attribute [Authorize(Roles = "Admin")]
 
@@ -145,7 +145,7 @@ else
 
     private async Task Refresh()
     {
-        
+
     }
 
     private async Task ActualizarMascota()
