@@ -4,28 +4,36 @@
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
-<h3 class="mb-4">Mascotas en Adopción</h3>
-<AuthorizeView Roles="Admin">
-    <button class="btn btn-primary" @onclick="gotoCreate">Crear Mascota</button>
-</AuthorizeView>
-@if (mascotas == null)
-{
-    <p>Cargando mascotas...</p>
-}
-else if (!mascotas.Any())
-{
-    <div class="alert alert-warning">No hay mascotas disponibles actualmente.</div>
-}
-else
-{
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach (var m in mascotas)
+<div class="mascotas-page">
+    <h3 class="mb-4">Mascotas en Adopción</h3>
+    <AuthorizeView Roles="Admin">
+        <button class="btn btn-primary" @onclick="gotoCreate">Crear Mascota</button>
+    </AuthorizeView>
+
+    <div class="mascotas-container">
+        @if (mascotas == null)
         {
-            <CardMascota Mascota="m"></CardMascota>
+            <p>Cargando mascotas...</p>
         }
+        else if (!mascotas.Any())
+        {
+            <div class="alert alert-warning">No hay mascotas disponibles actualmente.</div>
+        }
+        else
+        {
+            <div class="row row-cols-2 row-cols-md-4 g-2">
+                @foreach (var m in mascotas)
+                {
+                    <CardMascota Mascota="m"></CardMascota>
+                }
+            </div>
+
+        }
+
     </div>
 
-}
+</div>
+
 
 @code {
     private List<Mascotas>? mascotas;
