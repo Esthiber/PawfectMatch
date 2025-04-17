@@ -110,7 +110,7 @@ else
         bool exito = await solicitudesService.RechazarSolicitud(solicitud.SolicitudAdopcionId);
         if (exito)
         {
-            navManager.NavigateTo("/Index/Solicitudes", forceLoad: true);
+            navManager.NavigateTo($"{Urls.Solicitudes.Index}", forceLoad: true);
         }
         else
         {
@@ -120,6 +120,6 @@ else
 
     private void Volver()
     {
-        navManager.NavigateTo("/Index/Solicitudes");
+        navManager.NavigateTo(Urls.Solicitudes.Index);
     }
 }
