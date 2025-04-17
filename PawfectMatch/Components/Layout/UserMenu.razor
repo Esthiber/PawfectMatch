@@ -2,81 +2,103 @@
 @implements IDisposable
 @rendermode InteractiveServer
 
-<div class="user-menu">
-    <AuthorizeView>
-        <Authorized>
-            <NavLink href="@Urls.Account.Manage">
-                <div class="ver_perfil">
-                    Ver Perfil
-                </div>
-            </NavLink>
-        </Authorized>
-        <NotAuthorized>
-
-        </NotAuthorized>
-    </AuthorizeView>
-    <AuthorizeView Roles="Admin">
-        <NavLink href="@Urls.General.HistorialAdopciones">
-            <div class="button5">
-                <div class="button2">Historial Adop</div>
+<div class="modal fade show d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);" @onclick="CerrarModal">
+    <div class="modal-dialog" role="document" @onclick:stopPropagation="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Menu</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
             </div>
-        </NavLink>
+            <div class="modal-body">
+                <div class="card p-3 mb-3">
+                    <div class="user-menu" >
+                        <AuthorizeView>
+                            <Authorized>
+                                <NavLink href="@Urls.Account.Manage" @onclick="CerrarModal">
+                                    <div class="ver_perfil">
+                                        Ver Perfil
+                                    </div>
+                                </NavLink>
+                            </Authorized>
+                            <NotAuthorized>
 
-        <NavLink href="@Urls.Advanced.Index">
-            <div class="button5">
-                <div class="button2">Funciones Avanzadas</div>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                        <AuthorizeView Roles="Admin">
+                            <NavLink href="@Urls.General.HistorialAdopciones" @onclick="CerrarModal">
+                                <div class="btnUserMenu">
+                                    <i class="bi bi-code-slash"></i>
+                                    <div class="btnText">Historial Adop</div>
+                                </div>
+                            </NavLink>
+
+                            <NavLink href="@Urls.Advanced.Index" @onclick="CerrarModal">
+                                <div class="btnUserMenu">
+                                    <i class="bi bi-code-slash"></i>
+                                    <div class="btnText">Funciones Avanzadas</div>
+                                </div>
+                            </NavLink>
+
+                        </AuthorizeView>
+                        <AuthorizeView>
+                            <NotAuthorized>
+                                <NavLink href="@Urls.Account.Login" @onclick="CerrarModal">
+                                    <div class="btnUserMenu">
+                                        <i class="bi bi-code-slash"></i>
+                                        <div class="btnText">Iniciar Sesion</div>
+                                    </div>
+                                </NavLink>
+                                <NavLink href="@Urls.Account.Register" @onclick="CerrarModal">
+                                    <div class="btnUserMenu">
+                                        <i class="bi bi-code-slash"></i>
+                                        <div class="btnText">Registrarse</div>
+                                    </div>
+                                </NavLink>
+                            </NotAuthorized>
+
+                            <Authorized>
+                                <NavLink href="@Urls.Solicitudes.Index" @onclick="CerrarModal">
+                                    <div class="btnUserMenu">
+                                        <i class="bi bi-code-slash"></i>
+                                        <div class="btnText">Solicitudes</div>
+                                    </div>
+                                </NavLink>
+
+                                <NavLink href="@Urls.Citas.Index" @onclick="CerrarModal">
+                                    <div class="btnUserMenu">
+                                        <i class="bi bi-code-slash"></i>
+                                        <div class="btnText">Citas</div>
+                                    </div>
+                                </NavLink>
+
+                                <div>
+                                    <form action="Account/Logout" method="post">
+                                        <AntiforgeryToken />
+                                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                                        <button type="submit" class="btnUserMenu" @onclick="CerrarModal">
+                                            <i class="bi bi-code-slash"></i>
+                                            <div class="btnText">Cerrar Sesion</div>
+                                        </button>
+                                    </form>
+                                </div>
+                            </Authorized>
+                        </AuthorizeView>
+                    </div>
+
+                </div>
             </div>
-        </NavLink>
 
-    </AuthorizeView>
-    <AuthorizeView>
-        <NotAuthorized>
-            <NavLink href="@Urls.Account.Login">
-                <div class="button">
-                    @* <img class="log-in" src="log-in0.svg" /> *@
-                    <div class="button2">Iniciar Sesion</div>
-                </div>
-            </NavLink>
-            <NavLink href="@Urls.Account.Register">
-                <div class="button3">
-                    @* <img class="user-plus" src="user-plus0.svg" /> *@
-                    <div class="button2">Registrarse</div>
-                </div>
-            </NavLink>
-        </NotAuthorized>
-
-        <Authorized>
-            <NavLink class="button4" href="@Urls.Solicitudes.Index">
-                <div>
-                    @* <img class="book" src="./book0.svg" /> *@
-                    <div class="button2">Solicitudes</div>
-                </div>
-            </NavLink>
-
-            <NavLink href="@Urls.Citas.Index">
-                <div class="button5">
-                    <div class="button2">Citas</div>
-                </div>
-            </NavLink>
-
-            <div class="button6">
-                <form action="Account/Logout" method="post">
-                    <AntiforgeryToken />
-                    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                    <button type="submit" class="nav-link">
-                        @* <img class="log-out" src="log-out0.svg" /> *@
-
-                        <div class="button2">Cerrar Sesion</div>
-                    </button>
-                </form>
-
-            </div>
-        </Authorized>
-    </AuthorizeView>
+        </div>
+    </div>
 </div>
 
 @code {
     private string? currentUrl;
+    [Parameter] public EventCallback OnClose { get; set; }
+    public async Task CerrarModal()
+    {
+        await OnClose.InvokeAsync();
+    }
 
     protected override void OnInitialized()
     {

@@ -26,21 +26,22 @@
         </div>
     </NavLink>
 
-
-    <div class="user-btn" @onclick="pointerEnter" @onpointerleave="pointerLeave">
-        <img class="user" src="@Assets["/img/icons/user0.svg"]" />
+    <div class="user-btn" >
+        <img class="user" src="@Assets["/img/icons/user0.svg"]" @onclick="pointerEnter" />
         @if (showUserMenu)
         {
             <div class="usermenu-container">
-                <UserMenu />
+                <UserMenu OnClose="pointerLeave" />
             </div>
         }
     </div>
 </div>
 
+@inject IJSRuntime JSRuntime
+
 @code {
-    private bool showUserMenu = false;
+    [Parameter]
+    public bool showUserMenu { get; set; } = false;
     private void pointerEnter() => showUserMenu = true;
     private void pointerLeave() => showUserMenu = false;
-
 }
