@@ -1044,6 +1044,518 @@
     color: #555;
 }
 
+/* Estilos para la página de historial de adopciones */
+.historial-page {
+    padding: 20px;
+    color: #333;
+}
+
+/* Header Section */
+.header-section {
+    margin-bottom: 30px;
+}
+
+.header-section h3 {
+    color: #5e3023;
+    font-weight: 700;
+    margin-bottom: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+.header-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: #dab49d;
+    border-radius: 2px;
+}
+
+.header-section .subtitle {
+    color: #666;
+    font-size: 1rem;
+    margin-top: 15px;
+}
+
+/* Loading Container */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 0;
+    color: #5e3023;
+}
+
+.loading-container .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 15px;
+    color: #dab49d;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f9f5f1;
+    border-radius: 15px;
+    margin: 30px 0;
+}
+
+.empty-state .empty-icon {
+    font-size: 4rem;
+    color: #dab49d;
+    margin-bottom: 20px;
+}
+
+.empty-state h4 {
+    color: #5e3023;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #666;
+    margin-bottom: 25px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.empty-state .btn {
+    background-color: #5e3023;
+    border-color: #5e3023;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.empty-state .btn:hover {
+    background-color: #4a261c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Filter Section */
+.filter-section {
+    background-color: #f9f5f1;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-input-group {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+}
+
+.search-input-group i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5e3023;
+    font-size: 1.1rem;
+    z-index: 10;
+}
+
+.search-input-group .form-control {
+    padding-left: 40px;
+    border-radius: 10px;
+    border: 1px solid #e0d5c9;
+    height: 45px;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.search-input-group .form-control:focus {
+    border-color: #dab49d;
+    box-shadow: 0 0 0 0.25rem rgba(218, 180, 157, 0.25);
+}
+
+.search-input-group .btn-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+}
+
+.search-input-group .btn-clear:hover {
+    color: #5e3023;
+}
+
+.date-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.date-range {
+    display: flex;
+    gap: 10px;
+}
+
+.date-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.date-input-group label {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0;
+}
+
+.date-input-group .form-control {
+    border-radius: 10px;
+    border: 1px solid #e0d5c9;
+    height: 40px;
+    width: 150px;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.date-input-group .form-control:focus {
+    border-color: #dab49d;
+    box-shadow: 0 0 0 0.25rem rgba(218, 180, 157, 0.25);
+}
+
+/* Results Info */
+.results-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Table Styles */
+.table-responsive {
+    overflow-x: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.historial-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.historial-table thead {
+    background-color: #f3e9dc;
+}
+
+.historial-table th {
+    padding: 15px;
+    text-align: left;
+    color: #5e3023;
+    font-weight: 600;
+    border-bottom: 2px solid #dab49d;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.historial-table th:hover {
+    background-color: #efe3d5;
+}
+
+.historial-table th i {
+    margin-left: 5px;
+    font-size: 0.9rem;
+}
+
+.historial-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f0e6dd;
+    vertical-align: middle;
+}
+
+.historial-table tr:last-child td {
+    border-bottom: none;
+}
+
+.historial-table tr:hover {
+    background-color: #faf7f4;
+}
+
+/* Adoptante Info */
+.adoptante-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.adoptante-info .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #5e3023;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.adoptante-info .nombre {
+    font-weight: 600;
+    color: #333;
+}
+
+.adoptante-info .email {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Mascota Info */
+.mascota-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mascota-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #f3e9dc;
+}
+
+.mascota-info .nombre {
+    font-weight: 600;
+    color: #333;
+}
+
+.mascota-info .raza {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Fecha Adopción */
+.fecha-adopcion {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.fecha-adopcion .fecha {
+    font-weight: 600;
+    color: #333;
+}
+
+.fecha-adopcion .tiempo {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* Notas */
+.notas-container {
+    max-width: 300px;
+}
+
+.notas-container .notas {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333;
+}
+
+.notas-container .no-notas {
+    color: #999;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.actions .btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.actions .btn-outline-primary {
+    color: #5e3023;
+    border-color: #5e3023;
+}
+
+.actions .btn-outline-primary:hover {
+    background-color: #5e3023;
+    color: white;
+}
+
+.actions .btn-outline-secondary {
+    color: #666;
+    border-color: #ccc;
+}
+
+.actions .btn-outline-secondary:hover {
+    background-color: #f3e9dc;
+    color: #5e3023;
+    border-color: #dab49d;
+}
+
+/* Botones */
+.btn-outline-secondary {
+    color: #666;
+    border-color: #ccc;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #f3e9dc;
+    color: #5e3023;
+    border-color: #dab49d;
+}
+
+.btn-outline-primary {
+    color: #5e3023;
+    border-color: #5e3023;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #5e3023;
+    color: white;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.historial-table {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .date-filter {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .date-range {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .date-input-group .form-control {
+        width: 100%;
+    }
+    
+    .results-info {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .adoptante-info .email,
+    .mascota-info .raza,
+    .fecha-adopcion .tiempo {
+        display: none;
+    }
+    
+    .historial-table th,
+    .historial-table td {
+        padding: 10px;
+    }
+    
+    .actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .actions .btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+    
+    .notas-container {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 576px) {
+    .historial-table {
+        font-size: 0.9rem;
+    }
+    
+    .adoptante-info .avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+    }
+    
+    .mascota-info img {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .notas-container {
+        max-width: 100px;
+    }
+    
+    .notas-container .notas {
+        -webkit-line-clamp: 1;
+    }
+}
+
 /* Buttons */
 .btn-primary {
     background-color: #3b82f6;

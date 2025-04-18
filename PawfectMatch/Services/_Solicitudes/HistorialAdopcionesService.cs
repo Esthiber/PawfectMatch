@@ -37,6 +37,7 @@ namespace PawfectMatch.Services._Solicitudes
             return await ctx.HistorialAdopciones
                 .Include(a => a.Adoptante)
                 .Include(a => a.Mascota)
+                    .ThenInclude(m=>m.Categoria)
                 .AsNoTracking()
                 .Where(criteria)
                 .ToListAsync();
