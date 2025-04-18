@@ -1556,6 +1556,523 @@
     }
 }
 
+/* Estilos para la página de solicitudes de adopción */
+.solicitudes-page {
+    padding: 20px;
+    color: #333;
+}
+
+/* Header Section */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.title-area h3 {
+    color: #5e3023;
+    font-weight: 700;
+    margin-bottom: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+.title-area h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: #dab49d;
+    border-radius: 2px;
+}
+
+.title-area .subtitle {
+    color: #666;
+    font-size: 1rem;
+    margin-top: 15px;
+}
+
+/* Stats Area */
+.stats-area {
+    display: flex;
+    gap: 15px;
+}
+
+.stat-card {
+    background-color: #f9f5f1;
+    border-radius: 10px;
+    padding: 15px 25px;
+    text-align: center;
+    min-width: 120px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5e3023;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Filter Section */
+.filter-section {
+    background-color: #f9f5f1;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-input-group {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+}
+
+.search-input-group i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5e3023;
+    font-size: 1.1rem;
+    z-index: 10;
+}
+
+.search-input-group .form-control {
+    padding-left: 40px;
+    border-radius: 10px;
+    border: 1px solid #e0d5c9;
+    height: 45px;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.search-input-group .form-control:focus {
+    border-color: #dab49d;
+    box-shadow: 0 0 0 0.25rem rgba(218, 180, 157, 0.25);
+}
+
+.search-input-group .btn-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+}
+
+.search-input-group .btn-clear:hover {
+    color: #5e3023;
+}
+
+.filter-options {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.filter-dropdown .form-select,
+.date-filter .form-control {
+    border-radius: 10px;
+    border: 1px solid #e0d5c9;
+    height: 45px;
+    background-color: white;
+    min-width: 150px;
+    transition: all 0.3s ease;
+}
+
+.filter-dropdown .form-select:focus,
+.date-filter .form-control:focus {
+    border-color: #dab49d;
+    box-shadow: 0 0 0 0.25rem rgba(218, 180, 157, 0.25);
+}
+
+/* Loading Container */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 0;
+    color: #5e3023;
+}
+
+.loading-container .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 15px;
+    color: #dab49d;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f9f5f1;
+    border-radius: 15px;
+    margin: 30px 0;
+}
+
+.empty-state .empty-icon {
+    font-size: 4rem;
+    color: #dab49d;
+    margin-bottom: 20px;
+}
+
+.empty-state h4 {
+    color: #5e3023;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #666;
+    margin-bottom: 25px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.empty-state .btn {
+    background-color: #5e3023;
+    border-color: #5e3023;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.empty-state .btn:hover {
+    background-color: #4a261c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Solicitudes Grid */
+.solicitudes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+/* Solicitud Card */
+.solicitud-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    border-top: 5px solid #ddd;
+}
+
+.solicitud-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.solicitud-card.pendiente {
+    border-top-color: #f59e0b;
+}
+
+.solicitud-card.aprobada {
+    border-top-color: #10b981;
+}
+
+.solicitud-card.rechazada {
+    border-top-color: #ef4444;
+}
+
+.solicitud-card .card-header {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0e6dd;
+}
+
+.estado-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.estado-badge.pendiente {
+    background-color: #fff7ed;
+    color: #f59e0b;
+}
+
+.estado-badge.aprobada {
+    background-color: #ecfdf5;
+    color: #10b981;
+}
+
+.estado-badge.rechazada {
+    background-color: #fef2f2;
+    color: #ef4444;
+}
+
+.solicitud-card .fecha {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.solicitud-card .card-body {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mascota-info, .adoptante-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mascota-info img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.adoptante-info .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #5e3023;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.mascota-info h5, .adoptante-info h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.mascota-info p, .adoptante-info p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.solicitud-card .card-footer {
+    padding: 15px;
+    border-top: 1px solid #f0e6dd;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.solicitud-card .btn {
+    border-radius: 10px;
+    padding: 8px 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.solicitud-card .btn-primary {
+    background-color: #5e3023;
+    border-color: #5e3023;
+    width: 100%;
+}
+
+.solicitud-card .btn-primary:hover {
+    background-color: #4a261c;
+    border-color: #4a261c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-buttons .btn {
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+.action-buttons .btn-success {
+    background-color: #10b981;
+    border-color: #10b981;
+}
+
+.action-buttons .btn-success:hover {
+    background-color: #059669;
+    border-color: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons .btn-danger {
+    background-color: #ef4444;
+    border-color: #ef4444;
+}
+
+.action-buttons .btn-danger:hover {
+    background-color: #dc2626;
+    border-color: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones */
+.btn-outline-secondary {
+    color: #666;
+    border-color: #ccc;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #f3e9dc;
+    color: #5e3023;
+    border-color: #dab49d;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.solicitudes-grid {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.solicitud-card {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.solicitud-card:nth-child(1) { animation-delay: 0.1s; }
+.solicitud-card:nth-child(2) { animation-delay: 0.2s; }
+.solicitud-card:nth-child(3) { animation-delay: 0.3s; }
+.solicitud-card:nth-child(4) { animation-delay: 0.4s; }
+.solicitud-card:nth-child(5) { animation-delay: 0.5s; }
+.solicitud-card:nth-child(6) { animation-delay: 0.6s; }
+.solicitud-card:nth-child(7) { animation-delay: 0.7s; }
+.solicitud-card:nth-child(8) { animation-delay: 0.8s; }
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .stats-area {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-options {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    
+    .filter-dropdown, .date-filter {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+    .solicitudes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    
+    .stats-area {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .stat-card {
+        flex: 1;
+        min-width: 100px;
+        padding: 10px 15px;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 576px) {
+    .solicitudes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mascota-info h5, .adoptante-info h5 {
+        font-size: 1rem;
+    }
+    
+    .mascota-info p, .adoptante-info p {
+        font-size: 0.8rem;
+    }
+    
+    .mascota-info img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .adoptante-info .avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+
 /* Buttons */
 .btn-primary {
     background-color: #3b82f6;

@@ -1,58 +1,284 @@
 ﻿@page "/solicitudes"
-
 @attribute [Authorize(Roles = "Admin")]
-
 @inject SolicitudesAdopcionesService solicitudesAdopcionesService
 @inject AdoptantesService adoptantesService
 @inject MascotasService mascotasService
+@inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider authProvider
-
 @rendermode InteractiveServer
 
-<h3>Solicitudes de Adopción</h3>
+<PageTitle>Solicitudes de Adopción | Pawfect Match</PageTitle>
 
-@if (solicitudes is null)
-{
-    <p><em>Cargando solicitudes...</em></p>
-}
-else if (!solicitudes.Any())
-{
-    <p>No hay solicitudes disponibles.</p>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Solicitante</th>
-                <th>Mascota</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var solicitud in solicitudes)
+<div class="solicitudes-page">
+    <div class="header-section">
+        <div class="title-area">
+            <h3>Solicitudes de Adopción</h3>
+            <p class="subtitle">Gestiona las solicitudes de adopción de mascotas</p>
+        </div>
+        <div class="stats-area">
+            <div class="stat-card">
+                <div class="stat-value">@(solicitudes?.Count(s => s.EstadoSolicitudId == 1) ?? 0)</div>
+                <div class="stat-label">Pendientes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">@(solicitudes?.Count(s => s.EstadoSolicitudId == 2) ?? 0)</div>
+                <div class="stat-label">Aprobadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">@(solicitudes?.Count(s => s.EstadoSolicitudId == 3) ?? 0)</div>
+                <div class="stat-label">Rechazadas</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <div class="search-input-group">
+            <i class="bi bi-search"></i>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Buscar por nombre de mascota o adoptante..."
+                   @bind="searchTerm"
+                   @bind:event="oninput"
+                   @onkeyup="ApplyFilters" />
+            @if (!string.IsNullOrEmpty(searchTerm))
             {
-                <tr>
-                    <td>@solicitud.Adoptante.Nombre</td>
-                    <td>@solicitud.Mascota.Nombre</td>
-                    <td>@solicitud.Fecha.ToShortDateString()</td>
-                    <td>@solicitud.EstadoSolicitud.Nombre</td>
-                    <td>
-                        <a class="btn btn-info btn-sm" href="/Details/Solicitudes/@solicitud.SolicitudAdopcionId">Ver Detalles</a>
-                    </td>
-                </tr>
+                <button class="btn-clear" @onclick="ClearSearch">
+                    <i class="bi bi-x-circle"></i>
+                </button>
             }
-        </tbody>
-    </table>
-}
+        </div>
+
+        <div class="filter-options">
+            <div class="filter-dropdown">
+                <select class="form-select" @bind="estadoFiltro">
+                    <option value="0">Todos los estados</option>
+                    <option value="1">Pendientes</option>
+                    <option value="2">Aprobadas</option>
+                    <option value="3">Rechazadas</option>
+                </select>
+            </div>
+
+            <div class="date-filter">
+                <input type="date" class="form-control" placeholder="Fecha desde" @bind="fechaDesde" />
+            </div>
+
+            @if (IsFiltered)
+            {
+                <button class="btn btn-outline-secondary btn-sm" @onclick="ClearFilters">
+                    <i class="bi bi-x-circle"></i> Limpiar filtros
+                </button>
+            }
+        </div>
+    </div>
+
+    @if (solicitudes is null)
+    {
+        <div class="loading-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando solicitudes...</span>
+            </div>
+            <p>Cargando solicitudes...</p>
+        </div>
+    }
+    else if (!solicitudesFiltradas.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-clipboard-x"></i>
+            </div>
+            <h4>No hay solicitudes disponibles</h4>
+            @if (IsFiltered)
+            {
+                <p>No se encontraron solicitudes con los filtros seleccionados.</p>
+                <button class="btn btn-primary" @onclick="ClearFilters">
+                    <i class="bi bi-arrow-repeat"></i> Limpiar filtros
+                </button>
+            }
+            else
+            {
+                <p>Cuando los usuarios envíen solicitudes de adopción, aparecerán aquí.</p>
+                <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo("/Mascotas"))">
+                    <i class="bi bi-arrow-left"></i> Volver a Mascotas
+                </button>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="solicitudes-grid">
+            @foreach (var solicitud in solicitudesFiltradas)
+            {
+                <div class="solicitud-card @GetEstadoClass(solicitud.EstadoSolicitudId)">
+                    <div class="card-header">
+                        <div class="estado-badge @GetEstadoClass(solicitud.EstadoSolicitudId)">
+                            @solicitud.EstadoSolicitud.Nombre
+                        </div>
+                        <div class="fecha">
+                            <i class="bi bi-calendar3"></i> @solicitud.Fecha.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="mascota-info">
+                            <img src="@solicitud.Mascota.FotoUrl" alt="@solicitud.Mascota.Nombre" />
+                            <div>
+                                <h5>@solicitud.Mascota.Nombre</h5>
+                                <p>@solicitud.Mascota.Categoria.Nombre</p>
+                            </div>
+                        </div>
+
+                        <div class="adoptante-info">
+                            <div class="avatar">
+                                @solicitud.Adoptante.Nombre[0]
+                            </div>
+                            <div>
+                                <h5>@solicitud.Adoptante.Nombre</h5>
+                                <p>@(string.IsNullOrEmpty(solicitud.Adoptante.Ocupacion) ? "Sin ocupación" : solicitud.Adoptante.Ocupacion)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <a class="btn btn-primary" href="/Details/Solicitudes/@solicitud.SolicitudAdopcionId">
+                            <i class="bi bi-eye"></i> Ver Detalles
+                        </a>
+
+                        @if (solicitud.EstadoSolicitudId == 1)
+                        {
+                            <div class="action-buttons">
+                                <button class="btn btn-success" @onclick="() => AprobarSolicitud(solicitud.SolicitudAdopcionId)">
+                                    <i class="bi bi-check-circle"></i> Aprobar
+                                </button>
+                                <button class="btn btn-danger" @onclick="() => RechazarSolicitud(solicitud.SolicitudAdopcionId)">
+                                    <i class="bi bi-x-circle"></i> Rechazar
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
 
 @code {
     private List<SolicitudesAdopciones>? solicitudes;
+    private List<SolicitudesAdopciones> solicitudesFiltradas = new();
+
+    // Filtros
+    private string searchTerm = string.Empty;
+    private int estadoFiltro = 0;
+    private DateTime? fechaDesde = null;
+
+    private bool IsFiltered =>
+        !string.IsNullOrEmpty(searchTerm) ||
+        estadoFiltro != 0 ||
+        fechaDesde != null;
 
     protected override async Task OnInitializedAsync()
     {
         solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
+
+        if (solicitudes != null)
+        {
+            // Por defecto, mostrar primero las solicitudes pendientes
+            solicitudesFiltradas = solicitudes
+                .OrderByDescending(s => s.EstadoSolicitudId == 1)
+                .ThenByDescending(s => s.Fecha)
+                .ToList();
+        }
+    }
+
+    private void ApplyFilters()
+    {
+        if (solicitudes == null) return;
+
+        solicitudesFiltradas = solicitudes.ToList();
+
+        // Filtrar por término de búsqueda
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            solicitudesFiltradas = solicitudesFiltradas
+                .Where(s =>
+                    s.Adoptante.Nombre.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    s.Mascota.Nombre.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        // Filtrar por estado
+        if (estadoFiltro != 0)
+        {
+            solicitudesFiltradas = solicitudesFiltradas
+                .Where(s => s.EstadoSolicitudId == estadoFiltro)
+                .ToList();
+        }
+
+        // Filtrar por fecha
+        if (fechaDesde != null)
+        {
+            solicitudesFiltradas = solicitudesFiltradas
+                .Where(s => s.Fecha.Date >= fechaDesde.Value.Date)
+                .ToList();
+        }
+
+        // Ordenar: pendientes primero, luego por fecha descendente
+        solicitudesFiltradas = solicitudesFiltradas
+            .OrderByDescending(s => s.EstadoSolicitudId == 1)
+            .ThenByDescending(s => s.Fecha)
+            .ToList();
+    }
+
+    private void ClearSearch()
+    {
+        searchTerm = string.Empty;
+        ApplyFilters();
+    }
+
+    private void ClearFilters()
+    {
+        searchTerm = string.Empty;
+        estadoFiltro = 0;
+        fechaDesde = null;
+
+        if (solicitudes != null)
+        {
+            solicitudesFiltradas = solicitudes
+                .OrderByDescending(s => s.EstadoSolicitudId == 1)
+                .ThenByDescending(s => s.Fecha)
+                .ToList();
+        }
+    }
+
+    private string GetEstadoClass(int estadoId)
+    {
+        return estadoId switch
+        {
+            1 => "pendiente",
+            2 => "aprobada",
+            3 => "rechazada",
+            _ => ""
+        };
+    }
+
+    private async Task AprobarSolicitud(int id)
+    {
+        bool result = await solicitudesAdopcionesService.AceptarSolicitud(id);
+        if (result)
+        {
+            // Actualizar la lista de solicitudes
+            solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
+            ApplyFilters();
+        }
+    }
+
+    private async Task RechazarSolicitud(int id)
+    {
+        bool result = await solicitudesAdopcionesService.RechazarSolicitud(id);
+        if (result)
+        {
+            // Actualizar la lista de solicitudes
+            solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
+            ApplyFilters();
+        }
     }
 }
