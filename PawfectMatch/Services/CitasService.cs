@@ -28,7 +28,7 @@ namespace PawfectMatch.Services
             await using var ctx = await DbFactory.CreateDbContextAsync();
             return await ctx.Citas
                 .AnyAsync(c => c.CitaId == id);
-        }  
+        }
 
         public async Task<List<Citas>> ListAsync(Expression<Func<Citas, bool>> criteria)
         {
@@ -36,6 +36,7 @@ namespace PawfectMatch.Services
             return await ctx.Citas
                 .Include(c => c.Adoptante)
                 .Include(c => c.Mascota)
+                    .ThenInclude(_ => _.Categoria)
                 .AsNoTracking()
                 .Where(criteria)
                 .ToListAsync();
@@ -44,7 +45,7 @@ namespace PawfectMatch.Services
 
         public async Task<bool> SaveAsync(Citas elem)
         {
-            if(await ExistAsync(elem.CitaId))
+            if (await ExistAsync(elem.CitaId))
             {
                 return await InsertAsync(elem);
             }
@@ -60,6 +61,7 @@ namespace PawfectMatch.Services
             return await ctx.Citas
                 .Include(c => c.Adoptante)
                 .Include(c => c.Mascota)
+                    .ThenInclude(_ => _.Categoria)
                 .FirstOrDefaultAsync(c => c.CitaId == id) ?? new();
         }
 

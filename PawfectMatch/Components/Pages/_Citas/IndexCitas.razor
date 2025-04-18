@@ -1,54 +1,135 @@
 ﻿@page "/Citas"
-
 @attribute [Authorize]
-
 @inject CitasService citasService
 @inject AdoptantesService adoptantesService
 @inject MascotasService mascotasService
+@inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider authProvider
-
+@using System.Security.Claims
 @rendermode InteractiveServer
 
-<h3 class="text-xl font-semibold mb-4">Mis Citas</h3>
+<PageTitle>Mis Citas | Pawfect Match</PageTitle>
 
-@if (!string.IsNullOrEmpty(error))
-{
-    <div class="alert alert-danger">@error</div>
-}
-else if (citasUsuario is null)
-{
-    <p>Cargando tus citas...</p>
-}
-else if (citasUsuario.Count == 0)
-{
-    <p>No tienes citas agendadas aún.</p>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead class="table-light">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Mascota</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var cita in citasUsuario)
-                {
-                    <tr>
-                        <td>@cita.FechaHora.ToString("dd/MM/yyyy hh:mm tt")</td>
-                        <td>@cita.Mascota.Nombre</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="citas-page">
+    <div class="header-section">
+        <div class="title-area">
+            <h3>Mis Citas</h3>
+            <p class="subtitle">Gestiona tus citas para conocer a tus futuras mascotas</p>
+        </div>
+        <button class="btn btn-primary" @onclick="SolicitarNuevaCita">
+            <i class="bi bi-plus-circle"></i> Nueva Cita
+        </button>
     </div>
-}
+
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <div class="alert-container">
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span>@error</span>
+            </div>
+        </div>
+    }
+    else if (citasUsuario is null)
+    {
+        <div class="loading-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p>Cargando tus citas...</p>
+        </div>
+    }
+    else if (citasUsuario.Count == 0)
+    {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-calendar-x"></i>
+            </div>
+            <h4>No tienes citas agendadas</h4>
+            <p>Programa una cita para conocer a tu futura mascota en persona.</p>
+            <button class="btn btn-primary" @onclick="SolicitarNuevaCita">
+                <i class="bi bi-plus-circle"></i> Agendar Cita
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="citas-container">
+            <div class="citas-tabs">
+                <button class="tab-btn @(activeTab == "proximas" ? "active" : "")" @onclick="@(() => activeTab = " proximas")">
+                    <i class="bi bi-calendar-check"></i> Próximas
+                    <span class="badge">@citasProximas.Count</span>
+                </button>
+                <button class="tab-btn @(activeTab == "pasadas" ? "active" : "")" @onclick="@(() => activeTab = " pasadas")">
+                    <i class="bi bi-calendar-event"></i> Pasadas
+                    <span class="badge">@citasPasadas.Count</span>
+                </button>
+            </div>
+
+            @if ((activeTab == "proximas" && !citasProximas.Any()) || (activeTab == "pasadas" && !citasPasadas.Any()))
+            {
+                <div class="tab-empty-state">
+                    <i class="bi @(activeTab == "proximas" ? "bi-calendar-plus" : "bi-calendar-check")"></i>
+                    <p>No tienes citas @(activeTab == "proximas" ? "próximas" : "pasadas") en este momento.</p>
+                </div>
+            }
+            else
+            {
+                <div class="citas-grid">
+                    @foreach (var cita in (activeTab == "proximas" ? citasProximas : citasPasadas))
+                    {
+                        <div class="cita-card">
+                            <div class="cita-fecha">
+                                <div class="fecha-dia">@cita.FechaHora.Day</div>
+                                <div class="fecha-mes">@GetMonthName(cita.FechaHora.Month)</div>
+                            </div>
+                            <div class="cita-info">
+                                <div class="cita-hora">
+                                    <i class="bi bi-clock"></i> @cita.FechaHora.ToString("hh:mm tt")
+                                </div>
+                                <div class="cita-mascota">
+                                    <img src="@cita.Mascota.FotoUrl" alt="@cita.Mascota.Nombre" />
+                                    <div>
+                                        <h5>@cita.Mascota.Nombre</h5>
+                                        <p>@cita.Mascota.Categoria.Nombre</p>
+                                    </div>
+                                </div>
+                                <div class="cita-tiempo">
+                                    @if (activeTab == "proximas")
+                                    {
+                                        <span class="tiempo-falta">@GetTimeUntil(cita.FechaHora)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="tiempo-pasado">@GetTimeAgo(cita.FechaHora)</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="cita-actions">
+                                <button class="btn btn-outline-primary" @onclick="() => VerDetalles(cita.CitaId)">
+                                    <i class="bi bi-eye"></i> Ver Detalles
+                                </button>
+                                @if (activeTab == "proximas")
+                                {
+                                    <button class="btn btn-outline-danger" @onclick="() => CancelarCita(cita.CitaId)">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>
 
 @code {
     private List<Citas>? citasUsuario;
+    private List<Citas> citasProximas = new();
+    private List<Citas> citasPasadas = new();
     private string? error;
+    private string activeTab = "proximas";
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,5 +155,103 @@ else
         citasUsuario = citas
             .OrderBy(c => c.FechaHora)
             .ToList();
+
+        // Separar citas próximas y pasadas
+        var ahora = DateTime.Now;
+        citasProximas = citasUsuario.Where(c => c.FechaHora > ahora).OrderBy(c => c.FechaHora).ToList();
+        citasPasadas = citasUsuario.Where(c => c.FechaHora <= ahora).OrderByDescending(c => c.FechaHora).ToList();
+    }
+
+    private string GetMonthName(int month)
+    {
+        return month switch
+        {
+            1 => "Ene",
+            2 => "Feb",
+            3 => "Mar",
+            4 => "Abr",
+            5 => "May",
+            6 => "Jun",
+            7 => "Jul",
+            8 => "Ago",
+            9 => "Sep",
+            10 => "Oct",
+            11 => "Nov",
+            12 => "Dic",
+            _ => ""
+        };
+    }
+
+    private string GetTimeUntil(DateTime fecha)
+    {
+        var ahora = DateTime.Now;
+        var diferencia = fecha - ahora;
+
+        if (diferencia.TotalDays < 1)
+        {
+            if (diferencia.TotalHours < 1)
+                return $"En {Math.Floor(diferencia.TotalMinutes)} minutos";
+            else
+                return $"En {Math.Floor(diferencia.TotalHours)} horas";
+        }
+        else if (diferencia.TotalDays < 7)
+        {
+            return $"En {Math.Floor(diferencia.TotalDays)} días";
+        }
+        else if (diferencia.TotalDays < 30)
+        {
+            return $"En {Math.Floor(diferencia.TotalDays / 7)} semanas";
+        }
+        else
+        {
+            return $"En {Math.Floor(diferencia.TotalDays / 30)} meses";
+        }
+    }
+
+    private string GetTimeAgo(DateTime fecha)
+    {
+        var ahora = DateTime.Now;
+        var diferencia = ahora - fecha;
+
+        if (diferencia.TotalDays < 1)
+        {
+            if (diferencia.TotalHours < 1)
+                return $"Hace {Math.Floor(diferencia.TotalMinutes)} minutos";
+            else
+                return $"Hace {Math.Floor(diferencia.TotalHours)} horas";
+        }
+        else if (diferencia.TotalDays < 7)
+        {
+            return $"Hace {Math.Floor(diferencia.TotalDays)} días";
+        }
+        else if (diferencia.TotalDays < 30)
+        {
+            return $"Hace {Math.Floor(diferencia.TotalDays / 7)} semanas";
+        }
+        else
+        {
+            return $"Hace {Math.Floor(diferencia.TotalDays / 30)} meses";
+        }
+    }
+
+    private void SolicitarNuevaCita()
+    {
+        NavigationManager.NavigateTo("/SolicitarCita");
+    }
+
+    private void VerDetalles(int citaId)
+    {
+        NavigationManager.NavigateTo($"/Citas/{citaId}");
+    }
+
+    private async Task CancelarCita(int citaId)
+    {
+        // Aquí iría la lógica para cancelar la cita
+        bool result = await citasService.DeleteAsync(citaId);
+        if (result)
+        {
+            // Recargar las citas
+            await OnInitializedAsync();
+        }
     }
 }
