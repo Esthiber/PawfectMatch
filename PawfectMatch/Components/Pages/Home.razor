@@ -13,32 +13,8 @@
 @code {
     private List<Mascotas>? mascotas;
 
-    private List<string> imagenesHero = new()
-    {
-        "https://images.unsplash.com/photo-1611003228941-98852ba62227?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFieSUyMGRvZ3xlbnwwfHwwfHx8MA%3D%3D",
-        "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
-        "https://cdn.royalcanin-weshare-online.io/HiJiPmYBaxEApS7LmAfe/v1/ed7a-how-to-buy-a-puppy-article-dog"
-    };
-
-    private int currentIndex = 0;
-    private Timer? sliderTimer;
-
     protected override async Task OnInitializedAsync()
     {
         mascotas = await mascotasService.ListAsync(m => true) ?? new();
-
-        // Inicia el slider automático
-        sliderTimer = new Timer(ChangeSlide, null, 0, 5000); // 5 segundos
-    }
-
-    private void ChangeSlide(object? state)
-    {
-        currentIndex = (currentIndex + 1) % imagenesHero.Count;
-        InvokeAsync(StateHasChanged);
-    }
-
-    public void Dispose()
-    {
-        sliderTimer?.Dispose();
     }
 }
