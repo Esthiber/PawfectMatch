@@ -37,6 +37,7 @@ else
 
     </div>
 
+    @*Titulo izquierda*@
     <div class="hero-overlay">
         <div class="hero-content">
             @if (@Diapositivas[activeIndex].IsTituloLeftActive)
@@ -47,17 +48,17 @@ else
             @if ((bool)Diapositivas[activeIndex]?.IsButtonLeftActive)
             {
                 <div class="hero-buttons">
-                    <button class="btn btn-primary">
+                    <a class="btn btn-primary" href="@Diapositivas[activeIndex].LinkButton_Left">
                         <i class="bi bi-search-heart"></i> @Diapositivas[activeIndex]?.TextButton_Left
-                    </button>
-                    <button class="btn btn-outline">
+                    </a>
+                    <a class="btn btn-outline" href="@Urls.General.Nosotros">
                         <i class="bi bi-info-circle"></i> Como Funciona
-                    </button>
+                    </a>
                 </div>
             }
         </div>
     </div>
-
+    @*Titulo izquierda*@
     <div class="hero-overlay-right">
         <div class="hero-content">
             @if (@Diapositivas[activeIndex].IsTituloRightActive)
@@ -68,12 +69,12 @@ else
             @if ((bool)Diapositivas[activeIndex]?.IsButtonRightActive)
             {
                 <div class="hero-buttons">
-                    <button class="btn btn-primary">
+                    <a class="btn btn-primary" href="@Diapositivas[activeIndex].LinkButton_Left">
                         <i class="bi bi-search-heart"></i> @Diapositivas[activeIndex]?.TextButton_Right
-                    </button>
-                    <button class="btn btn-outline">
+                    </a>
+                    <a class="btn btn-outline" href="@Urls.General.Nosotros">
                         <i class="bi bi-info-circle"></i> Como Funciona
-                    </button>
+                    </a>
                 </div>
             }
         </div>
