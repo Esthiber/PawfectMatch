@@ -24,7 +24,7 @@ namespace PawfectMatch
             public const string Index = "/mascotas";
             public const string Crear = "/mascotas/crear";
             public const string Editar = "/mascotas/editar/";
-            public const string Detalle = "/mascotas/id/";
+            public const string Detalle = "/mascotas/";
         }
 
         public static class Categorias
