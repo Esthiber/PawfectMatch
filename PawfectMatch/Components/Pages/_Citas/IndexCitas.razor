@@ -56,27 +56,27 @@
     {
         <div class="citas-container">
             <div class="citas-tabs">
-                <button class="tab-btn @(activeTab == "proximas" ? "active" : "")" @onclick="@(() => activeTab = " proximas")">
+                <button class="tab-btn @(activeTab == " proximas" ? "active" : "")" @onclick="@(() => activeTab = " proximas")">
                     <i class="bi bi-calendar-check"></i> Próximas
                     <span class="badge">@citasProximas.Count</span>
                 </button>
-                <button class="tab-btn @(activeTab == "pasadas" ? "active" : "")" @onclick="@(() => activeTab = " pasadas")">
+                <button class="tab-btn @(activeTab == " pasadas" ? "active" : "")" @onclick="@(() => activeTab = " pasadas")">
                     <i class="bi bi-calendar-event"></i> Pasadas
                     <span class="badge">@citasPasadas.Count</span>
                 </button>
             </div>
 
-            @if ((activeTab == "proximas" && !citasProximas.Any()) || (activeTab == "pasadas" && !citasPasadas.Any()))
+            @if ((activeTab == " proximas" && !citasProximas.Any()) || (activeTab == " pasadas" && !citasPasadas.Any()))
             {
                 <div class="tab-empty-state">
-                    <i class="bi @(activeTab == "proximas" ? "bi-calendar-plus" : "bi-calendar-check")"></i>
-                    <p>No tienes citas @(activeTab == "proximas" ? "próximas" : "pasadas") en este momento.</p>
+                    <i class="bi @(activeTab == " proximas" ? "bi-calendar-plus" : "bi-calendar-check")"></i>
+                    <p>No tienes citas @(activeTab == " proximas" ? " próximas" : " pasadas") en este momento.</p>
                 </div>
             }
             else
             {
                 <div class="citas-grid">
-                    @foreach (var cita in (activeTab == "proximas" ? citasProximas : citasPasadas))
+                    @foreach (var cita in (activeTab == " proximas" ? citasProximas : citasPasadas))
                     {
                         <div class="cita-card">
                             <div class="cita-fecha">
@@ -95,7 +95,7 @@
                                     </div>
                                 </div>
                                 <div class="cita-tiempo">
-                                    @if (activeTab == "proximas")
+                                    @if (activeTab == " proximas")
                                     {
                                         <span class="tiempo-falta">@GetTimeUntil(cita.FechaHora)</span>
                                     }
@@ -109,7 +109,7 @@
                                 <button class="btn btn-outline-primary" @onclick="() => VerDetalles(cita.CitaId)">
                                     <i class="bi bi-eye"></i> Ver Detalles
                                 </button>
-                                @if (activeTab == "proximas")
+                                @if (activeTab == " proximas")
                                 {
                                     <button class="btn btn-outline-danger" @onclick="() => CancelarCita(cita.CitaId)">
                                         <i class="bi bi-x-circle"></i> Cancelar
@@ -129,7 +129,7 @@
     private List<Citas> citasProximas = new();
     private List<Citas> citasPasadas = new();
     private string? error;
-    private string activeTab = "proximas";
+    private string activeTab = " proximas";
 
     protected override async Task OnInitializedAsync()
     {
