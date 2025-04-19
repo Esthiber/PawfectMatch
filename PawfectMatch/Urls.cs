@@ -27,6 +27,16 @@ namespace PawfectMatch
             public const string Detalle = "/mascotas/id/";
         }
 
+        public static class Categorias
+        {
+            public const string Index = "/categorias";
+        }
+
+        public static class Razas
+        {
+            public const string Index = "/razas";
+        }
+
         public static class Solicitudes
         {
             public const string Index = "/solicitudes";
@@ -37,9 +47,18 @@ namespace PawfectMatch
 
         public static class Account
         {
+            public const string Index = "/usuarios";
             public const string Login = "Account/Login";
             public const string Register = "Account/Register";
             public const string Manage = "Account/Manage";
+        }
+
+        public static class Configuracion
+        {
+            public const string Index = "/configuracion";
+            public const string Reportes = "/configuracion/reportes";
+            public const string Backup = "/configuracion/backup";
+
         }
 
         public static class Sugerencias
@@ -66,7 +85,6 @@ namespace PawfectMatch
             public const string Error = "/error";
             public const string Auth = "/auth";
         }
-
 
     }
 }
