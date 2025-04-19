@@ -1,5 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
-
+@inject MascotasService mascotasService
 @rendermode InteractiveServer
 
 <div class="nav-menu">
@@ -20,13 +20,13 @@
             </div>
         </NavLink>
     </div>
-    <NavLink href="@Urls.Mascotas.Index">
+    <NavLink @onclick="GoToRandomMascota" style="cursor:pointer;">
         <div class="main-nav-btn">
-            <div class="text2">Adopta aqui !</div>
+            <div class="text2">¡ Descubrir !</div>
         </div>
     </NavLink>
 
-    <div class="user-btn" >
+    <div class="user-btn">
         <img class="user" src="@Assets["/img/icons/user0.svg"]" @onclick="pointerEnter" />
         @if (showUserMenu)
         {
@@ -44,4 +44,25 @@
     public bool showUserMenu { get; set; } = false;
     private void pointerEnter() => showUserMenu = true;
     private void pointerLeave() => showUserMenu = false;
+
+
+
+    private async Task<Mascotas?> RandomMascota()
+    {
+        var mascotas = await mascotasService.ListAsync(m => true) ?? new();
+
+        var randomMascota = mascotas
+            .Where(m => m.EstadoId == 1)
+            .OrderBy(_ => Guid.NewGuid())
+            .FirstOrDefault();
+
+        return randomMascota;
+    }
+
+    private async Task GoToRandomMascota()
+    {
+        var m = await RandomMascota() ?? new();
+
+        NavigationManager.NavigateTo($"{Urls.Mascotas.Detalle}{m.MascotaId}");
+    }
 }
