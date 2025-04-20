@@ -190,28 +190,62 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
                 ImageUrl = "https://images-ext-1.discordapp.net/external/pCPvCTsMyhwvSzSxaPZZ5PG8VfVshz1DMFeTU4VQBFo/https/images8.alphacoders.com/449/thumb-1920-449501.jpg?format=webp&width=1374&height=859",
                 Orden = 1
-
-            }, 
+            },
             new Diapositivas
             {
-                DiapositivaId = 1,
+                DiapositivaId = 2,
                 IsTituloLeftActive = true,
-                Titulo_Left = "Encuentra a tu compañero perfecto",
-                SubTitulo_Left = "Conectamos mascotas que necesitan un hogar con familias amorosas",
-
-                // Right title default false
+                Titulo_Left = "Adopta, no compres",
+                SubTitulo_Left = "Dale una segunda oportunidad a quienes más lo necesitan",
 
                 IsButtonLeftActive = true,
-                TextButton_Left = "Explorar Mascotas",
-                LinkButton_Left = Urls.Mascotas.Index,
+                TextButton_Left = "Ver Historias",
+                LinkButton_Left = "#",
 
-                // Right button default false
+                ImageUrl = "https://cdn.pixabay.com/photo/2016/11/29/04/17/dog-1861839_1280.jpg",
+                Orden = 2
+            },
+            new Diapositivas
+            {
+                DiapositivaId = 3,
+                IsTituloLeftActive = false,
+                IsTituloRightActive = true,
+                Titulo_Right = "Historias con final feliz",
+                SubTitulo_Right = "Conoce cómo nuestras mascotas encontraron un hogar lleno de amor",
 
-                ImageUrl = "https://images-ext-1.discordapp.net/external/pCPvCTsMyhwvSzSxaPZZ5PG8VfVshz1DMFeTU4VQBFo/https/images8.alphacoders.com/449/thumb-1920-449501.jpg?format=webp&width=1374&height=859",
-                Orden = 1
+                IsButtonRightActive = true,
+                TextButton_Right = "Leer historias",
+                LinkButton_Right = "#testimonials-section",
 
+                ImageUrl = "https://cdn.pixabay.com/photo/2020/02/06/15/06/dog-4824485_1280.jpg",
+                Orden = 3
             }
-            );
+
+        );
+
+        modelBuilder.Entity<PresentacionesDiapositivas>().HasData(
+            new PresentacionesDiapositivas()
+            {
+                PresentacionDiapositivaId = 1,
+                PresentacionId = 1,
+                DiapositivaId = 1,
+                Orden = 1
+            },
+             new PresentacionesDiapositivas()
+             {
+                 PresentacionDiapositivaId = 2,
+                 PresentacionId = 1,
+                 DiapositivaId = 2,
+                 Orden = 2
+             },
+              new PresentacionesDiapositivas()
+              {
+                  PresentacionDiapositivaId = 3,
+                  PresentacionId = 1,
+                  DiapositivaId = 3,
+                  Orden = 3
+              }
+        );
 
         modelBuilder.Entity<Servicios>().HasData(
             new Servicios
