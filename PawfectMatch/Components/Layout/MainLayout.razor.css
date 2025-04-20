@@ -96,3 +96,75 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+
+/* ===== LAYOUT STRUCTURE ===== */
+.content {
+    padding: 0 !important;
+    flex: 1;
+    min-height: 100dvh;
+    height: auto;
+    position: relative;
+    width: 100dvw;
+    background: var(--fifthcolor);
+    overflow-x: hidden;
+}
+
+.main {
+    background: var(--fifthcolor);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 1628px;
+    min-height: 1100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.home-page {
+    position: relative;
+}
+
+.frame {
+    width: 1292px;
+    height: 154px;
+    position: absolute;
+    left: 74px;
+    top: 882px;
+}
+
+.usermenu-container {
+    right: 0;
+    top: 45px;
+}
+
+.user-menu {
+    background: var(--firstcolor);
+    border-radius: 0 0 0 15px;
+    padding: 10px 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 220px;
+    height: auto;
+    overflow: hidden;
+}
+
+
+.sideMenu {
+    position: absolute !important;
+    top: 2px !important;
+    right: 0 !important;
+    margin: 0 !important;
+    width: 230px;
+    overflow: hidden;
+}
+
+    .sideMenu .modal-content {
+        height: 98vh !important;
+    }

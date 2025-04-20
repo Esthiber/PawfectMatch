@@ -154,11 +154,11 @@
 
 /* Logo */
 .logo-container {
-    width: 150px;
-    height: 99px;
+    /* width: 150px; */
+    /* height: 99px; */
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 15px;
+    /* top: 0; */
     transition: 300ms ease;
 }
 
