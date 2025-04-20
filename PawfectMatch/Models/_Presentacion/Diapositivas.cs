@@ -7,19 +7,19 @@ namespace PawfectMatch.Models._Presentacion
         [Key]
         public int DiapositivaId { get; set; }
 
-        public bool IsTituloLeftActive { get; set; }
+        public bool IsTituloLeftActive { get; set; } = false;
         public string? Titulo_Left { get; set; }
         public string? SubTitulo_Left { get; set; }
 
-        public bool IsTituloRightActive { get; set; }
+        public bool IsTituloRightActive { get; set; } = false;
         public string? Titulo_Right { get; set; }
         public string? SubTitulo_Right { get; set; }
 
-        public bool IsButtonLeftActive { get; set; }
+        public bool IsButtonLeftActive { get; set; } = false;
         public string? TextButton_Left { get; set; }
         public string? LinkButton_Left { get; set; }
 
-        public bool IsButtonRightActive { get; set; }
+        public bool IsButtonRightActive { get; set; } = false;
         public string? TextButton_Right { get; set; }
         public string? LinkButton_Right { get; set; }
 

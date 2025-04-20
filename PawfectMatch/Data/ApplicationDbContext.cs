@@ -16,7 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         : base(options)
     {
     }
-
+    #region DbSets
     public DbSet<Citas> Citas { get; set; }
 
     public DbSet<HistorialAdopciones> HistorialAdopciones { get; set; }
@@ -47,6 +47,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<Servicios> Servicios { get; set; }
     public DbSet<SolicitudesServicios> SolicitudesServicios { get; set; }
+    #endregion
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -115,13 +116,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<SolicitudesServicios>()
-            .HasKey(ss => ss.SolicitudServicioId); 
+            .HasKey(ss => ss.SolicitudServicioId);
 
         modelBuilder.Entity<SolicitudesServicios>()
             .HasOne(ss => ss.SolicitudAdopcion)
-            .WithMany(s => s.SolicitudesServicios) 
+            .WithMany(s => s.SolicitudesServicios)
             .HasForeignKey(ss => ss.SolicitudAdopcionId)
-            .OnDelete(DeleteBehavior.Cascade); 
+            .OnDelete(DeleteBehavior.Cascade);
         #endregion
 
         #region Initial Seed
@@ -164,6 +165,53 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
             new IdentityRole { Id = "2", Name = "User", NormalizedName = "USER" }
         );
+
+        modelBuilder.Entity<Presentaciones>().HasData(
+            new Presentaciones
+            {
+                PresentacionId = 1,
+                Titulo = "Default",
+                EsActiva = true,
+                Descripcion = "Esta es la presentacion default. No la borre por favor."
+            }
+        );
+
+        modelBuilder.Entity<Diapositivas>().HasData(
+            new Diapositivas
+            {
+                DiapositivaId = 1,
+                IsTituloLeftActive = true,
+                Titulo_Left = "Encuentra a tu compañero perfecto",
+                SubTitulo_Left = "Conectamos mascotas que necesitan un hogar con familias amorosas",
+
+                IsButtonLeftActive = true,
+                TextButton_Left = "Explorar Mascotas",
+                LinkButton_Left = Urls.Mascotas.Index,
+
+                ImageUrl = "https://images-ext-1.discordapp.net/external/pCPvCTsMyhwvSzSxaPZZ5PG8VfVshz1DMFeTU4VQBFo/https/images8.alphacoders.com/449/thumb-1920-449501.jpg?format=webp&width=1374&height=859",
+                Orden = 1
+
+            }, 
+            new Diapositivas
+            {
+                DiapositivaId = 1,
+                IsTituloLeftActive = true,
+                Titulo_Left = "Encuentra a tu compañero perfecto",
+                SubTitulo_Left = "Conectamos mascotas que necesitan un hogar con familias amorosas",
+
+                // Right title default false
+
+                IsButtonLeftActive = true,
+                TextButton_Left = "Explorar Mascotas",
+                LinkButton_Left = Urls.Mascotas.Index,
+
+                // Right button default false
+
+                ImageUrl = "https://images-ext-1.discordapp.net/external/pCPvCTsMyhwvSzSxaPZZ5PG8VfVshz1DMFeTU4VQBFo/https/images8.alphacoders.com/449/thumb-1920-449501.jpg?format=webp&width=1374&height=859",
+                Orden = 1
+
+            }
+            );
 
         modelBuilder.Entity<Servicios>().HasData(
             new Servicios
