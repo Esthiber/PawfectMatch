@@ -336,3 +336,297 @@
   .btn-primary:hover {
     background-color: #218838;
   }
+
+  /* Estilos para el componente de Detalle de Mascotas */
+.mascota-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--firstcolor);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .mascota-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--secondcolor);
+  }
+  
+  .mascota-detail-title {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mascota-detail-title h1 {
+    font-family: var(--titulo-1-font-family);
+    font-size: var(--titulo-1-font-size);
+    color: var(--thirdcolor);
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .mascota-badges {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .badge-categoria {
+    background-color: var(--secondcolor);
+    color: white;
+  }
+  
+  .badge-estado {
+    background-color: var(--thirdcolor);
+    color: white;
+  }
+  
+  .mascota-detail-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+  
+  .btn-secondary, .btn-edit, .btn-adopt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  
+  .btn-secondary {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #e5e5e5;
+  }
+  
+  .btn-edit {
+    background-color: var(--fourthcolor);
+    color: white;
+    border: none;
+  }
+  
+  .btn-edit:hover {
+    background-color: var(--thirdcolor);
+  }
+  
+  .btn-adopt {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    animation: pulse 2s infinite;
+  }
+  
+  .btn-adopt:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+  }
+  
+  .btn-adopt-large {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .btn-adopt-large:hover {
+    background-color: #c0392b;
+    transform: scale(1.02);
+  }
+  
+  .mascota-detail-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .mascota-detail-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .mascota-detail-actions {
+      width: 100%;
+      justify-content: flex-start;
+    }
+    
+    .mascota-detail-content {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .mascota-detail-image {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .mascota-detail-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+  
+  .mascota-age {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 500;
+    text-align: center;
+  }
+  
+  .mascota-detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .info-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .section-title {
+    font-family: var(--titulo-2-font-family);
+    font-size: var(--titulo-2-font-size);
+    color: var(--fourthcolor);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--fifthcolor);
+  }
+  
+  .mascota-description {
+    font-family: var(--parrafo-1-font-family);
+    font-size: var(--parrafo-1-font-size);
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  
+  @media (max-width: 576px) {
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .info-label {
+    font-size: 0.875rem;
+    color: #666;
+    font-weight: 500;
+  }
+  
+  .info-value {
+    font-size: 1.125rem;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .adoption-cta, .adoption-status {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+  
+  .adoption-cta p {
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+    color: #555;
+  }
+  
+  .adopted-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: rgba(46, 204, 113, 0.1);
+    border-radius: 8px;
+  }
+  
+  .adopted-message i {
+    font-size: 3rem;
+    color: #2ecc71;
+  }
+  
+  .adopted-message p {
+    font-size: 1.25rem;
+    color: #27ae60;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  /* Animaciones */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
