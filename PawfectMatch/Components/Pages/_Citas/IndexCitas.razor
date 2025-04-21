@@ -16,9 +16,9 @@
             <h3>Mis Citas</h3>
             <p class="subtitle">Gestiona tus citas para conocer a tus futuras mascotas</p>
         </div>
-        <button class="btn btn-primary" @onclick="SolicitarNuevaCita">
-            <i class="bi bi-plus-circle"></i> Nueva Cita
-        </button>
+        @* <button class="btn btn-primary" @onclick="SolicitarNuevaCita"> *@
+        @*     <i class="bi bi-plus-circle"></i> Nueva Cita *@
+        @* </button> *@
     </div>
 
     @if (!string.IsNullOrEmpty(error))
@@ -47,9 +47,9 @@
             </div>
             <h4>No tienes citas agendadas</h4>
             <p>Programa una cita para conocer a tu futura mascota en persona.</p>
-            <button class="btn btn-primary" @onclick="SolicitarNuevaCita">
-                <i class="bi bi-plus-circle"></i> Agendar Cita
-            </button>
+            @* <button class="btn btn-primary" @onclick="SolicitarNuevaCita"> *@
+            @*     <i class="bi bi-plus-circle"></i> Agendar Cita *@
+            @* </button> *@
         </div>
     }
     else
