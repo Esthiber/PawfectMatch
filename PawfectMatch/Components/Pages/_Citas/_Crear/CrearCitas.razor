@@ -25,6 +25,9 @@
     [Parameter]
     public Adoptantes Adoptante { get; set; } = null!;
 
+    [Parameter]
+    public EventCallback OnCitaCreada { get; set; }
+
     private Citas cita { get; set; } = new();
     private string mensaje { get; set; } = string.Empty;
 
@@ -57,6 +60,7 @@
                     AdoptanteId = Adoptante.AdoptanteId,
                     FechaHora = DateTime.Now.AddDays(1)
                 };
+            await OnCitaCreada.InvokeAsync();
         }
     }
 }
