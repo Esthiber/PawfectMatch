@@ -45,6 +45,8 @@
     private List<Categorias> categorias = new();
     private string? mensajeExito;
     private string? error;
+    [Parameter]
+    public EventCallback OnCreated { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,6 +68,7 @@
         {
             mensajeExito = "¡Raza creada con éxito!";
             raza = new();
+            await OnCreated.InvokeAsync();
         }
         else
         {

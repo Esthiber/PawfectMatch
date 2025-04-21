@@ -18,7 +18,7 @@ namespace PawfectMatch.Models._Mascotas
         public int RelacionSizeId { get; set; }
 
         [Required(ErrorMessage = "El Estado es Requerido")]
-        public int EstadoId { get; set; }
+        public int EstadoId { get; set; } = 1;
 
         [Required(ErrorMessage = "El nombre es requerido")]
         public string Nombre { get; set; } = null!;
@@ -27,7 +27,7 @@ namespace PawfectMatch.Models._Mascotas
         public double Tamano { get; set; } = 0; // Pulgadas
 
         [Required(ErrorMessage = "La Fecha de nacimiento es requerida")]
-        public DateOnly FechaNacimiento { get; set; }
+        public DateOnly FechaNacimiento { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
         [Required(ErrorMessage = "La descripcion es requerida")]
         public string Descripcion { get; set; } = null!;

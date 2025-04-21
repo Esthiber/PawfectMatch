@@ -30,7 +30,8 @@
     private Categorias categoria = new();
     private string? mensajeExito;
     private string? error;
-
+    [Parameter]
+    public EventCallback OnCreated { get; set; }
     private async Task CrearCategoria()
     {
         mensajeExito = error = null;
@@ -46,6 +47,7 @@
         {
             mensajeExito = "¡Categoría creada con éxito!";
             categoria = new();
+            await OnCreated.InvokeAsync();
         }
         else
         {
