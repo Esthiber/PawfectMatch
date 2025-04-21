@@ -1,27 +1,42 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PawfectMatch.Data;
 using PawfectMatch.Models._Presentacion;
 using System.Linq.Expressions;
 
 namespace PawfectMatch.Services._Presentacion
 {
-    public class PresentacionesService(IDbContextFactory<ApplicationDbContext> DbFactory)
+    public class PresentacionesService
     {
+        private readonly IDbContextFactory<ApplicationDbContext> _dbFactory;
+
+        public PresentacionesService(IDbContextFactory<ApplicationDbContext> dbFactory)
+        {
+            _dbFactory = dbFactory;
+        }
+
         public async Task<bool> DeleteAsync(int id)
         {
-            await using var ctx = await DbFactory.CreateDbContextAsync();
+            await using var ctx = await _dbFactory.CreateDbContextAsync();
             var presentacion = await ctx.Presentaciones
                 .Include(p => p.PresentacionesDiapositivas)
+                    .ThenInclude(pd => pd.Diapositiva)
                 .FirstOrDefaultAsync(p => p.PresentacionId == id);
 
             if (presentacion == null)
                 return false;
 
+            // Obtener las diapositivas para eliminarlas
+            var diapositivas = presentacion.PresentacionesDiapositivas
+                .Select(pd => pd.Diapositiva)
+                .ToList();
+
             // Eliminar relaciones primero
             ctx.PresentacionesDiapositivas.RemoveRange(presentacion.PresentacionesDiapositivas);
 
-            // Luego eliminar la presentación
+            // Eliminar diapositivas
+            ctx.Diapositivas.RemoveRange(diapositivas);
+
+            // Luego eliminar la presentacion
             ctx.Presentaciones.Remove(presentacion);
 
             return await ctx.SaveChangesAsync() > 0;
@@ -29,34 +44,80 @@ namespace PawfectMatch.Services._Presentacion
 
         public async Task<bool> ExistAsync(int id)
         {
-            await using var ctx = await DbFactory.CreateDbContextAsync();
+            await using var ctx = await _dbFactory.CreateDbContextAsync();
             return await ctx.Presentaciones.AnyAsync(p => p.PresentacionId == id);
         }
 
-        public async Task<bool> InsertAsync(Presentaciones elem, List<Diapositivas> diapositivas)
+        public async Task<bool> InsertAsync(Presentaciones presentacion, List<Diapositivas> diapositivas)
         {
-            await using var ctx = await DbFactory.CreateDbContextAsync();
-            ctx.Presentaciones.Add(elem);
+            // reutiliza este mismo codigo para el update ya que es mas sencillo, y primero borrar lo creado.
+            await using var ctx = await _dbFactory.CreateDbContextAsync();
 
-            foreach (var d in diapositivas) // Agregar Diapositivas
+            try
             {
-                ctx.Diapositivas.Add(d);
+                // Si se activa esta presentacion, desactivar las demas
+                if (presentacion.EsActiva)
+                {
+                    var presentacionesActivas = await ctx.Presentaciones
+                        .Where(p => p.EsActiva)
+                        .ToListAsync();
+
+                    foreach (var p in presentacionesActivas)
+                    {
+                        p.EsActiva = false;
+                        ctx.Presentaciones.Update(p);
+                    }
+                }
+
+                // Agregar la presentación y guardar para obtener el ID
+                ctx.Presentaciones.Add(presentacion);
                 await ctx.SaveChangesAsync();
-            }
 
-            foreach (var d in diapositivas) // En base a las diapositivas agregar a la tabla relacional
-            {
-                var r = new PresentacionesDiapositivas();
-                r.PresentacionId = elem.PresentacionId;
-                r.DiapositivaId = d.DiapositivaId;
-                ctx.PresentacionesDiapositivas.Add(r);
+                // Agregar diapositivas y relaciones
+                foreach (var diapositiva in diapositivas)
+                {
+                    
+                    if (diapositiva.Orden <= 0)
+                    {
+                        diapositiva.Orden = diapositivas.IndexOf(diapositiva) + 1;
+                    }
+
+                    ctx.Diapositivas.Add(diapositiva);
+                    await ctx.SaveChangesAsync(); // Guardar para obtener el ID de la diapositiva
+
+                    // Crear la relacion
+                    var relacion = new PresentacionesDiapositivas
+                    {
+                        PresentacionId = presentacion.PresentacionId,
+                        DiapositivaId = diapositiva.DiapositivaId,
+                        Orden = diapositiva.Orden
+                    };
+
+                    ctx.PresentacionesDiapositivas.Add(relacion);
+                }
+
+                return await ctx.SaveChangesAsync() > 0;
             }
-            return await ctx.SaveChangesAsync() > 0;
+            catch (Exception)
+            {
+                // Si algo falla, intentar limpiar los datos parcialmente insertados
+                if (presentacion.PresentacionId > 0)
+                {
+                    var entidad = await ctx.Presentaciones.FindAsync(presentacion.PresentacionId);
+                    if (entidad != null)
+                    {
+                        ctx.Presentaciones.Remove(entidad);
+                        await ctx.SaveChangesAsync();
+                    }
+                }
+
+                throw; 
+            }
         }
 
         public async Task<List<Presentaciones>> ListAsync(Expression<Func<Presentaciones, bool>> criteria)
         {
-            await using var ctx = await DbFactory.CreateDbContextAsync();
+            await using var ctx = await _dbFactory.CreateDbContextAsync();
 
             return await ctx.Presentaciones
                 .Include(p => p.PresentacionesDiapositivas)
@@ -79,94 +140,144 @@ namespace PawfectMatch.Services._Presentacion
 
         public async Task<Presentaciones> SearchByIdAsync(int id)
         {
-            await using var ctx = await DbFactory.CreateDbContextAsync();
+            await using var ctx = await _dbFactory.CreateDbContextAsync();
 
-            return await ctx.Presentaciones
+            var presentacion = await ctx.Presentaciones
                 .Include(p => p.PresentacionesDiapositivas)
                     .ThenInclude(pd => pd.Diapositiva)
-                .FirstOrDefaultAsync(p => p.PresentacionId == id)
-                ?? throw new KeyNotFoundException($"Presentación con ID {id} no encontrada.");
+                .FirstOrDefaultAsync(p => p.PresentacionId == id);
+
+            if (presentacion == null)
+            {
+                throw new KeyNotFoundException($"Presentación con ID {id} no encontrada.");
+            }
+
+            // Ordenar las diapositivas por el campo Orden
+            presentacion.PresentacionesDiapositivas = presentacion.PresentacionesDiapositivas
+                .OrderBy(pd => pd.Orden)
+                .ToList();
+
+            return presentacion;
         }
 
-        public async Task<bool> UpdateAsync(Presentaciones elem, List<Diapositivas> nuevasDiapositivas)
+        public async Task<bool> UpdateAsync(Presentaciones presentacion, List<Diapositivas> nuevasDiapositivas)
         {
-            await using var ctx = await DbFactory.CreateDbContextAsync();
+            // para poder actualizar primero hay que borrar las diapositivas, demasiados fallos actualizando.
+            await using var ctx = await _dbFactory.CreateDbContextAsync();
 
             var existing = await ctx.Presentaciones
                 .Include(p => p.PresentacionesDiapositivas)
-                .ThenInclude(pd => pd.Diapositiva)
-                .FirstOrDefaultAsync(p => p.PresentacionId == elem.PresentacionId);
+                    .ThenInclude(pd => pd.Diapositiva)
+                .FirstOrDefaultAsync(p => p.PresentacionId == presentacion.PresentacionId);
 
             if (existing == null)
                 return false;
 
-            // Actualizar campos básicos
-            existing.Titulo = elem.Titulo;
-            existing.FechaCreacion = elem.FechaCreacion;
-            existing.EsActiva = elem.EsActiva;
-
-            // Eliminar relaciones y diapositivas antiguas
-            foreach (var rel in existing.PresentacionesDiapositivas)
+            try
             {
-                ctx.Diapositivas.Remove(rel.Diapositiva); // si deseas conservarlas, quita esta línea
-            }
-            ctx.PresentacionesDiapositivas.RemoveRange(existing.PresentacionesDiapositivas);
-
-            await ctx.SaveChangesAsync();
-
-            // Insertar nuevas diapositivas y relaciones
-            foreach (var nueva in nuevasDiapositivas)
-            {
-                ctx.Diapositivas.Add(nueva);
-                await ctx.SaveChangesAsync(); // Para que tenga DiapositivaId
-
-                var relacion = new PresentacionesDiapositivas
+                // Si se activa esta presentación, desactivar las demás
+                if (presentacion.EsActiva && !existing.EsActiva)
                 {
-                    PresentacionId = existing.PresentacionId,
-                    DiapositivaId = nueva.DiapositivaId
-                };
-                ctx.PresentacionesDiapositivas.Add(relacion);
-            }
+                    var presentacionesActivas = await ctx.Presentaciones
+                        .Where(p => p.EsActiva && p.PresentacionId != presentacion.PresentacionId)
+                        .ToListAsync();
 
-            return await ctx.SaveChangesAsync() > 0;
+                    foreach (var p in presentacionesActivas)
+                    {
+                        p.EsActiva = false;
+                        ctx.Presentaciones.Update(p);
+                    }
+                }
+
+                // Actualizar campos basicos
+                existing.Titulo = presentacion.Titulo;
+                existing.Descripcion = presentacion.Descripcion;
+                existing.EsActiva = presentacion.EsActiva;
+
+                // Obtener las diapositivas actuales para eliminarlas
+                var diapositivasActuales = existing.PresentacionesDiapositivas
+                    .Select(pd => pd.Diapositiva)
+                    .ToList();
+
+                // Eliminar relaciones
+                ctx.PresentacionesDiapositivas.RemoveRange(existing.PresentacionesDiapositivas);
+
+                // Eliminar diapositivas antiguas
+                ctx.Diapositivas.RemoveRange(diapositivasActuales);
+
+                await ctx.SaveChangesAsync();
+
+                // Insertar nuevas diapositivas y relaciones
+                foreach (var diapositiva in nuevasDiapositivas)
+                {
+                    if (diapositiva.Orden <= 0)
+                    {
+                        diapositiva.Orden = nuevasDiapositivas.IndexOf(diapositiva) + 1;
+                    }
+
+                    diapositiva.DiapositivaId = 0;
+
+                    ctx.Diapositivas.Add(diapositiva);
+                    await ctx.SaveChangesAsync(); 
+
+                    // Crear la relación
+                    var relacion = new PresentacionesDiapositivas
+                    {
+                        PresentacionId = existing.PresentacionId,
+                        DiapositivaId = diapositiva.DiapositivaId,
+                        Orden = diapositiva.Orden
+                    };
+
+                    ctx.PresentacionesDiapositivas.Add(relacion);
+                }
+
+                return await ctx.SaveChangesAsync() > 0;
+            }
+            catch (Exception)
+            {
+                await ctx.DisposeAsync();
+                throw; 
+            }
         }
 
-        public async Task<Presentaciones> GetActiveAsync()
+        public async Task<Presentaciones?> GetActiveAsync()
         {
-            await using var ctx = await DbFactory.CreateDbContextAsync();
+            await using var ctx = await _dbFactory.CreateDbContextAsync();
+
             return await ctx.Presentaciones
-                 .Include(p => p.PresentacionesDiapositivas)
-                     .ThenInclude(pd => pd.Diapositiva)
-                 .FirstOrDefaultAsync(p => p.EsActiva) ?? null!;
+                .Include(p => p.PresentacionesDiapositivas)
+                    .ThenInclude(pd => pd.Diapositiva)
+                .FirstOrDefaultAsync(p => p.EsActiva);
         }
 
         public async Task<bool> SetActive(int id)
         {
-            await using var ctx = await DbFactory.CreateDbContextAsync();
+            await using var ctx = await _dbFactory.CreateDbContextAsync();
 
-            List<Presentaciones> lista = await ctx.Presentaciones
-                .Include(p => p.PresentacionesDiapositivas)
-                    .ThenInclude(pd => pd.Diapositiva)
-                .Where(p => p.EsActiva == true)
+            // Desactivar todas las presentaciones activas
+            var presentacionesActivas = await ctx.Presentaciones
+                .Where(p => p.EsActiva)
                 .ToListAsync();
 
-
-            foreach (var p in lista)
+            foreach (var p in presentacionesActivas)
             {
                 p.EsActiva = false;
                 ctx.Presentaciones.Update(p);
             }
 
-            var elem = await ctx.Presentaciones
-                .Include(p => p.PresentacionesDiapositivas)
-                    .ThenInclude(pd => pd.Diapositiva)
-                .FirstOrDefaultAsync(p => p.PresentacionId == id)
-                ?? throw new KeyNotFoundException($"Presentación con ID {id} no encontrada.");
+            // Activar manualmente la presentacin seleccionada
+            var presentacion = await ctx.Presentaciones
+                .FirstOrDefaultAsync(p => p.PresentacionId == id);
 
-            elem.EsActiva = true;
-            ctx.Presentaciones.Update(elem);
+            if (presentacion == null)
+            {
+                throw new KeyNotFoundException($"Presentación con ID {id} no encontrada.");
+            }
+
+            presentacion.EsActiva = true;
+            ctx.Presentaciones.Update(presentacion);
+
             return await ctx.SaveChangesAsync() > 0;
         }
-
     }
 }

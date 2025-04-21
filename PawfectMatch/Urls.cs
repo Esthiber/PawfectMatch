@@ -73,6 +73,7 @@ namespace PawfectMatch
             public const string Index = "/Advanced";
             public const string Presentacion = "/Advanced/Presentaciones";
             public const string CrearPresentacion = "/Advanced/Presentaciones/Crear";
+            public const string EditarPresentacion = "/Advanced/Presentaciones/Editar/";
         }
 
         public static class Historial

@@ -15,6 +15,7 @@ namespace PawfectMatch.Models._Presentacion
         public int DiapositivaId { get; set; }
 
         public int Orden { get; set; }
+
         [ForeignKey("PresentacionId")]
         virtual public Presentaciones Presentacion { get; set; } = null!;
         [ForeignKey("DiapositivaId")]
