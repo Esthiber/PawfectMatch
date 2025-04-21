@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PawfectMatch.Data;
 
@@ -11,9 +12,11 @@ using PawfectMatch.Data;
 namespace PawfectMatch.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250421231226_LastCheck")]
+    partial class LastCheck
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1079,7 +1082,7 @@ namespace PawfectMatch.Migrations
                             PresentacionId = 1,
                             Descripcion = "Esta es la presentacion default. No la borre por favor.",
                             EsActiva = true,
-                            FechaCreacion = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaCreacion = new DateTime(2025, 4, 21, 19, 12, 23, 649, DateTimeKind.Local).AddTicks(8047),
                             Titulo = "Default"
                         });
                 });
