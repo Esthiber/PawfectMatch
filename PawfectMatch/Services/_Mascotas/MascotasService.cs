@@ -70,7 +70,27 @@ namespace PawfectMatch.Services._Mascotas
         public async Task<bool> UpdateAsync(Mascotas elem)
         {
             await using var ctx = await DbFactory.CreateDbContextAsync();
-            ctx.Mascotas.Update(elem);
+            var m = await ctx.Mascotas
+                .Include(a => a.Categoria)
+                .Include(a => a.Estado)
+                .Include(a => a.RelacionSize)
+                .Include(a => a.Sexo)
+                .FirstOrDefaultAsync(a => a.MascotaId == elem.MascotaId);
+
+            if (m is null) return false;
+
+            m.Nombre = elem.Nombre;
+            m.Descripcion = elem.Descripcion;
+            m.Tamano = elem.Tamano;
+            m.FechaNacimiento = elem.FechaNacimiento;
+            m.FotoUrl = elem.FotoUrl;
+
+            m.SexoId = elem.SexoId;
+            m.CategoriaId = elem.CategoriaId;
+            m.RazaId = elem.RazaId;
+            m.EstadoId = elem.EstadoId;
+            m.RelacionSizeId = elem.RelacionSizeId;
+
             return await ctx.SaveChangesAsync() > 0;
         }
 

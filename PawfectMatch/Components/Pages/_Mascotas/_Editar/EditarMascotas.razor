@@ -220,7 +220,7 @@
         {
             if (mascota != null)
             {
-                bool actualizado = await mascotasService.SaveAsync(mascota);
+                bool actualizado = await mascotasService.UpdateAsync(mascota);
                 if (actualizado)
                 {
                     ToastService.ShowSuccess("Mascota actualizada exitosamente");
@@ -230,6 +230,7 @@
                 {
                     error = "No se pudo actualizar la mascota";
                     ToastService.ShowError(error);
+                    throw new Exception(error);
                 }
             }
         }
