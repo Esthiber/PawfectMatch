@@ -1,5 +1,5 @@
 ﻿@page "/solicitudes"
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize]
 @inject SolicitudesAdopcionesService solicitudesAdopcionesService
 @inject AdoptantesService adoptantesService
 @inject MascotasService mascotasService
@@ -13,7 +13,16 @@
     <div class="header-section">
         <div class="title-area">
             <h3>Solicitudes de Adopción</h3>
-            <p class="subtitle">Gestiona las solicitudes de adopción de mascotas</p>
+            <p class="subtitle">
+                @if (esAdmin)
+                {
+                    <span>Gestiona todas las solicitudes de adopción de mascotas</span>
+                }
+                else
+                {
+                    <span>Tus solicitudes de adopción de mascotas</span>
+                }
+            </p>
         </div>
         <div class="stats-area">
             <div class="stat-card">
@@ -71,7 +80,7 @@
         </div>
     </div>
 
-    @if (solicitudes is null)
+    @if (isLoading)
     {
         <div class="loading-container">
             <div class="spinner-border text-primary" role="status">
@@ -96,7 +105,14 @@
             }
             else
             {
-                <p>Cuando los usuarios envíen solicitudes de adopción, aparecerán aquí.</p>
+                @if (esAdmin)
+                {
+                    <p>Cuando los usuarios envíen solicitudes de adopción, aparecerán aquí.</p>
+                }
+                else
+                {
+                    <p>Aún no has enviado ninguna solicitud de adopción.</p>
+                }
                 <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo("/Mascotas"))">
                     <i class="bi bi-arrow-left"></i> Volver a Mascotas
                 </button>
@@ -143,7 +159,7 @@
                             <i class="bi bi-eye"></i> Ver Detalles
                         </a>
 
-                        @if (solicitud.EstadoSolicitudId == 1)
+                        @if (esAdmin && solicitud.EstadoSolicitudId == 1)
                         {
                             <div class="action-buttons">
                                 <button class="btn btn-success" @onclick="() => AprobarSolicitud(solicitud.SolicitudAdopcionId)">
@@ -164,6 +180,9 @@
 @code {
     private List<SolicitudesAdopciones>? solicitudes;
     private List<SolicitudesAdopciones> solicitudesFiltradas = new();
+    private bool isLoading = true;
+    private bool esAdmin = false;
+    private string? userId;
 
     // Filtros
     private string searchTerm = string.Empty;
@@ -177,15 +196,58 @@
 
     protected override async Task OnInitializedAsync()
     {
-        solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
-
-        if (solicitudes != null)
+        try
         {
-            // Por defecto, mostrar primero las solicitudes pendientes
-            solicitudesFiltradas = solicitudes
-                .OrderByDescending(s => s.EstadoSolicitudId == 1)
-                .ThenByDescending(s => s.Fecha)
-                .ToList();
+            // Determinar si el usuario es administrador
+            var authState = await authProvider.GetAuthenticationStateAsync();
+            esAdmin = authState.User.IsInRole("Admin");
+            userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Cargar las solicitudes según el rol
+            if (esAdmin)
+            {
+                // Administrador: cargar todas las solicitudes
+                solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
+            }
+            else if (!string.IsNullOrEmpty(userId))
+            {
+                // Usuario normal: cargar solo sus solicitudes
+                var adoptantes = await adoptantesService.ListAsync(a => a.UsuarioId == userId);
+                var adoptanteId = adoptantes.FirstOrDefault()?.AdoptanteId ?? 0;
+
+                if (adoptanteId > 0)
+                {
+                    solicitudes = await solicitudesAdopcionesService.ListAsync(s => s.AdoptanteId == adoptanteId);
+                }
+                else
+                {
+                    // El usuario no tiene un perfil de adoptante
+                    solicitudes = new List<SolicitudesAdopciones>();
+                }
+            }
+            else
+            {
+                solicitudes = new List<SolicitudesAdopciones>();
+            }
+
+            // Aplicar ordenamiento inicial
+            if (solicitudes != null)
+            {
+                solicitudesFiltradas = solicitudes
+                    .OrderByDescending(s => s.EstadoSolicitudId == 1)
+                    .ThenByDescending(s => s.Fecha)
+                    .ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar solicitudes: {ex.Message}");
+            solicitudes = new List<SolicitudesAdopciones>();
+            solicitudesFiltradas = new List<SolicitudesAdopciones>();
+        }
+        finally
+        {
+            isLoading = false;
         }
     }
 
@@ -262,22 +324,54 @@
 
     private async Task AprobarSolicitud(int id)
     {
+        if (!esAdmin) return; // Solo administradores pueden aprobar
+
         bool result = await solicitudesAdopcionesService.AceptarSolicitud(id);
         if (result)
         {
             // Actualizar la lista de solicitudes
-            solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
+            if (esAdmin)
+            {
+                solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
+            }
+            else if (!string.IsNullOrEmpty(userId))
+            {
+                var adoptantes = await adoptantesService.ListAsync(a => a.UsuarioId == userId);
+                var adoptanteId = adoptantes.FirstOrDefault()?.AdoptanteId ?? 0;
+
+                if (adoptanteId > 0)
+                {
+                    solicitudes = await solicitudesAdopcionesService.ListAsync(s => s.AdoptanteId == adoptanteId);
+                }
+            }
+
             ApplyFilters();
         }
     }
 
     private async Task RechazarSolicitud(int id)
     {
+        if (!esAdmin) return; // Solo administradores pueden rechazar
+
         bool result = await solicitudesAdopcionesService.RechazarSolicitud(id);
         if (result)
         {
             // Actualizar la lista de solicitudes
-            solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
+            if (esAdmin)
+            {
+                solicitudes = await solicitudesAdopcionesService.ListAsync(s => true);
+            }
+            else if (!string.IsNullOrEmpty(userId))
+            {
+                var adoptantes = await adoptantesService.ListAsync(a => a.UsuarioId == userId);
+                var adoptanteId = adoptantes.FirstOrDefault()?.AdoptanteId ?? 0;
+
+                if (adoptanteId > 0)
+                {
+                    solicitudes = await solicitudesAdopcionesService.ListAsync(s => s.AdoptanteId == adoptanteId);
+                }
+            }
+
             ApplyFilters();
         }
     }
