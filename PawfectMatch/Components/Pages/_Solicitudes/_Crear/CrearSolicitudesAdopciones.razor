@@ -213,18 +213,15 @@
                     EstadoSolicitudId = 1 // Estado inicial (pendiente)
                 };
 
-            // Obtener información del usuario autenticado
             var authState = await authProvider.GetAuthenticationStateAsync();
             var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             correoUsuario = authState.User.FindFirst(ClaimTypes.Email)?.Value;
 
             if (userId is not null)
             {
-                // Buscar si el usuario ya tiene un perfil de adoptante
                 var adoptantes = await adoptantesService.ListAsync(a => a.UsuarioId == userId);
                 adoptanteActual = adoptantes.FirstOrDefault() ?? new Adoptantes { UsuarioId = userId };
 
-                // Cargar información de la mascota
                 mascota = await mascotasService.SearchByIdAsync(id);
 
                 if (mascota is null || mascota.MascotaId == 0)

@@ -35,8 +35,15 @@ namespace PawfectMatch.Services._Solicitudes
             await using var ctx = await DbFactory.CreateDbContextAsync();
             return await ctx.SolicitudesAdopciones
                 .Include(a => a.Adoptante)
+                    .ThenInclude(_ => _.User)
                 .Include(a => a.Mascota)
                     .ThenInclude(m => m.Categoria)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.RelacionSize)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Estado)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Sexo)
                 .Include(a => a.EstadoSolicitud)
                 .Where(criteria)
                 .ToListAsync();
@@ -59,8 +66,15 @@ namespace PawfectMatch.Services._Solicitudes
             await using var ctx = await DbFactory.CreateDbContextAsync();
             return await ctx.SolicitudesAdopciones
                 .Include(a => a.Adoptante)
+                    .ThenInclude(_ => _.User)
                 .Include(a => a.Mascota)
-                    .ThenInclude(_ => _.Categoria)
+                    .ThenInclude(m => m.Categoria)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.RelacionSize)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Estado)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Sexo)
                 .Include(a => a.EstadoSolicitud)
                 .FirstOrDefaultAsync(a => a.SolicitudAdopcionId == id) ?? new();
         }
