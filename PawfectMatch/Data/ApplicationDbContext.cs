@@ -135,7 +135,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             new Razas { RazaId = 1, CategoriaId = 1, Nombre = "Labrador" },
             new Razas { RazaId = 2, CategoriaId = 1, Nombre = "Bulldog" },
             new Razas { RazaId = 3, CategoriaId = 2, Nombre = "Persa" },
-            new Razas { RazaId = 4, CategoriaId = 2, Nombre = "Siamés" }
+            new Razas { RazaId = 4, CategoriaId = 2, Nombre = "Siamés" },
+            new Razas { RazaId = 5, CategoriaId = 1, Nombre = "Golden Retriever" },
+            new Razas { RazaId = 6, CategoriaId = 1, Nombre = "Chihuahua" },
+            new Razas { RazaId = 7, CategoriaId = 1, Nombre = "Dachshund" },
+            new Razas { RazaId = 8, CategoriaId = 1, Nombre = "Cocker Spaniel" },
+            new Razas { RazaId = 9, CategoriaId = 1, Nombre = "Shih Tzu" },
+            new Razas { RazaId = 10, CategoriaId = 2, Nombre = "Bengalí" },
+            new Razas { RazaId = 11, CategoriaId = 2, Nombre = "Maine Coon" },
+            new Razas { RazaId = 12, CategoriaId = 2, Nombre = "Esfinge" },
+            new Razas { RazaId = 13, CategoriaId = 2, Nombre = "Azul Ruso" }
+
         );
 
         modelBuilder.Entity<RelacionSizes>().HasData(
@@ -411,7 +421,232 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             Descripcion = "Es un perro con mucha energia y adora que le den cariño",
             FotoUrl = "https://th.bing.com/th/id/OIP.JuzlhHcoLZR61J50nJgftwHaFr?rs=1&pid=ImgDetMain",
             SexoId = 1
-        });
+        },
+        new Mascotas()
+        {
+            MascotaId = 10,
+            CategoriaId = 1,
+            RazaId = 4,
+            RelacionSizeId = 2,
+            EstadoId = 2,
+            Nombre = "Nina",
+            Tamano = 14,
+            FechaNacimiento = DateOnly.Parse("2022-02-14"),
+            Descripcion = "Dócil, juguetona y le encanta estar en brazos.",
+            FotoUrl = "https://th.bing.com/th/id/OIP.yRLVHRUwgdR4OiOxTPnNDgHaE7?rs=1&pid=ImgDetMain",
+            SexoId = 2
+        },
+        new Mascotas()
+        {
+            MascotaId = 11,
+            CategoriaId = 1,
+            RazaId = 3,
+            RelacionSizeId = 1,
+            EstadoId = 1,
+            Nombre = "Thor",
+            Tamano = 20,
+            FechaNacimiento = DateOnly.Parse("2020-05-09"),
+            Descripcion = "Muy protector y obediente.",
+            FotoUrl = "https://th.bing.com/th/id/OIP.qkqCM7eQmJwvj8AkH3u5ngHaE8?rs=1&pid=ImgDetMain",
+            SexoId = 1
+        },
+        new Mascotas()
+        {
+            MascotaId = 12,
+            CategoriaId = 1,
+            RazaId = 9,
+            RelacionSizeId = 3,
+            EstadoId = 1,
+            Nombre = "Luna",
+            Tamano = 12,
+            FechaNacimiento = DateOnly.Parse("2023-09-20"),
+            Descripcion = "Le gusta dormir y es muy tranquila.",
+            FotoUrl = "https://th.bing.com/th/id/OIP.QcIBbq4tgrIPhU3W0XxvagHaE7?rs=1&pid=ImgDetMain",
+            SexoId = 2
+        },
+         new Mascotas()
+         {
+             MascotaId = 13,
+             CategoriaId = 1,
+             RazaId = 2,
+             RelacionSizeId = 2,
+             EstadoId = 1,
+             Nombre = "Zeus",
+             Tamano = 22,
+             FechaNacimiento = DateOnly.Parse("2022-12-01"),
+             Descripcion = "Un perro valiente y sociable.",
+             FotoUrl = "https://th.bing.com/th/id/OIP.f3eZqKFb3I53N7QOkz-xaQHaE8?rs=1&pid=ImgDetMain",
+             SexoId = 1
+         },
+          new Mascotas()
+          {
+              MascotaId = 14,
+              CategoriaId = 1,
+              RazaId = 5,
+              RelacionSizeId = 3,
+              EstadoId = 2,
+              Nombre = "Mimi",
+              Tamano = 11,
+              FechaNacimiento = DateOnly.Parse("2021-07-17"),
+              Descripcion = "Pequeñita, dulce y siempre feliz.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.F5dOGfGKePtNmliuyzYhiAHaE7?rs=1&pid=ImgDetMain",
+              SexoId = 2
+          },
+          new Mascotas()
+          {
+              MascotaId = 15,
+              CategoriaId = 1,
+              RazaId = 4,
+              RelacionSizeId = 2,
+              EstadoId = 1,
+              Nombre = "Coco",
+              Tamano = 19,
+              FechaNacimiento = DateOnly.Parse("2023-01-05"),
+              Descripcion = "Curioso, travieso pero muy leal.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.7f62UOkFMy3dk9MK-DKrCwHaEK?rs=1&pid=ImgDetMain",
+              SexoId = 1
+          },
+          new Mascotas()
+          {
+              MascotaId = 16,
+              CategoriaId = 1,
+              RazaId = 7,
+              RelacionSizeId = 1,
+              EstadoId = 1,
+              Nombre = "Chispa",
+              Tamano = 10,
+              FechaNacimiento = DateOnly.Parse("2022-03-15"),
+              Descripcion = "Tiene una energía inagotable, ama jugar con pelotas.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.hKhG7YFi7tvYoXL4o_ArAwHaE7?rs=1&pid=ImgDetMain",
+              SexoId = 2
+          },
+          new Mascotas()
+          {
+              MascotaId = 17,
+              CategoriaId = 1,
+              RazaId = 8,
+              RelacionSizeId = 2,
+              EstadoId = 1,
+              Nombre = "Toby",
+              Tamano = 18,
+              FechaNacimiento = DateOnly.Parse("2021-11-25"),
+              Descripcion = "Fiel y tranquilo, le gusta que lo cepillen.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.EjRBsp3T_z1sjEdQAlm0eQHaFj?rs=1&pid=ImgDetMain",
+              SexoId = 1
+          },
+          new Mascotas()
+          {
+              MascotaId = 18,
+              CategoriaId = 1,
+              RazaId = 9,
+              RelacionSizeId = 1,
+              EstadoId = 1,
+              Nombre = "Kira",
+              Tamano = 9,
+              FechaNacimiento = DateOnly.Parse("2023-02-10"),
+              Descripcion = "Una perrita súper tierna, perfecta para compañía.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.ohAyzfrYc6QjFZ3v1nypIAHaE8?rs=1&pid=ImgDetMain",
+              SexoId = 2
+          },
+          new Mascotas()
+          {
+              MascotaId = 19,
+              CategoriaId = 1,
+              RazaId = 3,
+              RelacionSizeId = 3,
+              EstadoId = 2,
+              Nombre = "Axel",
+              Tamano = 30,
+              FechaNacimiento = DateOnly.Parse("2020-07-01"),
+              Descripcion = "Gran protector, adiestrado y obediente.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.sAfYcLwUDwKXwJKCdWrjWwHaE8?rs=1&pid=ImgDetMain",
+              SexoId = 1
+          },
+          new Mascotas()
+          {
+              MascotaId = 20,
+              CategoriaId = 1,
+              RazaId = 6,
+              RelacionSizeId = 1,
+              EstadoId = 1,
+              Nombre = "Lilo",
+              Tamano = 6,
+              FechaNacimiento = DateOnly.Parse("2024-05-19"),
+              Descripcion = "Pequeñito pero con un ladrido potente.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.z3Q5VZ8cJ3C07IbEECtkhwHaE7?rs=1&pid=ImgDetMain",
+              SexoId = 1
+          },
+          new Mascotas()
+          {
+              MascotaId = 21,
+              CategoriaId = 1,
+              RazaId = 2,
+              RelacionSizeId = 2,
+              EstadoId = 1,
+              Nombre = "Nube",
+              Tamano = 17,
+              FechaNacimiento = DateOnly.Parse("2023-06-03"),
+              Descripcion = "Muy consentida, le encanta dormir en almohadas.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.ESAKWAbKk7cyEJOLFnIMrAHaE6?rs=1&pid=ImgDetMain",
+              SexoId = 2
+          },
+          new Mascotas()
+          {
+              MascotaId = 22,
+              CategoriaId = 2,
+              RazaId = 10,
+              RelacionSizeId = 2,
+              EstadoId = 1,
+              Nombre = "Mishu",
+              Tamano = 12,
+              FechaNacimiento = DateOnly.Parse("2023-03-10"),
+              Descripcion = "Gato tranquilo, le encanta dormir y ronronear.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.cAluVwFq_G_AUtMXrP3KYwHaE8?rs=1&pid=ImgDetMain",
+              SexoId = 2
+          },
+          new Mascotas()
+          {
+              MascotaId = 23,
+              CategoriaId = 2,
+              RazaId = 11,
+              RelacionSizeId = 2,
+              EstadoId = 2,
+              Nombre = "Simón",
+              Tamano = 11,
+              FechaNacimiento = DateOnly.Parse("2021-09-15"),
+              Descripcion = "Muy hablador y curioso. Siempre quiere estar contigo.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.3Hu0Z6b-DUYZf_A9GlQXuwHaE8?rs=1&pid=ImgDetMain",
+              SexoId = 1
+          },
+          new Mascotas()
+          {
+              MascotaId = 24,
+              CategoriaId = 2,
+              RazaId = 12,
+              RelacionSizeId = 2,
+              EstadoId = 1,
+              Nombre = "Nala",
+              Tamano = 13,
+              FechaNacimiento = DateOnly.Parse("2022-01-22"),
+              Descripcion = "Ágil, le encanta explorar todo el lugar.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.nQwMG4DyUqVxgo7BunwYyAHaE8?rs=1&pid=ImgDetMain",
+              SexoId = 2
+          },
+          new Mascotas()
+          {
+              MascotaId = 25,
+              CategoriaId = 2,
+              RazaId = 13, 
+              RelacionSizeId = 3,
+              EstadoId = 1,
+              Nombre = "Ragnar",
+              Tamano = 20,
+              FechaNacimiento = DateOnly.Parse("2020-06-30"),
+              Descripcion = "Gran tamaño y corazón. Muy tranquilo.",
+              FotoUrl = "https://th.bing.com/th/id/OIP.Qo9h1u8q1zB2UrdkMhvCBAHaEK?rs=1&pid=ImgDetMain",
+              SexoId = 1
+          });
+
         #endregion
     }
 }
