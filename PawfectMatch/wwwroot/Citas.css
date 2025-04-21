@@ -1,0 +1,593 @@
+/* Estilos para el componente de Detalle de Citas */
+.cita-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--firstcolor);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  /* Estilos para estados de carga y errores */
+  .loading-container,
+  .unauthorized-container,
+  .not-found-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid var(--fifthcolor);
+    border-top: 5px solid var(--secondcolor);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1.5rem;
+  }
+  
+  .unauthorized-icon,
+  .not-found-icon {
+    font-size: 4rem;
+    color: var(--fourthcolor);
+    margin-bottom: 1.5rem;
+  }
+  
+  .unauthorized-container h2,
+  .not-found-container h2 {
+    font-family: var(--titulo-2-font-family);
+    font-size: var(--titulo-2-font-size);
+    color: var(--thirdcolor);
+    margin-bottom: 1rem;
+  }
+  
+  .unauthorized-container p,
+  .not-found-container p {
+    font-family: var(--parrafo-1-font-family);
+    font-size: 1.125rem;
+    color: #555;
+    margin-bottom: 2rem;
+  }
+  
+  /* Encabezado de la cita */
+  .cita-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--secondcolor);
+  }
+  
+  .cita-title {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .cita-title h1 {
+    font-family: var(--titulo-1-font-family);
+    font-size: 2.25rem;
+    color: var(--thirdcolor);
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .cita-badges {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  
+  .badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .badge-id {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .badge-status {
+    background-color: #17a2b8;
+    color: white;
+  }
+  
+  .cita-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+  
+  .btn-secondary, .btn-primary, .btn-calendar, .btn-map {
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    font-family: var(--single-line-body-base-font-family);
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    border: none;
+  }
+  
+  .btn-secondary {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #e5e5e5;
+  }
+  
+  .btn-primary {
+    background-color: var(--secondcolor);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--fourthcolor);
+  }
+  
+  .btn-calendar {
+    background-color: #6f42c1;
+    color: white;
+  }
+  
+  .btn-calendar:hover {
+    background-color: #5a32a3;
+  }
+  
+  .btn-map {
+    background-color: #28a745;
+    color: white;
+    margin-top: 1rem;
+  }
+  
+  .btn-map:hover {
+    background-color: #218838;
+  }
+  
+  /* Fecha y hora de la cita */
+  .cita-datetime {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .date-display {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .calendar-icon {
+    width: 80px;
+    height: 90px;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .calendar-month {
+    background-color: var(--secondcolor);
+    color: white;
+    text-align: center;
+    padding: 0.25rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  
+  .calendar-day {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--thirdcolor);
+  }
+  
+  .date-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .date-full {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--thirdcolor);
+  }
+  
+  .time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.125rem;
+    color: #555;
+  }
+  
+  .time i {
+    color: var(--fourthcolor);
+  }
+  
+  .countdown {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+  }
+  
+  .countdown-label {
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  .countdown-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--fourthcolor);
+  }
+  
+  .countdown-value.completed {
+    color: #28a745;
+  }
+  
+  /* Contenido principal */
+  .cita-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .cita-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .section-title {
+    font-family: var(--titulo-2-font-family);
+    font-size: 1.5rem;
+    color: var(--fourthcolor);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--fifthcolor);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .section-title i {
+    color: var(--secondcolor);
+  }
+  
+  /* Sección de mascota */
+  .mascota-card {
+    display: flex;
+    gap: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  @media (max-width: 768px) {
+    .mascota-card {
+      flex-direction: column;
+    }
+  }
+  
+  .mascota-image {
+    flex: 0 0 300px;
+    max-height: 300px;
+    overflow: hidden;
+  }
+  
+  .mascota-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .mascota-details {
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .mascota-name {
+    font-family: var(--titulo-2-font-family);
+    font-size: 1.75rem;
+    color: var(--thirdcolor);
+    margin: 0;
+  }
+  
+  .mascota-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  @media (max-width: 576px) {
+    .mascota-info {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .info-label {
+    font-size: 0.875rem;
+    color: #666;
+    font-weight: 500;
+  }
+  
+  .info-value {
+    font-size: 1.125rem;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .mascota-description {
+    font-family: var(--parrafo-1-font-family);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+  }
+  
+  /* Sección de adoptante */
+  .adoptante-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+  
+  .adoptante-avatar {
+    flex: 0 0 80px;
+    height: 80px;
+    background-color: var(--fifthcolor);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--thirdcolor);
+    font-size: 2.5rem;
+  }
+  
+  .adoptante-details {
+    flex: 1;
+  }
+  
+  .adoptante-name {
+    font-family: var(--titulo-2-font-family);
+    font-size: 1.5rem;
+    color: var(--thirdcolor);
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .adoptante-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  @media (max-width: 576px) {
+    .adoptante-info {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Sección de ubicación */
+  .ubicacion-card {
+    display: flex;
+    gap: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  @media (max-width: 768px) {
+    .ubicacion-card {
+      flex-direction: column;
+    }
+  }
+  
+  .ubicacion-details {
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .ubicacion-name {
+    font-family: var(--titulo-2-font-family);
+    font-size: 1.5rem;
+    color: var(--thirdcolor);
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .ubicacion-address,
+  .ubicacion-phone,
+  .ubicacion-email {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    color: #555;
+    margin: 0.5rem 0;
+  }
+  
+  .ubicacion-address i,
+  .ubicacion-phone i,
+  .ubicacion-email i {
+    color: var(--fourthcolor);
+    width: 20px;
+    text-align: center;
+  }
+  
+  .ubicacion-map {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .ubicacion-map img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  /* Sección de recordatorios */
+  .recordatorios-card {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    .recordatorios-card {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .recordatorio-item {
+    display: flex;
+    gap: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1.25rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .recordatorio-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recordatorio-icon {
+    flex: 0 0 40px;
+    height: 40px;
+    background-color: var(--secondcolor);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+  }
+  
+  .recordatorio-content {
+    flex: 1;
+  }
+  
+  .recordatorio-content h4 {
+    font-family: var(--titulo-2-font-family);
+    font-size: 1.125rem;
+    color: var(--thirdcolor);
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .recordatorio-content p {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  /* Animaciones */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .cita-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .cita-actions {
+      width: 100%;
+      flex-wrap: wrap;
+    }
+    
+    .cita-datetime {
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    
+    .countdown {
+      align-items: flex-start;
+      width: 100%;
+    }
+    
+    .adoptante-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .adoptante-avatar {
+      margin-bottom: 1rem;
+    }
+    
+    .btn-secondary, .btn-primary, .btn-calendar {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .cita-detail-container {
+      padding: 1rem;
+    }
+    
+    .date-display {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .calendar-icon {
+      align-self: center;
+    }
+  }

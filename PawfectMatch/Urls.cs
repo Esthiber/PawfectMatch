@@ -16,6 +16,7 @@ namespace PawfectMatch
         public static class Citas
         {
             public const string Index = "/citas";
+            public const string Details = "/citas/";
             public const string Editar = "/citas/editar/";
         }
 

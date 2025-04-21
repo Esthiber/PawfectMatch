@@ -35,8 +35,14 @@ namespace PawfectMatch.Services
             await using var ctx = await DbFactory.CreateDbContextAsync();
             return await ctx.Citas
                 .Include(c => c.Adoptante)
-                .Include(c => c.Mascota)
-                    .ThenInclude(_ => _.Categoria)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Categoria)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.RelacionSize)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Estado)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Sexo)
                 .AsNoTracking()
                 .Where(criteria)
                 .ToListAsync();
@@ -60,8 +66,14 @@ namespace PawfectMatch.Services
             await using var ctx = await DbFactory.CreateDbContextAsync();
             return await ctx.Citas
                 .Include(c => c.Adoptante)
-                .Include(c => c.Mascota)
-                    .ThenInclude(_ => _.Categoria)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Categoria)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.RelacionSize)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Estado)
+                .Include(a => a.Mascota)
+                    .ThenInclude(m => m.Sexo)
                 .FirstOrDefaultAsync(c => c.CitaId == id) ?? new();
         }
 
