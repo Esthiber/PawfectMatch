@@ -2,6 +2,7 @@
 @attribute [Authorize(Roles = "Admin")]
 @inject HistorialAdopcionesService HistorialService
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
 <PageTitle>Historial de Adopciones | Pawfect Match</PageTitle>
 
@@ -28,7 +29,7 @@
             </div>
             <h4>No hay adopciones registradas</h4>
             <p>Cuando se realicen adopciones, aparecerán en esta lista.</p>
-            <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo("/Mascotas"))">
+            <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo(Urls.Mascotas.Index))">
                 <i class="bi bi-arrow-left"></i> Volver a Mascotas
             </button>
         </div>
@@ -144,12 +145,14 @@
                             </td>
                             <td>
                                 <div class="actions">
-                                    <button class="btn btn-sm btn-outline-primary" title="Ver detalles" @onclick="() => VerDetalles(item.HistorialAdopcioneId)">
+                                    <button class="btn btn-sm btn-outline-primary" title="Ver detalles" @onclick="@(() =>{ VerDetalles(item.HistorialAdopcioneId);})">
                                         <i class="bi bi-eye"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-outline-secondary" title="Editar notas" @onclick="() => EditarNotas(item.HistorialAdopcioneId)">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
+
+                                    @* <button class="btn btn-sm btn-outline-secondary" title="Editar notas" @onclick="() => EditarNotas(item.HistorialAdopcioneId)"> *@
+                                    @*     <i class="bi bi-pencil"></i> *@
+                                    @* </button> *@
+
                                 </div>
                             </td>
                         </tr>
@@ -316,7 +319,7 @@
 
     private void VerDetalles(int id)
     {
-        NavigationManager.NavigateTo($"/historial/{id}");
+        NavigationManager.NavigateTo($"{Urls.Historial.Details}{id}");
     }
 
     private void EditarNotas(int id)

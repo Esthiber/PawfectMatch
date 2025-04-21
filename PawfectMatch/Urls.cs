@@ -74,6 +74,12 @@ namespace PawfectMatch
             public const string CrearPresentacion = "/Advanced/Presentaciones/Crear";
         }
 
+        public static class Historial
+        {
+            public const string Index = "/historial";
+            public const string Details = "/historial/";
+        }
+
         public static class General
         {
             public const string Home = "/";
