@@ -157,7 +157,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
         modelBuilder.Entity<Estados>().HasData(
             new Estados { EstadoId = 1, Nombre = "Disponible" },
             new Estados { EstadoId = 2, Nombre = "Adoptado" },
-            new Estados { EstadoId = 3, Nombre = "No Disponible" }
+            new Estados { EstadoId = 3, Nombre = "No Disponible" }// Osea muerto
         );
 
         modelBuilder.Entity<Sexos>().HasData(

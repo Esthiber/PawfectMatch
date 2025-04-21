@@ -325,9 +325,13 @@
     private async Task AprobarSolicitud(int id)
     {
         if (!esAdmin) return; // Solo administradores pueden aprobar
+        var soli = await solicitudesAdopcionesService.SearchByIdAsync(id);
+
+        soli.Mascota.EstadoId = 2;
+        bool exitoMascota = await mascotasService.UpdateAsync(soli.Mascota);
 
         bool result = await solicitudesAdopcionesService.AceptarSolicitud(id);
-        if (result)
+        if (result && exitoMascota)
         {
             // Actualizar la lista de solicitudes
             if (esAdmin)

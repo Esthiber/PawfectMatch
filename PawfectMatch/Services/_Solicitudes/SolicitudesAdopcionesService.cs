@@ -92,7 +92,6 @@ namespace PawfectMatch.Services._Solicitudes
             var s = await ctx.SolicitudesAdopciones
                 .Include(a => a.Adoptante)
                 .Include(a => a.Mascota)
-                    .ThenInclude(_ => _.Categoria)
                 .Include(a => a.EstadoSolicitud)
                 .FirstOrDefaultAsync(a => a.SolicitudAdopcionId == id);
 
@@ -110,7 +109,6 @@ namespace PawfectMatch.Services._Solicitudes
             var s = await ctx.SolicitudesAdopciones
                 .Include(a => a.Adoptante)
                 .Include(a => a.Mascota)
-                    .ThenInclude(_ => _.Categoria)
                 .Include(a => a.EstadoSolicitud)
                 .FirstOrDefaultAsync(a => a.SolicitudAdopcionId == id);
 

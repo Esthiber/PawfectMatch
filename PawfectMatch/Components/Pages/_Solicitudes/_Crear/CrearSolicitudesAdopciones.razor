@@ -334,13 +334,11 @@
                 mensajeExito = "¡Tu solicitud de adopción ha sido enviada con éxito! Pronto nos pondremos en contacto contigo.";
                 ToastService.ShowSuccess(mensajeExito);
 
-                // Reiniciar el formulario
                 solicitud = new() { Fecha = DateTime.Now, EstadoSolicitudId = 1 };
                 serviciosSeleccionados.Clear();
 
-                // Redirigir después de un breve retraso
                 await Task.Delay(3000);
-                NavigationManager.NavigateTo("/mis-solicitudes");
+                NavigationManager.NavigateTo(Urls.Solicitudes.Index);
             }
             else
             {
