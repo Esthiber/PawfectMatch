@@ -243,6 +243,11 @@
                 @*     <i class="bi bi-bar-chart"></i> *@
                 @*     <span>Reportes</span> *@
                 @* </button> *@
+                <button class="action-btn" @onclick="@(() => NavigationManager.NavigateTo(Urls.Sugerencias.Index))">
+                    <i class="bi bi-envelope-paper-heart"></i>
+                    <span>Sugerencias</span>
+                </button>
+
                 <button class="action-btn" @onclick="@(() => NavigationManager.NavigateTo(Urls.Configuracion.Backup))">
                     <i class="bi bi-database-check"></i>
                     <span>Respaldo</span>
