@@ -1,99 +1,105 @@
+# 🐾 Sistema de Adopción de Mascotas
 
-Descripción detallada
-Este es un programa de adopción de animales en el cual un adoptante puede elegir entre perro y gato por medio de ver el catálogo y luego seleccionar el de su preferencia y llenar un formulario de adopción entre otras funciones del programa , en donde se están desempeñando dos roles el de adoptante y el de admin , cuyas funciones serán distintas en este programa.
+Este proyecto es una plataforma web para la **adopción de animales** que permite a los usuarios explorar un catálogo de mascotas, registrarse, enviar solicitudes de adopción y dar sugerencias. A su vez, el **administrador** puede gestionar mascotas, revisar solicitudes y programar citas. 
 
-el programa tendrá distintas funciones para el user Josme@user.com
-,Josme@123
-  las cuales serán las siguientes:
+## 🚀 Tecnologías Utilizadas
 
-Iniciar sesión 
-Registrarse 
- Mascotas 
- detalles de mascotas 
-registro de adopción 
-estado de solicitud 
-Sugerencias 
-Cerrar Sesión
+- **Visual Studio**
+- **SQL Server**
+- **Figma**
 
-Mientras que el admin  Chanceenos@Porfavor.com
-,Chance@123
-tendrá las siguientes opciones: 
+---
 
-Iniciar sesión 
-ver solicitudes 
-Subir Mascotas 
-Historial Adopciones
-Citas 
-panel de control 
-Cerrar Sesión 
+## 👥 Roles en el Sistema
 
+### Adoptante
+Usuario con funciones para visualizar, solicitar y dar seguimiento a la adopción de mascotas.
 
-Tecnologías utilizadas 
-Visual studio
-Sql Server 
-Figma
+**Credenciales de ejemplo:**
+Correo: Josme@user.com
+Contraseña: Josme@123
 
-Definición de funciones 
+### Administrador
+Usuario con privilegios para gestionar el contenido y las solicitudes del sistema.
 
-Adoptante 
+**Credenciales de ejemplo:**
+Correo: Chanceenos@Porfavor.com
+Contraseña: Chance@123
 
-Inicio Sesión
-Aquí el user si ya tiene cuenta solo debe de iniciar sesion con sus datos cómo su email  y contraseña 
+---
 
+## 🐶 Funcionalidades por Rol
 
+### 🧍‍♂️ Adoptante
 
-Registrarse
-de no tener una cuenta el user se registrará con los siguientes datos , email y contraseña , la cual debe confirmar una vez .
+- **Iniciar Sesión:**  
+  Acceso mediante correo electrónico y contraseña.
 
+- **Registrarse:**  
+  Crear una cuenta nueva ingresando correo, contraseña y confirmación de la misma.
 
-Mascotas 
-Este es un botón que te lleva al catálogo principal de la página donde se podrá visualizar las distintas mascotas en este caso perro y gato que se pueden llegar a adoptar.
+- **Mascotas:**  
+  Explorar el catálogo con todas las mascotas disponibles para adopción (perros y gatos).
 
-Descubre más
- Al user  darle a este botón en una tarjeta de alguna mascota , a este se le mostrará  la información de la mascota y si desea adoptarlo , le dará a adoptar.
+- **Detalles de Mascotas (Descubre más):**  
+  Ver información detallada de cada mascota con la opción de iniciar el proceso de adopción.
 
+- **Registro de Adopción:**  
+  Llenar un formulario con nombre completo, ocupación y día de cita al momento de adoptar.
 
-         
-Registro adopción 
-Luego que el usuario le dé a adoptar  se le presentará un pequeño formulario donde se le pedirá el nombre completo y la ocupación y día de cita , luego este le dará a enviar.
+- **Estado de Solicitud:**  
+  Ver el estado de su solicitud de adopción (aceptada, rechazada o en revisión).
 
+- **Sugerencias:**  
+  Enviar ideas o recomendaciones mediante un formulario que incluye nombre, correo, ocupación y descripción.
 
+- **Cerrar Sesión:**  
+  Finalizar sesión del sistema.
 
-Estado Solicitud 
-Aquí el user podrá visualizar en qué estado está su solicitud de adopción y si este le da un click podrá ver la información detallada de su solicitud de adopción.
+---
 
+### 🧑‍💼 Administrador
 
+- **Iniciar Sesión:**  
+  Acceso exclusivo con credenciales de administrador.
 
-Sugerencias 
-Aquí al user se le muestra un formulario que llenar en el cual tendrá los siguientes datos nombre , correo electrónico , ocupación y descripción de la sugerencia , luego le da a enviar y se enviará al admin para poder ver detalladamente las sugerencias. 
+- **Ver Solicitudes:**  
+  Vista previa y detallada de las solicitudes de adopción para evaluación.
 
+- **Subir Mascotas:**  
+  Formulario para registrar nuevas mascotas con datos como:
+  - Categoría (Perro/Gato)
+  - Nombre
+  - Raza
+  - Tamaño
+  - Fecha de nacimiento
+  - Descripción de personalidad
+  - Imagen
+  - Estado (Disponible)
 
+- **Historial de Adopciones:**  
+  Consultar adopciones completadas con detalles al hacer clic sobre ellas.
 
-Admin 
+- **Citas:**  
+  Calendario interactivo donde se resaltan fechas acordadas y detalles de la cita al seleccionarlas.
 
-Subir mascotas 
-Aqui el admin tendrá que llenar un formulario con todos los datos importantes de la mascotas los cuales serán la categoría: ya sea gato o perro , el nombre , la raza , el tamaño , fecha de nacimiento , descripción de la personalidad de la mascota y una foto y el estado de dicha mascota en este caso disponible. 
+- **Panel de Control:**  
+  Vista administrativa para gestión completa del sistema, incluyendo:
+  - Estadísticas
+  - Últimas solicitudes
+  - Gestión rápida de mascotas
 
-también al darle del icono de mas se mostrará que se puede agregar otra mascota al mismo tiempo.
+- **Cerrar Sesión:**  
+  Finalizar sesión como administrador.
 
+---
 
-Ver solicitudes 
-Aquí el admin podrá ver las solicitudes de los adoptantes como si fuera una vista previa , luego de el admin le de click se mostrará de forma detallada la solicitud del adoptante , donde el admin decidirá si es apto o no para la adopción de la mascota.
+## 📌 Notas Finales
 
-luego de que se le acepte al adoptante en solicitudes del adoptante se presentará en el estado si ha sido aceptada , rechazada o está aún en revisión.
+Este sistema está diseñado para facilitar el proceso de adopción, fomentando el cuidado responsable de los animales y ofreciendo herramientas tanto para usuarios como para administradores. 
 
+Si deseas contribuir, sugerir mejoras o reportar errores, no dudes en hacerlo.
 
+---
 
-Historial de adopciones 
-Aquí el admin tendrá una vista previa de las adopciones anteriores de los adoptante , en la cual al darle click se mostrará de una forma más detallada la adopción anteriormente realizada.
-
-
-
-Citas 
-Aquí el admin podrá en el calendario ciertas fechas de un color resaltando en la cual al darle click se mostrará de forma detallada la solicitud del cliente con la fecha y hora acordada para la cita.
-
-
-panel de control 
-aqui el admin podra tener mas a mano todo el control de nuestro proyecto con todas las funcionalidades que trae como presentación , ver ultimas solicitudes , agregar mascotas entre otras demas funciones que este panel ofrece al admin
-
-
+**¡Gracias por ser parte de este proyecto y apoyar la adopción responsable! 🐾**
