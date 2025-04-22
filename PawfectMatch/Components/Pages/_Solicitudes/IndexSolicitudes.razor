@@ -3,6 +3,7 @@
 @inject SolicitudesAdopcionesService solicitudesAdopcionesService
 @inject AdoptantesService adoptantesService
 @inject MascotasService mascotasService
+@inject HistorialAdopcionesService historialService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider authProvider
 @rendermode InteractiveServer
@@ -333,6 +334,16 @@
         bool result = await solicitudesAdopcionesService.AceptarSolicitud(id);
         if (result && exitoMascota)
         {
+            var historialAdopciones = new HistorialAdopciones
+                {
+                    AdoptanteId = soli.AdoptanteId,
+                    MascotaId = soli.MascotaId,
+                    FechaAdopcion = DateTime.Now,
+                    Notas = "Adopción aprobada desde el sistema"
+                };
+
+            bool exitoHistorial = await historialService.InsertAsync(historialAdopciones);
+
             // Actualizar la lista de solicitudes
             if (esAdmin)
             {
