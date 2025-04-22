@@ -182,7 +182,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
                 PresentacionId = 1,
                 Titulo = "Default",
                 EsActiva = true,
-                Descripcion = "Esta es la presentacion default. No la borre por favor."
+                Descripcion = "Esta es la presentacion default. No la borre por favor.",
+                FechaCreacion = new DateTime(2025, 1, 1)
             }
         );
 
@@ -212,7 +213,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
                 TextButton_Left = "Ver Historias",
                 LinkButton_Left = "#",
 
-                ImageUrl = "https://cdn.pixabay.com/photo/2016/11/29/04/17/dog-1861839_1280.jpg",
+                ImageUrl = "https://c.wallhere.com/photos/27/00/1920x1200_px_dog-1643539.jpg!d",
                 Orden = 2
             },
             new Diapositivas
@@ -227,7 +228,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
                 TextButton_Right = "Leer historias",
                 LinkButton_Right = "#testimonials-section",
 
-                ImageUrl = "https://cdn.pixabay.com/photo/2020/02/06/15/06/dog-4824485_1280.jpg",
+                ImageUrl = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0fGVufDB8fDB8fHww",
                 Orden = 3
             }
 
@@ -636,7 +637,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
           {
               MascotaId = 25,
               CategoriaId = 2,
-              RazaId = 13, 
+              RazaId = 13,
               RelacionSizeId = 3,
               EstadoId = 1,
               Nombre = "Ragnar",
