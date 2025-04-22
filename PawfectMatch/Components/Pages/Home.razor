@@ -59,7 +59,7 @@
                                 <span><i class="bi bi-calendar-heart"></i> @CalcularEdad(mascota.FechaNacimiento)</span>
                             </div>
                             <p class="pet-description">@(mascota.Descripcion.Length > 100 ? mascota.Descripcion.Substring(0, 100) + "..." : mascota.Descripcion)</p>
-                            <button class="btn btn-outline-primary">Conocer más</button>
+                            <a class="btn btn-outline-primary" href="@Urls.Mascotas.Detalle @mascota.MascotaId">Conocer más</a>
                         </div>
                     </div>
                 }
