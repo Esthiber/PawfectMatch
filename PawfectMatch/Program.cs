@@ -47,6 +47,7 @@ builder.Services.AddScoped<RelacionSizesService>();
 builder.Services.AddScoped<PresentacionesService>();
 builder.Services.AddScoped<ServiciosService>();
 builder.Services.AddScoped<SolicitudesServiciosService>();
+builder.Services.AddScoped<SugerenciasService>();
 
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddBlazoredToast();

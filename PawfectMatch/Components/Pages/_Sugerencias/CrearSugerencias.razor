@@ -1,41 +1,75 @@
-﻿@page "/Sugerencias"
+﻿@page "/Sugerencias/Crear"
 
 @inject SugerenciasService sugerenciasService
 @inject AuthenticationStateProvider authProvider
 
-<h3 class="text-lg font-semibold mb-3">Déjanos tu sugerencia</h3>
+@rendermode InteractiveServer
 
-@if (guardado)
-{
-    <div class="alert alert-success">
-        ¡Gracias por tu sugerencia!
-    </div>
-}
+<link rel="stylesheet" href="@Assets["Sugerencias.css"]" />
 
-<EditForm Model="@sugerencia" OnValidSubmit="GuardarSugerencia">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<div class="sugerencias-container">
+    @if (!guardado)
+    {
+        <div class="sugerencias-form-container">
+            <h2 class="sugerencias-title">Comparte tu sugerencia</h2>
+            <p class="sugerencias-subtitle">Tus ideas nos ayudan a mejorar nuestro servicio para ti y tu mascota</p>
 
-    <AuthorizeView Context="other_name">
-        <Authorized>
-            <div class="mb-3">
-                <label>Correo electrónico:</label>
-                <InputText @bind-Value="sugerencia.UserMail" class="form-control" readonly />
+            <EditForm Model="@sugerencia" OnValidSubmit="GuardarSugerencia" class="sugerencias-form">
+                <DataAnnotationsValidator />
+
+                <AuthorizeView>
+                    <Authorized Context="another_name">
+                        <div class="form-group">
+                            <label class="form-label">Tu correo electrónico</label>
+                            <InputText @bind-Value="sugerencia.UserMail" class="form-input" readonly />
+                        </div>
+                    </Authorized>
+                    <NotAuthorized Context="another_name">
+                        <div class="login-prompt">
+                            <p>Para enviar una sugerencia, necesitas iniciar sesión</p>
+                            <a class="login-button" href="@Urls.Account.Login">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                            </a>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
+
+                <AuthorizeView>
+                    <Authorized Context="another_name">
+                        <div class="form-group">
+                            <label for="desc" class="form-label">¿Qué podemos mejorar?</label>
+                            <InputTextArea @bind-Value="sugerencia.Descripcion" class="form-textarea" id="desc"
+                                           placeholder="Cuéntanos tu idea o sugerencia..." rows="5" />
+                            <ValidationMessage For="@(() => sugerencia.Descripcion)" class="validation-message" />
+                        </div>
+
+                        <button type="submit" class="submit-button">
+                            <span>Enviar sugerencia</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </Authorized>
+                </AuthorizeView>
+            </EditForm>
+        </div>
+    }
+    else
+    {
+        <div class="success-container">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
             </div>
-
-        </Authorized>
-        <NotAuthorized>
-            <a class="btn btn-primary" href="@Urls.Account.Login"> Iniciar Session</a>
-        </NotAuthorized>
-    </AuthorizeView>
-    <div class="mb-3">
-        <label for="desc">Descripción:</label>
-        <InputTextArea @bind-Value="sugerencia.Descripcion" class="form-control" id="desc" />
-        <ValidationMessage For="@(() => sugerencia.Descripcion)" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Enviar</button>
-</EditForm>
+            <h2 class="success-title">¡Gracias por tu sugerencia!</h2>
+            <p class="success-message">
+                Valoramos mucho tu aporte para hacer de Pawfect Match un mejor lugar para ti y tu mascota.
+                Tu sugerencia ha sido recibida y será revisada por nuestro equipo.
+            </p>
+            <button @onclick="NuevaSugerencia" class="new-suggestion-button">
+                <i class="fas fa-plus"></i>
+                <span>Enviar otra sugerencia</span>
+            </button>
+        </div>
+    }
+</div>
 
 @code {
     private Sugerencias sugerencia = new();
@@ -55,10 +89,25 @@
     private async Task GuardarSugerencia()
     {
         guardado = await sugerenciasService.InsertAsync(sugerencia);
-        if (guardado)
+    }
+
+    private void NuevaSugerencia()
+    {
+        guardado = false;
+        sugerencia = new Sugerencias();
+
+        // Recuperar el email del usuario actual
+        _ = SetUserEmail();
+    }
+
+    private async Task SetUserEmail()
+    {
+        var authState = await authProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated == true)
         {
-            sugerencia.Descripcion = string.Empty; // solo limpiamos la descripción
+            sugerencia.UserMail = user.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
         }
     }
 }
-
